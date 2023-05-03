@@ -1,0 +1,145 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title" class="lead pb-3" *ngIf="!isUpdateRegister && !isModeViewForm">
+                            {{ "patient.medicationinformation.TitleAdd" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isUpdateRegister">
+                            {{ "patient.medicationinformation.TitleEdit" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isModeViewForm">
+                            {{ "patient.medicationinformation.TitleView" | translate }}
+                        </h4>
+                    </div>
+                    <div class="content">
+                        <form #rF="ngForm" [formGroup]="registerForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="description"> {{ "general.description" | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="description" name="description"
+                                            formControlName="description" maxlength="100"
+                                            [ngClass]="!isValidFormDescription() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormDescription()" class="text-danger">
+                                            {{ "general.description_required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <!--datepicker-->
+                                        <label for="startDate">{{ "patient.medicationinformation.startDate.title"
+                                            |
+                                            translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="date" class="form-control " id="startDate" name="startDate"
+                                            formControlName="startDate" maxlength="10"
+                                            [ngClass]="!isValidFormStartDate() ? '' : 'error'"
+                                            placeholder="dd-mm-yyyy" />
+                                        <small [hidden]="!isValidFormStartDate()" class="text-danger">
+                                            {{ "patient.medicationinformation.startDate.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <!--datepicker-->
+                                        <label for="endDate">{{ "patient.medicationinformation.endDate.title" |
+                                            translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="date" class="form-control " id="endDate" name="endDate"
+                                            formControlName="endDate" maxlength="10"
+                                            [ngClass]="!isValidFormEndDate() ? '' : 'error'" placeholder="dd-mm-yyyy" />
+                                        <small [hidden]="!isValidFormEndDate()" class="text-danger">
+                                            {{ "patient.medicationinformation.endDate.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="dosage"> {{ "patient.medicationinformation.dosage.title" |
+                                            translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="dosage" name="dosage"
+                                            formControlName="dosage" maxlength="100"
+                                            [ngClass]="!isValidFormDosage() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormDosage()" class="text-danger">
+                                            {{ "patient.medicationinformation.dosage.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="mainDrug"> {{ "patient.medicationinformation.mainDrug.title"
+                                            | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="mainDrug" name="mainDrug"
+                                            formControlName="mainDrug" maxlength="100"
+                                            [ngClass]="!isValidFormMainDrug() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormMainDrug()" class="text-danger">
+                                            {{ "patient.medicationinformation.mainDrug.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="posology"> {{ "patient.medicationinformation.posology.title"
+                                            | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="posology" name="posology"
+                                            formControlName="posology" maxlength="100"
+                                            [ngClass]="!isValidFormPosology() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormPosology()" class="text-danger">
+                                            {{ "patient.medicationinformation.posology.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="enableOpt"> {{ "general.enable" | translate }}:</label>
+                                        <div class="clearfix"></div>
+                                        <bSwitch formControlName="enableOpt" required [switch-on-color]="'primary'">
+                                        </bSwitch>
+                                    </div>
+                                </div>
+                            </div> 
+                            <button [@botaoAnimado]="estadoBotao_goBackToList"
+                                (mouseenter)="animarBotao('final', 'goBackToList')"
+                                (mouseleave)="animarBotao('inicial', 'goBackToList')" type="button"
+                                class="btn btn-wd btn-default" (click)="goBackToList()">
+                                <span class="btn-label">
+                                    <i class="fa fa-arrow-left"></i>
+                                </span>
+                                {{ "general.backnav" | translate }}
+                            </button>
+                            <button type="button" [@botaoAnimado]="estadoBotao_addRegister"
+                                (mouseenter)="animarBotao('final', 'addRegister')"
+                                (mouseleave)="animarBotao('inicial', 'addRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="addRegister()"
+                                *ngIf="!isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{
+                                "general.saveregisterbtn" | translate }}</button>
+
+                            <button type="button" [@botaoAnimado]="estadoBotao_updateRegister"
+                                (mouseenter)="animarBotao('final','updateRegister')"
+                                (mouseleave)="animarBotao('inicial', 'updateRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="updateRegister()"
+                                *ngIf="isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{
+                                "general.updateregisterbtn" | translate }}</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

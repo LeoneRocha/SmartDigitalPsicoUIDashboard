@@ -1,0 +1,73 @@
+{
+  "decimal": ",",
+  "thousands": ".",
+  "search": "Buscar:",
+  "lengthMenu": "Mostrar _MENU_ registros",
+  "zeroRecords": "Ningún registro encontrado",
+  "info": "Mostrando _START_ hasta _END_ de _TOTAL_ registros",
+  "infoEmpty": "Mostrando 0 hasta 0 de 0 registros",
+  "infoFiltered": "(filtrado de _MAX_ registros en total)",
+  "loadingRecords": "Cargando...",
+  "processing": "Procesando...",
+  "paginate": {
+    "first": "Primera",
+    "last": "Última",
+    "next": "Próxima",
+    "previous": "Anterior"
+  },
+  "aria": {
+    "sortAscending": ": ordenar columnas de forma ascendente",
+    "sortDescending": ": ordenar columnas de forma descendente"
+  },
+  "buttons": {
+    "create": "Nuevo registro",
+    "edit": "Editar registro",
+    "remove": "Eliminar registro",
+    "copy": "Copiar registro",
+    "csv": "Exportar CSV",
+    "excel": "Exportar Excel",
+    "pdf": "Exportar PDF",
+    "print": "Imprimir"
+  },
+  "datetime": {
+    "previous": "anterior",
+    "next": "próximo",
+    "months": [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre"
+    ],
+    "weekdays": ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+    "amPm": ["am", "pm"],
+    "hours": "Horas",
+    "minutes": "Minutos",
+    "seconds": "Segundos",
+    "unknown": "-"
+  },
+  "select": {
+    "rows": {
+      "": "Seleccionado %d filas",
+      "0": "Ninguna fila seleccionada",
+      "1": "Seleccionada 1 fila"
+    },
+    "cells": {
+      "1": "1 celda seleccionada",
+      "": "%d celdas seleccionadas"
+    },
+    "columns": {
+      "1": "1 columna seleccionada",
+      "_": "%d columnas seleccionadas"
+    }
+  },
+  "emptyTable": "No hay datos disponibles en la tabla",
+  "infoThousands": "."
+}

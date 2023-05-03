@@ -1,0 +1,174 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title" class="lead pb-3" *ngIf="!isUpdateRegister && !isModeViewForm">
+                            {{ "medical.form.TitleAdd" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isUpdateRegister">
+                            {{ "medical.form.TitleEdit" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isModeViewForm">
+                            {{ "medical.form.TitleView" | translate }}
+                        </h4>
+                    </div>
+                    <div class="content">
+                        <form #rF="ngForm" [formGroup]="registerForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name">{{ "general.name.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            formControlName="name" maxlength="255"
+                                            [ngClass]="!isValidFormName() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormName()" class="text-danger">
+                                            {{ "general.name.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">{{ "general.email.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <input type="email" class="form-control" id="email" name="email"
+                                            formControlName="email" maxlength="100"
+                                            [ngClass]="!isValidFormEmail() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormEmail()" class="text-danger">
+                                            {{ "general.email.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="typeAccreditation">
+                                            {{ "medical.typeAccreditation.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <select formControlName="typeAccreditation" required name="typeAccreditation"
+                                            class="form-control" data-style="btn-default btn-block"
+                                            [ngClass]="!isValidFormTypeAccreditation() ? '' : 'error'"
+                                            data-title="Select" data-menu-style="dropdown-blue"
+                                            (change)="onSelect($event.target.value)">
+                                            <option value="">{{ "general.select" | translate }}</option>
+                                            <option *ngFor="let c of typeAccreditationOpts" [value]="c.code">
+                                                {{ c.name }}
+                                            </option>
+                                        </select>
+                                        <small [hidden]="!isValidFormTypeAccreditation()" class="text-danger">
+                                            {{ "medical.typeAccreditation.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="accreditation">{{ "medical.accreditation.title" | translate
+                                            }}:</label> <span class="star">*</span>
+                                        <input type="text" class="form-control" id="accreditation" name="accreditation"
+                                            formControlName="accreditation" maxlength="10"
+                                            [ngClass]="!isValidFormAccreditation() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormAccreditation()" class="text-danger">
+                                            {{ "medical.accreditation.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="officeId">{{ "office.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <select data-title="Select" data-menu-style="dropdown-blue"
+                                            data-style="btn-default btn-block" class="form-control" name="officeId"
+                                            formControlName="officeId" [ngClass]="!isValidFormOfficeId() ? '' : 'error'"
+                                            required (change)="onSelect($event.target.value)">
+                                            <option value="">{{ "general.select" | translate }}</option>
+                                            <option *ngFor="let c of officesOpts" [value]="c.id">{{ c.description }}
+                                            </option>
+                                        </select>
+                                        <small [hidden]="!isValidFormOfficeId()" class="text-danger">
+                                            {{ "office.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <!--  <select data-title="Select" data-menu-style="dropdown-blue"
+                                            data-style="btn-default btn-block" class="form-control"
+                                            name="specialtiesIds" formControlName="specialtiesIds"
+                                            [ngClass]="!isValidFormSpecialtiesIds() ? '' : 'error'" required
+                                            (change)="onSelect($event.target.value)">
+                                            <option value="">Select</option>
+                                            <option *ngFor="let c of specialtiesOpts" [value]="c.id">{{ c.description }}
+                                            </option>
+                                        </select><select multiple data-title="Select" data-menu-style="dropdown-blue"
+                                            data-style="btn-default btn-block" class="form-control"
+                                            name="specialtiesIds" formControlName="specialtiesIds"
+                                            [ngClass]="!isValidFormSpecialtiesIds() ? '' : 'error'" required
+                                            (change)="onSelect($event.target.value)">
+                                            <option value="">Select</option>
+                                            <option *ngFor="let c of specialtiesOpts" [value]="c.id">{{ c.description }}
+                                            </option> 
+                                        </select>  -->
+                                        <label for="specialtiesIds"> {{ "specialty.titles" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <div *ngFor="let data of specialtiesOpts; let i=index">
+                                            <div class="checkbox checkbox-inline">
+                                                <input [id]="'checkbox' + data.id" type="checkbox" [value]="data.id"
+                                                    (change)="onCheckboxChange($event)" [checked]="data.selected" [disabled]="this.isModeViewForm" />
+                                                <label [for]="'checkbox' + data.id">
+                                                    {{data.description}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <small [hidden]="!isValidFormSpecialtiesIds()" class="text-danger">
+                                            {{ "specialty.requireds" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="enableOpt"> {{ "general.enable" | translate }}:</label>
+                                        <div class="clearfix"></div>
+                                        <bSwitch formControlName="enableOpt" required [switch-on-color]="'primary'">
+                                        </bSwitch>
+                                    </div>
+                                </div>
+                            </div>
+                            <button [@botaoAnimado]="estadoBotao_goBackToList"
+                                (mouseenter)="animarBotao('final', 'goBackToList')"
+                                (mouseleave)="animarBotao('inicial', 'goBackToList')" type="button"
+                                class="btn btn-wd btn-default" (click)="goBackToList()">
+                                <span class="btn-label">
+                                    <i class="fa fa-arrow-left"></i>
+                                </span>
+                                {{ "general.backnav" | translate }}
+                            </button>
+                            <button type="button" [@botaoAnimado]="estadoBotao_addRegister"
+                                (mouseenter)="animarBotao('final', 'addRegister')"
+                                (mouseleave)="animarBotao('inicial', 'addRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="addRegister()"
+                                *ngIf="!isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{
+                                "general.saveregisterbtn" | translate }}</button>
+
+                            <button type="button" [@botaoAnimado]="estadoBotao_updateRegister"
+                                (mouseenter)="animarBotao('final','updateRegister')"
+                                (mouseleave)="animarBotao('inicial', 'updateRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="updateRegister()"
+                                *ngIf="isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{
+                                "general.updateregisterbtn" | translate }}</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

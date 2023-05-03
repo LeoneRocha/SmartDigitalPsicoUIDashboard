@@ -1,0 +1,93 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title" class="lead pb-3" *ngIf="!isUpdateRegister && !isModeViewForm">
+                            {{ "patient.additionalinformation.TitleAdd" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isUpdateRegister">
+                            {{ "patient.additionalinformation.TitleEdit" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isModeViewForm">
+                            {{ "patient.additionalinformation.TitleView" | translate }}
+                        </h4>
+                    </div>
+                    <div class="content">
+                        <form #rF="ngForm" [formGroup]="registerForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="followUp_Neurological"> {{
+                                            "patient.additionalinformation.FollowUp_Neurological.title" | translate
+                                            }}:</label> <span class="star">*</span>
+
+                                        <textarea class="form-control overdrivetextarea" id="followUp_Neurological"
+                                            name="followUp_Neurological" formControlName="followUp_Neurological"
+                                            rows="5" [ngClass]="!isValidFormFollowUp_Neurological() ? '' : 'error'">
+                                        </textarea>
+                                        <small [hidden]="!isValidFormFollowUp_Neurological()" class="text-danger">
+                                            {{ "patient.additionalinformation.FollowUp_Neurological.required" |
+                                            translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="followUp_Psychiatric"> {{
+                                            "patient.additionalinformation.FollowUp_Psychiatric.title" | translate
+                                            }}:</label> <span class="star">*</span>
+                                        <textarea class="form-control overdrivetextarea" id="followUp_Psychiatric"
+                                            name="followUp_Psychiatric" formControlName="followUp_Psychiatric" rows="5"
+                                            [ngClass]="!isValidFormFollowUp_Psychiatric() ? '' : 'error'">
+                                        </textarea>
+                                        <small [hidden]="!isValidFormFollowUp_Psychiatric()" class="text-danger">
+                                            {{ "patient.additionalinformation.FollowUp_Psychiatric.required" | translate
+                                            }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="enableOpt"> {{ "general.enable" | translate }}:</label>
+                                        <div class="clearfix"></div>
+                                        <bSwitch formControlName="enableOpt" required [switch-on-color]="'primary'">
+                                        </bSwitch>
+                                    </div>
+                                </div>
+                            </div>
+                            <button [@botaoAnimado]="estadoBotao_goBackToList"
+                                (mouseenter)="animarBotao('final', 'goBackToList')"
+                                (mouseleave)="animarBotao('inicial', 'goBackToList')" type="button"
+                                class="btn btn-wd btn-default" (click)="goBackToList()">
+                                <span class="btn-label">
+                                    <i class="fa fa-arrow-left"></i>
+                                </span>
+                                {{ "general.backnav" | translate }}
+                            </button>
+                            <button type="button" [@botaoAnimado]="estadoBotao_addRegister"
+                                (mouseenter)="animarBotao('final', 'addRegister')"
+                                (mouseleave)="animarBotao('inicial', 'addRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="addRegister()"
+                                *ngIf="!isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{
+                                "general.saveregisterbtn" | translate }}</button>
+
+                            <button type="button" [@botaoAnimado]="estadoBotao_updateRegister"
+                                (mouseenter)="animarBotao('final','updateRegister')"
+                                (mouseleave)="animarBotao('inicial', 'updateRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="updateRegister()"
+                                *ngIf="isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{
+                                "general.updateregisterbtn" | translate }}</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

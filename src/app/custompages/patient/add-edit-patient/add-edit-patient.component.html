@@ -1,0 +1,297 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title" class="lead pb-3" *ngIf="!isUpdateRegister && !isModeViewForm">
+                            {{ "patient.form.TitleAdd" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isUpdateRegister">
+                            {{ "patient.form.TitleEdit" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isModeViewForm">
+                            {{ "patient.form.TitleView" | translate }}
+                        </h4>
+                    </div>
+                    <div class="content">
+                        <form #rF="ngForm" [formGroup]="registerForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name"> {{ "patient.name.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            formControlName="name" maxlength="255"
+                                            [ngClass]="!isValidFormName() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormName()" class="text-danger">
+                                            {{ "patient.name.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="role">{{ "gender.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <select formControlName="genderId" required name="genderId" class="form-control"
+                                            data-style="btn-default btn-block"
+                                            [ngClass]="!isValidFormGenderId() ? '' : 'error'" data-title="Select"
+                                            data-menu-style="dropdown-blue" (change)="onSelect($event.target.value)">
+                                            <option value="">{{ "general.select" | translate }}</option>
+                                            <option *ngFor="let c of gendersOpts" [value]="c.id">{{ c.description }}
+                                            </option>
+                                        </select>
+                                        <small [hidden]="!isValidFormGenderId()" class="text-danger">
+                                            {{ "gender.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <!--datepicker-->
+                                        <label for="dateOfBirth">{{ "patient.dateOfBirth.title" | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="date" class="form-control " id="dateOfBirth" name="dateOfBirth"
+                                            formControlName="dateOfBirth" maxlength="10"
+                                            [ngClass]="!isValidFormDateOfBirth() ? '' : 'error'"
+                                            placeholder="dd-mm-yyyy" />
+                                        <small [hidden]="!isValidFormDateOfBirth()" class="text-danger">
+                                            {{ "patient.dateOfBirth.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="cpf">{{ "patient.cpf.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <input type="text" class="form-control" id="cpf" name="cpf"
+                                            formControlName="cpf" maxlength="15"
+                                            [ngClass]="!isValidFormCPF() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormCPF()" class="text-danger">
+                                            {{ "patient.cpf.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="rg">{{ "patient.rg.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <input type="text" class="form-control" id="rg" name="rg" formControlName="rg"
+                                            maxlength="15" [ngClass]="!isValidFormRG() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormRG()" class="text-danger">
+                                            {{ "patient.rg.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="profession">{{ "patient.profession.title" | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="profession" name="profession"
+                                            formControlName="profession" maxlength="100"
+                                            [ngClass]="!isValidFormProfession() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormProfession()" class="text-danger">
+                                            {{ "patient.profession.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="education">{{ "patient.education.title" | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="education" name="education"
+                                            formControlName="education" maxlength="100"
+                                            [ngClass]="!isValidFormEducation() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormEducation()" class="text-danger">
+                                            {{ "patient.education.title" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="maritalStatus">
+                                            {{ "patient.maritalStatus.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <select formControlName="maritalStatus" required name="maritalStatus"
+                                            class="form-control" data-style="btn-default btn-block"
+                                            [ngClass]="!isValidFormMaritalStatus() ? '' : 'error'" data-title="Select"
+                                            data-menu-style="dropdown-blue" (change)="onSelect($event.target.value)">
+                                            <option value="">{{ "general.select" | translate }}</option>
+                                            <option *ngFor="let c of maritalStatusOpts" [value]="c.code">
+                                                {{ c.name | translate  }}
+                                            </option>
+                                        </select>
+                                        <small [hidden]="!isValidFormMaritalStatus()" class="text-danger">
+                                            {{ "patient.maritalStatus.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="addressCep">{{ "patient.addressCep.title" | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="addressCep" name="addressCep"
+                                            formControlName="addressCep" maxlength="20"
+                                            [ngClass]="!isValidFormAddressCep() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormAddressCep()" class="text-danger">
+                                            {{ "patient.addressCep.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="addressCity">{{ "patient.addressCity.title" | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="addressCity" name="addressCity"
+                                            formControlName="addressCity" maxlength="100"
+                                            [ngClass]="!isValidFormAddressCity() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormAddressCity()" class="text-danger">
+                                            {{ "patient.addressCity.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="addressState">{{ "patient.addressState.title" | translate
+                                            }}:</label> <span class="star">*</span>
+                                        <input type="text" class="form-control" id="addressState" name="addressState"
+                                            formControlName="addressState" maxlength="100"
+                                            [ngClass]="!isValidFormAddressState() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormAddressState()" class="text-danger">
+                                            {{ "patient.addressState.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="addressNeighborhood">
+                                            {{ "patient.addressNeighborhood.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <input type="text" class="form-control" id="addressNeighborhood"
+                                            name="addressNeighborhood" formControlName="addressNeighborhood"
+                                            maxlength="100"
+                                            [ngClass]="!isValidFormAddressNeighborhood() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormAddressNeighborhood()" class="text-danger">
+                                            {{ "patient.addressNeighborhood.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="addressStreet">{{ "patient.addressStreet.title" | translate
+                                            }}:</label> <span class="star">*</span>
+                                        <input type="text" class="form-control" id="addressStreet" name="addressStreet"
+                                            formControlName="addressStreet" maxlength="100"
+                                            [ngClass]="!isValidFormAddressStreet() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormAddressStreet()" class="text-danger">
+                                            {{ "patient.addressStreet.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="phoneNumber">{{ "patient.phoneNumber.title" | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                                            formControlName="phoneNumber" maxlength="100"
+                                            [ngClass]="!isValidFormPhoneNumber() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormPhoneNumber()" class="text-danger">
+                                            {{ "patient.phoneNumber.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email"> {{ "general.email.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <input type="email" class="form-control" id="email" name="email"
+                                            formControlName="email" maxlength="100"
+                                            [ngClass]="!isValidFormEmail() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormEmail()" class="text-danger">
+                                            {{ "general.email.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="emergencyContactName">
+                                            {{ "patient.emergencyContactName.title" | translate }}</label> <span
+                                            class="star">*</span>
+                                        <input type="text" class="form-control" id="emergencyContactName"
+                                            name="emergencyContactName" formControlName="emergencyContactName"
+                                            maxlength="100"
+                                            [ngClass]="!isValidFormEmergencyContactName() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormEmergencyContactName()" class="text-danger">
+                                            {{ "patient.emergencyContactName.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="emergencyContactPhoneNumber">
+                                            {{ "patient.emergencyContactPhoneNumber.title" | translate }} </label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="emergencyContactPhoneNumber"
+                                            name="emergencyContactPhoneNumber"
+                                            formControlName="emergencyContactPhoneNumber" maxlength="100"
+                                            [ngClass]="!isValidFormEmergencyContactPhoneNumber() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormEmergencyContactPhoneNumber()" class="text-danger">
+                                            {{ "patient.emergencyContactPhoneNumber.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="enableOpt"> {{ "general.enable" | translate }}:</label>
+                                        <div class="clearfix"></div>
+                                        <bSwitch formControlName="enableOpt" required [switch-on-color]="'primary'">
+                                        </bSwitch>
+                                    </div>
+                                </div>
+                            </div>
+                            <button [@botaoAnimado]="estadoBotao_goBackToList"
+                                (mouseenter)="animarBotao('final', 'goBackToList')"
+                                (mouseleave)="animarBotao('inicial', 'goBackToList')" type="button"
+                                class="btn btn-wd btn-default" (click)="goBackToList()">
+                                <span class="btn-label">
+                                    <i class="fa fa-arrow-left"></i>
+                                </span>
+                                {{ "general.backnav" | translate }}
+                            </button>
+                            <button type="button" [@botaoAnimado]="estadoBotao_addRegister"
+                                (mouseenter)="animarBotao('final', 'addRegister')"
+                                (mouseleave)="animarBotao('inicial', 'addRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="addRegister()"
+                                *ngIf="!isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{
+                                "general.saveregisterbtn" | translate }}</button>
+
+                            <button type="button" [@botaoAnimado]="estadoBotao_updateRegister"
+                                (mouseenter)="animarBotao('final','updateRegister')"
+                                (mouseleave)="animarBotao('inicial', 'updateRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="updateRegister()"
+                                *ngIf="isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{
+                                "general.updateregisterbtn" | translate }}</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title" class="lead pb-3" *ngIf="!isUpdateRegister && !isModeViewForm">
+                            {{ "applanguage.form.TitleAdd" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isUpdateRegister">
+                            {{ "applanguage.form.TitleEdit" | translate }}
+                        </h4>
+                        <h4 class="title" class="lead pb-3" *ngIf="isModeViewForm">
+                            {{ "applanguage.form.TitleView" | translate }}
+                        </h4>
+                    </div>
+                    <div class="content">
+                        <form #rF="ngForm" [formGroup]="registerForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="description">{{ "general.description" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <input type="text" class="form-control" id="description" name="description"
+                                            formControlName="description" maxlength="50"
+                                            [ngClass]="!isValidFormDescription() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormDescription()" class="text-danger">
+                                            {{ "general.description_required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="language">{{ "general.language.title" | translate }}:</label> <span
+                                            class="star">*</span>
+                                        <select formControlName="language" required name="language" class="form-control"
+                                            data-style="btn-default btn-block"
+                                            [ngClass]="!isValidFormLanguage() ? '' : 'error'" data-title="Select"
+                                            data-menu-style="dropdown-blue" (change)="onSelect($event.target.value)">
+                                            <option value="">{{ "general.select" | translate }}</option>
+                                            <option *ngFor="let c of languages" [value]="c.code">{{ c.name }}
+                                            </option>
+                                        </select>
+                                        <small [hidden]="!isValidFormLanguage()" class="text-danger">
+                                            {{ "general.language.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="languageKey">{{ "applanguage.languageKey" | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="languageKey" name="languageKey"
+                                            formControlName="languageKey" maxlength="255"
+                                            [ngClass]="!isValidFormLanguageKey() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormLanguageKey()" class="text-danger">
+                                            {{ "applanguage.languageKey_required" | translate }}
+
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="languageValue">{{ "applanguage.languageValue" | translate
+                                            }}:</label> <span class="star">*</span>
+                                        <input type="text" class="form-control" id="languageValue" name="languageValue"
+                                            formControlName="languageValue" maxlength="255"
+                                            [ngClass]="!isValidFormLanguageValue() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormLanguageValue()" class="text-danger">
+                                            {{ "applanguage.languageValue_required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="resourceKey">{{ "applanguage.resourceKey" | translate
+                                        }}:</label> <span class="star">*</span>
+                                        <select formControlName="resourceKey" required name="resourceKey"
+                                            class="form-control" data-style="btn-default btn-block"
+                                            [ngClass]="!isValidFormResourceKey() ? '' : 'error'" data-title="Select"
+                                            data-menu-style="dropdown-blue" (change)="onSelect($event.target.value)">
+                                            <option value="">{{ "general.select" | translate }}</option>
+                                            <option *ngFor="let c of resourceKeyOpts" [value]="c.code">{{ c.name }}
+                                            </option>
+                                        </select>
+                                        <small [hidden]="!isValidFormResourceKey()" class="text-danger">
+                                            {{ "applanguage.resourceKey_required" | translate }}  
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="enableOpt"> {{ "general.enable" | translate }}:</label>
+                                        <div class="clearfix"></div>
+                                        <bSwitch formControlName="enableOpt" required [switch-on-color]="'primary'">
+                                        </bSwitch>
+                                    </div>
+                                </div>
+                            </div>
+                            <button [@botaoAnimado]="estadoBotao_goBackToList"
+                                (mouseenter)="animarBotao('final', 'goBackToList')"
+                                (mouseleave)="animarBotao('inicial', 'goBackToList')" type="button"
+                                class="btn btn-wd btn-default" (click)="goBackToList()">
+                                <span class="btn-label">
+                                    <i class="fa fa-arrow-left"></i>
+                                </span>
+                                {{ "general.backnav" | translate }}
+                            </button>
+                            <button type="button" [@botaoAnimado]="estadoBotao_addRegister"
+                                (mouseenter)="animarBotao('final', 'addRegister')"
+                                (mouseleave)="animarBotao('inicial', 'addRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="addRegister()"
+                                *ngIf="!isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{ "general.saveregisterbtn" | translate }}</button>
+
+                            <button type="button" [@botaoAnimado]="estadoBotao_updateRegister"
+                                (mouseenter)="animarBotao('final','updateRegister')"
+                                (mouseleave)="animarBotao('inicial', 'updateRegister')"
+                                class="btn btn-info btn-fill pull-right" (click)="updateRegister()"
+                                *ngIf="isUpdateRegister" [disabled]="rF.invalid || this.isModeViewForm">{{ "general.updateregisterbtn" | translate }}</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

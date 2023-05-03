@@ -1,0 +1,420 @@
+{
+  "TESTE": "TESTE :) !",
+  "modalalert": {
+    "remove": {
+      "title": "Tem certeza?",
+      "text": "Você não poderá recuperar o registro!",
+      "confirmButtonText": "Sim, exclua-o!",
+      "cancelButtonText": "Não, mantenha-o",
+      "erro": "Erro ao excluir."
+    },
+    "cancelled": {
+      "title": "Cancelado",
+      "text": "O registro não foi excluído",
+      "erro": "Erro ao cancelar."
+    },
+    "deleted": {
+      "title": "Excluído!",
+      "text": "O registro foi excluído. Eu fecharei em 5 segundos",
+      "erro": "Erro ao excluir."
+    },
+    "saved": {
+      "title": "Registro salvo!",
+      "text": "Eu fecharei em 5 segundos",
+      "erro": "Erro ao adicionar!",
+      "erroupdate": "Erro ao atualizar!"
+    },
+    "load": {
+      "title": "Erro ao carregar!",
+      "text": "Mensagem de erro"
+    },
+    "error": {
+      "title": "Erro ao carregar!",
+      "erro": "Erro ao carregar!",
+      "text": "Mensagem de erro"
+    },
+    "notification": {
+      "title": "Erro do notification!",
+      "text": "Erro do notification!",
+      "erro": {
+        "connection": "Erro ao conectar!"
+      }
+    }
+  },
+  "navbar": {
+    "home": "Início",
+    "company": "Empresa",
+    "portfolio": "Portfólio",
+    "blog": "Blog",
+    "dashboard": "Dashboard",
+    "patient": "Pacientes",
+    "users": "Usuários",
+    "patientrecord": "Registros",
+    "configurations": "Configurações",
+    "registers": "Registros",
+    "userpage": "Página do Usuário",
+    "userregisterpage": "Página de Registro",
+    "gender": "Gênero",
+    "office": "Cargo",
+    "rolegroup": "Grupo de Funções",
+    "specialty": "Especialidade",
+    "applicationsetting": "Configurações do Sistema",
+    "applicationlanguage": "Idiomas",
+    "medicals": "Médicos"
+  },
+  "general": {
+    "select": "Selecionar",
+    "enable": "Ativo",
+    "admin": "Administrador",
+    "patientrecords": "Detalhes Paciente",
+    "actions": "Ações",
+    "actived": "Ativo",
+    "desactived": "Inativo",
+    "backnav": "Voltar",
+    "newregisterbtn": "Novo",
+    "updateregisterbtn": "Atualizar",
+    "saveregisterbtn": "Salvar",
+    "description": "Descrição",
+    "description_required": "A descrição é obrigatória!",
+    "altAdd": "Adicionar",
+    "altEdit": "Editar",
+    "altView": "Visualizar",
+    "altDelete": "Excluir",
+    "datetime": {
+      "title": "Data",
+      "required": "Data é obrigatório"
+    },
+    "name": {
+      "title": "Nome",
+      "required": "O nome é obrigatório"
+    },
+    "language": {
+      "title": "Idioma",
+      "required": "Idioma é obrigatório"
+    },
+    "email": {
+      "title": "E-mail",
+      "required": "E-mail é obrigatório"
+    },
+    "login": {
+      "title": "Login",
+      "logout": "Sair",
+      "required": "Login é obrigatório",
+      "header": "Acesse sua conta",
+      "rememberme": "Lembrar de mim",
+      "register": "Registra-se",
+      "changelanguage": "Mudar idoma",
+      "invalidLogin": "Usuário e/ou senha inválidos."
+    },
+    "timezone": {
+      "title": "Fuso Horário",
+      "required": "Fuso Horário é obrigatório"
+    },
+    "password": {
+      "title": "Senha",
+      "required": "Senha é obrigatória"
+    },
+    "mainrole": {
+      "title": "Papel Principal",
+      "required": "Papel Principal é obrigatório"
+    }
+  },
+  "appsetting": {
+    "title": "Configuração",
+    "category": "Lista de Configurações",
+    "select": "Selecionar Configuração",
+    "form": {
+      "TitleAdd": "Adicionar Configuração",
+      "TitleEdit": "Editar Configuração",
+      "TitleView": "Visualizar Configuração"
+    }
+  },
+  "applanguage": {
+    "title": "Idioma",
+    "category": "Lista de Idiomas",
+    "select": "Selecionar Idioma",
+    "languageKey": "Chave",
+    "languageKey_required": "Chave do Idioma é obrigatória",
+    "languageValue": "Valor",
+    "languageValue_required": "Valor do Idioma é obrigatório",
+    "resourceKey": "Chave do Recurso",
+    "resourceKey_required": "Chave do Recurso é obrigatória",
+    "form": {
+      "TitleAdd": "Adicionar Idioma",
+      "TitleEdit": "Editar Idioma",
+      "TitleView": "Visualizar Idioma"
+    }
+  },
+  "office": {
+    "title": "Profisão",
+    "category": "Lista de Profisão",
+    "select": "Selecionar Profisão",
+    "form": {
+      "TitleAdd": "Adicionar Profisão",
+      "TitleEdit": "Editar Profisão",
+      "TitleView": "Visualizar Profisão"
+    }
+  },
+  "gender": {
+    "title": "Gênero",
+    "category": "Lista de Gêneros",
+    "select": "Selecionar Gênero",
+    "required": "O gênero é obrigatório",
+    "form": {
+      "TitleAdd": "Adicionar Gênero",
+      "TitleEdit": "Editar Gênero",
+      "TitleView": "Visualizar Gênero"
+    }
+  },
+  "specialty": {
+    "title": "Especialidade",
+    "titles": "Especialidades",
+    "category": "Lista de Especialidades",
+    "select": "Selecione uma Especialidade",
+    "required": "Especialidade é obrigatória",
+    "requireds": "Especialidades são obrigatórias",
+    "form": {
+      "TitleAdd": "Adicionar Especialidade",
+      "TitleEdit": "Editar Especialidade",
+      "TitleView": "Visualizar Especialidade"
+    }
+  },
+  "user": {
+    "title": "Usuário",
+    "category": "Lista de Usuários",
+    "select": "Selecionar Usuário",
+    "myprofile": "Meu Perfil",
+    "form": {
+      "TitleAdd": "Adicionar Usuário",
+      "TitleEdit": "Editar Usuário",
+      "TitleView": "Visualizar Usuário"
+    }
+  },
+  "medical": {
+    "title": "Médico",
+    "required": "Médico é obrigatório",
+    "category": "Lista de Médicos",
+    "select": "Selecionar Médico",
+    "typeAccreditation": {
+      "title": "Tipo de Acreditação",
+      "required": "Tipo de Acreditação é obrigatório"
+    },
+    "accreditation": {
+      "title": "Acreditação",
+      "required": "Acreditação é obrigatória"
+    },
+    "form": {
+      "TitleAdd": "Adicionar Médico",
+      "TitleEdit": "Editar Médico",
+      "TitleView": "Visualizar Médico"
+    }
+  },
+  "patient": {
+    "title": "Paciente",
+    "required": "Paciente é obrigatório",
+    "category": "Lista de Pacientes",
+    "select": "Selecione o Paciente",
+    "name": {
+      "title": "Nome",
+      "required": "Nome é obrigatório"
+    },
+    "dateOfBirth": {
+      "title": "Data de Nascimento",
+      "required": "Data de Nascimento é obrigatória"
+    },
+    "cpf": {
+      "title": "CPF",
+      "required": "CPF é obrigatório"
+    },
+    "rg": {
+      "title": "RG",
+      "required": "RG é obrigatório"
+    },
+    "profession": {
+      "title": "Profissão",
+      "required": "Profissão é obrigatória"
+    },
+    "education": {
+      "title": "Educação",
+      "required": "Educação é obrigatória"
+    },
+    "maritalStatus": {
+      "title": "Estado Civil",
+      "required": "Estado Civil é obrigatório"
+    },
+    "addressCep": {
+      "title": "CEP",
+      "required": "CEP é obrigatório"
+    },
+    "addressCity": {
+      "title": "Cidade",
+      "required": "Cidade é obrigatória"
+    },
+    "addressState": {
+      "title": "Estado",
+      "required": "Estado é obrigatório"
+    },
+    "addressNeighborhood": {
+      "title": "Bairro",
+      "required": "Bairro é obrigatório"
+    },
+    "addressStreet": {
+      "title": "Rua",
+      "required": "Rua é obrigatória"
+    },
+    "phoneNumber": {
+      "title": "Número de telefone",
+      "required": "Número de telefone é obrigatório"
+    },
+    "emergencyContactName": {
+      "title": "Nome do Contato de Emergência",
+      "required": "Nome do Contato de Emergência é obrigatório"
+    },
+    "emergencyContactPhoneNumber": {
+      "title": "Número de Telefone do Contato de Emergência",
+      "required": "Número de Telefone do Contato de Emergência é obrigatório"
+    },
+    "form": {
+      "TitleAdd": "Adicionar Paciente",
+      "TitleEdit": "Editar Paciente",
+      "TitleView": "Visualizar Paciente"
+    },
+    "additionalinformation": {
+      "title": "Informações Complementares",
+      "required": "Informações Complementares são obrigatórias",
+      "category": "Lista de Informações Complementares",
+      "select": "Selecione uma Informação Complementares",
+      "FollowUp_Neurological": {
+        "title": "Acompanhamento Neurológico",
+        "required": "Acompanhamento Neurológico é obrigatório"
+      },
+      "FollowUp_Psychiatric": {
+        "title": "Acompanhamento Psiquiátrico",
+        "required": "Acompanhamento Psiquiátrico é obrigatório"
+      },
+      "TitleAdd": "Adicionar Informação Adicional",
+      "TitleEdit": "Editar Informação Adicional",
+      "TitleView": "Ver Informação Adicional"
+    },
+    "hospitalizationinformation": {
+      "title": "Informações de Hospitalização",
+      "required": "Informações de Hospitalização são obrigatórias",
+      "category": "Lista de Informações de Hospitalização",
+      "select": "Selecione as Informações de Hospitalização",
+      "CID": {
+        "title": "CID",
+        "required": "CID é obrigatório"
+      },
+      "startDate": {
+        "title": "Data de Início",
+        "required": "Data de Início é obrigatória"
+      },
+      "endDate": {
+        "title": "Data de Fim",
+        "required": "Data de Fim é obrigatória"
+      },
+      "hospitalization": {
+        "title": "Hospitalização",
+        "required": "Hospitalização é obrigatória"
+      },
+      "observation": {
+        "title": "Observação",
+        "required": "Observação é obrigatória"
+      },
+      "TitleAdd": "Adicionar Informações de Hospitalização",
+      "TitleEdit": "Editar Informações de Hospitalização",
+      "TitleView": "Visualizar Informações de Hospitalização"
+    },
+    "medicationinformation": {
+      "title": "Informações sobre Medicamentos",
+      "required": "Informações sobre Medicamentos são obrigatórias",
+      "category": "Lista de Informações sobre Medicamentos",
+      "select": "Selecionar Informações sobre Medicamentos",
+      "startDate": {
+        "title": "Data de Início",
+        "required": "A Data de Início é obrigatória"
+      },
+      "endDate": {
+        "title": "Data de Fim",
+        "required": "A Data de Fim é obrigatória"
+      },
+      "dosage": {
+        "title": "Dosagem",
+        "required": "A Dosagem é obrigatória"
+      },
+      "mainDrug": {
+        "title": "Medicamento Principal",
+        "required": "O Medicamento Principal é obrigatório"
+      },
+      "posology": {
+        "title": "Posologia",
+        "required": "A Posologia é obrigatória"
+      },
+      "TitleAdd": "Adicionar Informações sobre Medicamentos",
+      "TitleEdit": "Editar Informações sobre Medicamentos",
+      "TitleView": "Visualizar Informações sobre Medicamentos"
+    },
+    "record": {
+      "title": "Anotação do Registro",
+      "required": "Anotação do Registro é obrigatória",
+      "category": "Lista de Anotações do Registro",
+      "select": "Selecionar Anotação do Registro",
+      "annotationDate": {
+        "title": "Data da Anotação",
+        "required": "Data da Anotação é obrigatória"
+      },
+      "annotation": {
+        "title": "Anotação",
+        "required": "Anotação é obrigatória"
+      },
+      "TitleAdd": "Adicionar Anotação do Registro",
+      "TitleEdit": "Editar Anotação do Registro",
+      "TitleView": "Visualizar Anotação do Registro"
+    }
+  },
+  "userprofile": {
+    "title": "Perfil",
+    "annotationDate": {
+      "title": "Annotation Date",
+      "required": "Annotation Date is required"
+    }
+  },
+  "rolegroup": {
+    "title": "Grupo de Funções",
+    "category": "Lista de Grupos de Funções",
+    "select": "Selecionar Grupo de Funções",
+    "rolepolicyclaimcode": "Código",
+    "rolepolicyclaimcode_required": "Código é obrigatório",
+    "form": {
+      "TitleAdd": "Adicionar Grupo de Funções",
+      "TitleEdit": "Editar Grupo de Funções",
+      "TitleView": "Visualizar Grupo de Funções"
+    }
+  },
+  "notfoundpage": {
+    "title": "Ooops!",
+    "category": "404 - Página não encontrada",
+    "description": "A página que você está procurando não existe.",
+    "backnav": "Voltar"
+  },
+  "noaccess": {
+    "title": "Acesso negado!",
+    "category": "403 - Proibido",
+    "description": "Você não tem permissão!",
+    "backnav": "Voltar"
+  },
+  "maritalstatusoptions": {
+    "single": {
+      "title": "Solteiro(a)"
+    },
+    "married": {
+      "title": "Casado(a)"
+    },
+    "divorced": {
+      "title": "Divorciado(a)"
+    },
+    "other": {
+      "title": "Outro"
+    }
+  }
+}
