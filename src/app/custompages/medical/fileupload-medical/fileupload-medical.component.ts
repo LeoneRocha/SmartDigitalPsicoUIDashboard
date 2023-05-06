@@ -1,78 +1,98 @@
 import { Component, OnInit } from '@angular/core';
 import { Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { ServiceResponse } from 'app/models/ServiceResponse';
 import { CaptureTologFunc } from 'app/common/errohandler/app-error-handler';
-import { DataTable, RouteEntity } from 'app/models/general/DataTable';
-import { UserModel } from 'app/models/principalsmodel/UserModel';
-import { MedicalService } from 'app/services/general/principals/medical.service';
-import { MedicalModel } from 'app/models/principalsmodel/MedicalModel';
-import { LanguageService } from 'app/services/general/language.service';
-
+import { DataTable, RouteEntity } from 'app/models/general/DataTable'; 
+import { LanguageService } from 'app/services/general/language.service';   
+import { MedicalFileService } from 'app/services/general/principals/medicalfile.service';
+import { MedicalFileModel } from 'app/models/principalsmodel/MedicalFileModel';
 declare var $: any;
-
 @Component({
     moduleId: module.id,
-    selector: 'medical-list',
-    templateUrl: 'medical.component.html'
-    //styleUrls: ['./Medical.component.css']
+    selector: 'fileupload-medical-list',
+    templateUrl: 'fileupload-medical.component.html'
+    //styleUrls: ['./Medical.component.css'] 
 })
 
-export class MedicalComponent implements OnInit {
-    public listResult: MedicalModel[];
-    serviceResponse: ServiceResponse<MedicalModel>;
+export class FileUploadMedicalComponent implements OnInit {
     public dataTable: DataTable;
     entityRoute: RouteEntity;
     columlabelsDT: string[] = [
-        'Id'
-        , 'general.name.title'
-        , 'general.email.title'
+           'Id'
+        , 'medical.name.title'
+        , 'general.description'
         , 'general.enable'
         , 'general.actions'
     ];
+    public listResult: MedicalFileModel[];
+    serviceResponse: ServiceResponse<MedicalFileModel>;
+    parentId: number;
+    estadoBotao_goBackToList = 'inicial';
+    estadoBotao_addRegister = 'inicial';
+    estadoBotao_updateRegister = 'inicial';
 
-    constructor(@Inject(MedicalService) private registerService: MedicalService
+    constructor(@Inject(ActivatedRoute) private route: ActivatedRoute
+        , @Inject(MedicalFileService) private registerService: MedicalFileService
         , @Inject(Router) private router: Router
         , @Inject(LanguageService) private languageService: LanguageService) { }
     ngOnInit() {
+        debugger;
         this.languageService.loadLanguage();
         this.loadHeaderFooterDataTable();
         this.retrieveList();
     }
     ngAfterViewInit() {
     }
+    animarBotao(estado: string, stateBtn: string) {
+        if (stateBtn === 'goBackToList')
+            this.estadoBotao_goBackToList = estado;
+
+        if (stateBtn === 'addRegister')
+            this.estadoBotao_addRegister = estado;
+
+        if (stateBtn === 'updateRegister')
+            this.estadoBotao_updateRegister = estado;
+    }
+    goBackToList() { 
+        this.router.navigate(['/medical/manage/', { parentId: this.parentId }]);
+    }
     newRegister(): void {
-        this.router.navigate(['/medical/manage/medicalaction']);
+        this.router.navigate(['/medical/manage/fileaction', { parentId: this.parentId }]);
     }
     viewRegister(idRegister: number): void {
-        this.router.navigate(['/medical/manage/medicalaction', { modeForm: 'view', id: idRegister }]);
+        this.router.navigate(['/medical/manage/fileaction', { modeForm: 'view', parentId: this.parentId, id: idRegister }]);
     }
     editRegister(idRegister: number): void {
-        this.router.navigate(['/medical/manage/medicalaction', { modeForm: 'edit', id: idRegister }]);
-    }
-    manageChildren(idRegister: number, actionRoute: string): void {
-        this.router.navigate([`/medical/manage/${actionRoute}`, { parentId: idRegister }]);
+        this.router.navigate(['/medical/manage/fileaction', { modeForm: 'edit', parentId: this.parentId, id: idRegister }]);
     }
     removeRegister(idRegister: number): void {
         this.modalAlertRemove(idRegister);
     }
+    private getMedicalId(): number {
+        let paramsUrl = this.route.snapshot.paramMap;
+        this.parentId = Number(paramsUrl.get('parentId'));
+        return this.parentId;
+    }
     retrieveList(): void {
-        this.registerService.getAll().subscribe({
+        //let MedicalId: number = 1
+        this.registerService.getAllByParentId(this.getMedicalId(), "medicalId").subscribe({
             next: (response: any) => {
-                this.listResult = response["data"]; 
-                this.loadConfigDataTablesLazzy();
+                this.listResult = response["data"];   
+                console.log(this.listResult );   
+                //this.loadConfigDataTablesLazzy();
                 //this.convertListToDataTableRowAndFill(response["data"]);  this.loadConfigDataTablesLazzy()
                 CaptureTologFunc('retrieveList-Medical', response);
             },
-            error: (err) => { this.showNotification('top', 'center', this.gettranslateInformationAsync('modalalert.notification.erro.connection'), 'danger'); }
+           error: (err) => { this.showNotification('top', 'center', this.gettranslateInformationAsync('modalalert.notification.erro.connection'), 'danger'); }
         }); 
     } 
     executeDeleteRegister(idRegister: number) {
         this.registerService.delete(idRegister).subscribe({
             next: (response: any) => {
                 CaptureTologFunc('executeDeleteRegister-Medical', response);
-                this.listResult = this.removeItemFromList<MedicalModel>(this.listResult, idRegister);
+                this.listResult = this.removeItemFromList<MedicalFileModel>(this.listResult, idRegister);
                 this.modalAlertDeleted();
             },
             error: (err) => { this.modalErroAlert('Error of delete.'); }
@@ -83,7 +103,8 @@ export class MedicalComponent implements OnInit {
         let indexReg = lista.indexOf(registerFinded);
         lista.splice(indexReg, 1);
         return lista;
-    } modalAlertRemove(idRegister: number) {
+    }
+    modalAlertRemove(idRegister: number) {
         swal.fire({
             title: this.gettranslateInformationAsync('modalalert.remove.title'),//'Are you sure?',
             text: this.gettranslateInformationAsync('modalalert.remove.text'),// 'You will not be able to recover register!',
@@ -139,7 +160,7 @@ export class MedicalComponent implements OnInit {
         });
     }
     gettranslateInformationAsync(key: string): string {
-        let result = this.languageService.translateInformationAsync([key])[0]; 
+        let result = this.languageService.translateInformationAsync([key])[0];        
         return result;
     }
     showNotification(from, align, messageCustom: string, colorType: string) {
@@ -171,7 +192,6 @@ export class MedicalComponent implements OnInit {
             }
 
         });
-        // $('#datatables').DataTable();
 
         // Edit record
         table.on('click', '.edit', function () {
@@ -191,6 +211,7 @@ export class MedicalComponent implements OnInit {
         });
     }
     loadHeaderFooterDataTable() {
+
         let dtLabels = this.getDTLabels();
         this.dataTable = {
             headerRow: dtLabels,

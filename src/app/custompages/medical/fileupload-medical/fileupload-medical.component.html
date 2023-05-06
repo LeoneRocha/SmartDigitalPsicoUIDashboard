@@ -4,8 +4,8 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="content">
-                        <h4 class="title">{{ "medical.title" | translate }}</h4>
-                        <p class="category">{{ "medical.category" | translate }}</p>
+                        <h4 class="title">{{ "medical.file.title" | translate }}</h4>
+                        <p class="category">{{ "medical.title" | translate }}</p>
                         <div class="toolbar">
                             <!--        Here you can write extra buttons/actions for the toolbar              -->
                             <div class="content table-responsive table-full-width">
@@ -28,35 +28,24 @@
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>{{ dataTable.footerRow[0] }}</th>
-                                        <th>{{ dataTable.footerRow[1] }}</th>
-                                        <th>{{ dataTable.footerRow[2] }}</th>
-                                        <th>{{ dataTable.footerRow[3] }}</th>
-                                        <th class="text-right">{{ dataTable.footerRow[4] }}</th>
+                                        <th>{{ dataTable.headerRow[0] }}</th>
+                                        <th>{{ dataTable.headerRow[1] }}</th>
+                                        <th>{{ dataTable.headerRow[2] }}</th>
+                                        <th>{{ dataTable.headerRow[3] }}</th>
+                                        <th class="disabled-sorting text-right">{{ dataTable.headerRow[4] }}</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
                                     <tr *ngFor="let row of listResult">
                                         <td class="text-center">{{ row.id }}</td>
-                                        <td>{{ row.name }}</td>
-                                        <td>{{ row.email }}</td>
-                                        <td>{{ row.enable | customtextactive | translate }}</td>
+                                        <td>{{ row.medical?.name }}</td>
+                                        <td>{{ row.description }}</td>
+                                        <td>{{ row.enable }}</td>
                                         <td class="text-right">
-                                       <button class="btn btn-info btn-simple btn-icon" data-placement="left"
-                                            rel="tooltip" title="File" type="button"
-                                            data-original-title="File"
-                                            (click)="manageChildren(row.id, 'filelist')">
-                                            <i class="fa fa-info"></i>
-                                        </button>
                                             <a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon eye"
                                                 (click)="viewRegister(row.id)">
                                                 <i class="fa fa-eye"></i>
-                                            </a>
-                                            <a rel="tooltip" title="Edit"
-                                                class="btn btn-simple btn-warning btn-icon edit"
-                                                (click)="editRegister(row.id)">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
+                                            </a> 
                                             <a rel="tooltip" title="Remove"
                                                 class="btn btn-simple btn-danger btn-icon remove"
                                                 (click)="removeRegister(row.id)">
@@ -68,6 +57,15 @@
                             </table>
                             <!--      Transformar em componente   -->
                         </div>
+                        <button [@botaoAnimado]="estadoBotao_goBackToList"
+                            (mouseenter)="animarBotao('final', 'goBackToList')"
+                            (mouseleave)="animarBotao('inicial', 'goBackToList')" type="button"
+                            class="btn btn-wd btn-default" (click)="goBackToList()">
+                            <span class="btn-label">
+                                <i class="fa fa-arrow-left"></i>
+                            </span>
+                            {{ "general.backnav" | translate }}
+                        </button>
                     </div>
                     <!-- end content  -->
                 </div>

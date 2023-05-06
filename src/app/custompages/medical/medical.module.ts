@@ -10,6 +10,9 @@ import { SpecialtyService } from 'app/services/general/simple/specialty.service'
 import { LanguageService } from 'app/services/general/language.service';
 import { NgxTranslateModule } from 'app/translate/translate.module'; 
 import { CustomPipesModule } from 'app/common/custompipe/custompipe.module';
+import { FileUploadMedicalComponent } from './fileupload-medical/fileupload-medical.component';
+import { MedicalFileService } from 'app/services/general/principals/medicalfile.service';
+import { AddEditFileUploadMedicalComponent } from './fileupload-medical/add-edit-fileupload-medical.component';
 @NgModule({
     imports: [
         CustomPagesModule,
@@ -20,11 +23,13 @@ import { CustomPipesModule } from 'app/common/custompipe/custompipe.module';
     declarations: [ 
         MedicalComponent, 
         AddEditMedicalComponent,  
+        FileUploadMedicalComponent,
+        AddEditFileUploadMedicalComponent
     ]
     ,
     providers: [
         MedicalService,
-        OfficeService, SpecialtyService, , LanguageService
+        OfficeService, SpecialtyService, LanguageService, MedicalFileService
     ],
 })
 
