@@ -200,9 +200,7 @@ export class AddEditFileUploadMedicalComponent implements OnInit {
         fd.append('id', "0");
         fd.append('description', this.registerForm.get('description').value);
         fd.append('enable', this.registerForm.get('enableOpt').value);
-        fd.append('fileDetails', this.fileToUpload, nameFile);
-
-        console.log(fd);
+        fd.append('fileDetails', this.fileToUpload, nameFile); 
         this.registerModel = {
             medicalId: this.parentId ? this.parentId : 0,
             id: this.registerId ? this.registerId : 0,
@@ -210,8 +208,7 @@ export class AddEditFileUploadMedicalComponent implements OnInit {
             //fileDetails: this.fileToUpload,
             fileDetails: fd,
             enable: formElement.controls['enableOpt']?.value,
-        };
-        console.log(this.registerModel);
+        }; 
         return fd;
     }
     createEmptyRegister(): void {

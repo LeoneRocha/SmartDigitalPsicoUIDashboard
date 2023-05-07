@@ -42,10 +42,14 @@
                                         <td>{{ row.description }}</td>
                                         <td>{{ row.enable }}</td>
                                         <td class="text-right">
+                                            <a rel="tooltip" title="Download" class="btn btn-simple btn-info btn-icon eye"
+                                                (click)="downloadRegister(row.id)">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
                                             <a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon eye"
                                                 (click)="viewRegister(row.id)">
                                                 <i class="fa fa-eye"></i>
-                                            </a> 
+                                            </a>
                                             <a rel="tooltip" title="Remove"
                                                 class="btn btn-simple btn-danger btn-icon remove"
                                                 (click)="removeRegister(row.id)">

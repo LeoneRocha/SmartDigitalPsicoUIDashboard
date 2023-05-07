@@ -61,6 +61,34 @@ export class FileUploadMedicalComponent implements OnInit {
     newRegister(): void {
         this.router.navigate(['/medical/manage/fileaction', { parentId: this.parentId }]);
     }
+    downloadRegister(idRegister: number): void {
+        
+        const fileName = 'file.jpg'; 
+ 
+        this.registerService.downloadFile(idRegister).subscribe({
+            next: (blob) => {
+
+                const url = window.URL.createObjectURL(blob);
+                console.log(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName ,//blob['fileDownloadName'];
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+
+                //CaptureTologFunc('downloadFile-Medical', response);
+                 
+            },
+            error: (err) => { this.modalErroAlert('Error of fileDownloadName.'); }
+        });
+
+
+    }
+
+
     viewRegister(idRegister: number): void {
         this.router.navigate(['/medical/manage/fileaction', { modeForm: 'view', parentId: this.parentId, id: idRegister }]);
     }
@@ -79,8 +107,7 @@ export class FileUploadMedicalComponent implements OnInit {
         //let MedicalId: number = 1
         this.registerService.getAllByParentId(this.getMedicalId(), "medicalId").subscribe({
             next: (response: any) => {
-                this.listResult = response["data"];   
-                console.log(this.listResult );   
+                this.listResult = response["data"];  
                 //this.loadConfigDataTablesLazzy();
                 //this.convertListToDataTableRowAndFill(response["data"]);  this.loadConfigDataTablesLazzy()
                 CaptureTologFunc('retrieveList-Medical', response);
