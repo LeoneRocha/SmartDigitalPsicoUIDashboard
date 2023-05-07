@@ -21,8 +21,8 @@ export class FileUploadMedicalComponent implements OnInit {
     entityRoute: RouteEntity;
     columlabelsDT: string[] = [
            'Id'
-        , 'medical.name.title'
-        , 'general.description'
+        , 'general.name.title'
+        , 'general.description.title'
         , 'general.enable'
         , 'general.actions'
     ];

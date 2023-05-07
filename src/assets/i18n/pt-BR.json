@@ -74,8 +74,7 @@
     "newregisterbtn": "Novo",
     "updateregisterbtn": "Atualizar",
     "saveregisterbtn": "Salvar",
-    "description": "Descrição",
-    "description_required": "A descrição é obrigatória!",
+    "description1": "Descrição",
     "altAdd": "Adicionar",
     "altEdit": "Editar",
     "altView": "Visualizar",
@@ -87,6 +86,10 @@
     "name": {
       "title": "Nome",
       "required": "O nome é obrigatório"
+    },
+    "description": {
+      "title": "Descrição",
+      "required": "A descrição é obrigatória!"
     },
     "language": {
       "title": "Idioma",
@@ -117,6 +120,13 @@
     "mainrole": {
       "title": "Papel Principal",
       "required": "Papel Principal é obrigatório"
+    },
+    "file": {
+      "TitleAdd": "Adicionar arquivo",
+      "TitleEdit": "Editar arquivo",
+      "TitleView": "Ver arquivo",
+      "title": "Arquivo",
+      "required": "Arquivo é obrigatório"
     }
   },
   "appsetting": {

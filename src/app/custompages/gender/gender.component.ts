@@ -29,7 +29,7 @@ export class GenderComponent implements OnInit, OnDestroy {
     columlabel_1: string;
     columlabelsDT: string[] = [
         'Id'
-        , 'general.description'
+        , 'general.description.title'
         , 'applanguage.title'
         , 'general.enable'
         , 'general.actions'
@@ -44,7 +44,7 @@ export class GenderComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.languageService.loadLanguage();
 
-        // this.columlabel_1 =  this.languageService.translateInformation('general.description');         
+        // this.columlabel_1 =  this.languageService.translateInformation('general.description.title');         
         this.loadHeaderFooterDataTable();
         this.retrieveList();
 

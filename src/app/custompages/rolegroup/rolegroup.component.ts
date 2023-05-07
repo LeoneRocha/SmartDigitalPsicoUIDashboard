@@ -25,7 +25,7 @@ export class RoleGroupComponent implements OnInit {
     entityRoute: RouteEntity;
     columlabelsDT: string[] = [
         'Id'
-        , 'general.description'
+        , 'general.description.title'
         , 'applanguage.title'
         , 'general.enable'
         , 'general.actions'

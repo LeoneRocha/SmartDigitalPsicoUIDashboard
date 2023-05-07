@@ -24,7 +24,7 @@ export class PatientMedicationInformationComponent implements OnInit {
     columlabelsDT: string[] = [
         'Id'
         , 'patient.name.title'
-        , 'general.description'
+        , 'general.description.title'
         , 'general.enable'
         , 'general.actions'
     ];

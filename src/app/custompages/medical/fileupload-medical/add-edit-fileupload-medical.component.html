@@ -5,13 +5,13 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title" class="lead pb-3" *ngIf="!isUpdateRegister && !isModeViewForm">
-                            {{ "medical.file.TitleAdd" | translate }}
+                            {{ "general.file.TitleAdd" | translate }}
                         </h4>
                         <h4 class="title" class="lead pb-3" *ngIf="isUpdateRegister">
-                            {{ "medical.file.TitleEdit" | translate }}
+                            {{ "general.file.TitleEdit" | translate }}
                         </h4>
                         <h4 class="title" class="lead pb-3" *ngIf="isModeViewForm">
-                            {{ "medical.file.TitleView" | translate }}
+                            {{ "general.file.TitleView" | translate }}
                         </h4>
                     </div>
                     <div class="content">
@@ -20,13 +20,13 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="description"> {{
-                                            "medical.file.description.title" | translate
+                                            "general.description.title" | translate
                                             }}:</label> <span class="star">*</span>
                                         <input type="text" class="form-control" id="description"
                                             name="description" formControlName="description"
                                             [ngClass]="!isValidFormDescription() ? '' : 'error'" />
                                         <small [hidden]="!isValidFormDescription()" class="text-danger">
-                                            {{ "medical.file.description.required" | translate
+                                            {{ "general.description.required" | translate
                                             }}
                                         </small>
                                     </div>
