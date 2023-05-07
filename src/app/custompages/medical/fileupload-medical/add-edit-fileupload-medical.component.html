@@ -22,8 +22,8 @@
                                         <label for="description"> {{
                                             "general.description.title" | translate
                                             }}:</label> <span class="star">*</span>
-                                        <input type="text" class="form-control" id="description"
-                                            name="description" formControlName="description"
+                                        <input type="text" class="form-control" id="description" name="description"
+                                            formControlName="description"
                                             [ngClass]="!isValidFormDescription() ? '' : 'error'" />
                                         <small [hidden]="!isValidFormDescription()" class="text-danger">
                                             {{ "general.description.required" | translate
@@ -36,18 +36,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="enableOpt"> {{ "general.file.title" | translate }}:</label>
-                                        <span class="star">*</span>  
-                                    <!--    <input  type="file" class="form-control" id="fileDetails"
-                                        name="fileDetails" formControlName="fileDetails"
-                                        [ngClass]="!isValidFormDescription() ? '' : 'error'" />
-                                    -->
+                                        <span class="star">*</span>
                                         <input type="file" (change)="onFileSelected($event)" #fileInput>
-                                        <button type="button" (click)="fileInput.click()">Selecionar Arquivo</button>
-  
-
-                                       
-                                       
-                                       
                                         <small [hidden]="!isValidFormDescription()" class="text-danger">
                                             {{ "medical.file.description.required" | translate
                                             }}

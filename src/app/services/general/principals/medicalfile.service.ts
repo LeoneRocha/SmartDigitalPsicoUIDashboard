@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Inject } from '@angular/core';
 import { ServiceResponse } from 'app/models/ServiceResponse';
 import { environment } from 'environments/environment';
@@ -25,17 +25,18 @@ export class MedicalFileService extends GenericService<ServiceResponse<MedicalFi
       .pipe(map(response => { return response; }), catchError(super.customHandleError));
   }
 
-  downloadFile(fileId: number) {
+  downloadFile(fileId: number): Observable<HttpResponse<Blob>> {
     let headers = this.getHeaders();
     headers.set('Content-Type', 'application/json');
 
     const options = {
       headers,
-      responseType: 'blob' as 'json'
+      //observe: 'response',
+      responseType: 'blob'  as 'json'
     };
-    return this._http.get<Blob>(`${this.baseUrlLocal}/Download/${fileId}`, options)
-    .pipe(map(response => { return response; }), catchError(super.customHandleError));
-
+    return this._http.get(`${this.baseUrlLocal}/Download/${fileId}`, { headers: headers, observe: 'response', responseType: 'blob'})
+    .pipe(map(response => { return response; }), catchError(super.customHandleError)); 
   }
+  //https://stackoverflow.com/questions/52154874/angular-6-downloading-file-from-rest-api
 
 }

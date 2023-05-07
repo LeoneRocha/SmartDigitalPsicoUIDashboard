@@ -4,10 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { ServiceResponse } from 'app/models/ServiceResponse';
 import { CaptureTologFunc } from 'app/common/errohandler/app-error-handler';
-import { DataTable, RouteEntity } from 'app/models/general/DataTable'; 
-import { LanguageService } from 'app/services/general/language.service';   
+import { DataTable, RouteEntity } from 'app/models/general/DataTable';
+import { LanguageService } from 'app/services/general/language.service';
 import { MedicalFileService } from 'app/services/general/principals/medicalfile.service';
 import { MedicalFileModel } from 'app/models/principalsmodel/MedicalFileModel';
+import { HttpResponse } from '@angular/common/http';
 declare var $: any;
 @Component({
     moduleId: module.id,
@@ -20,7 +21,7 @@ export class FileUploadMedicalComponent implements OnInit {
     public dataTable: DataTable;
     entityRoute: RouteEntity;
     columlabelsDT: string[] = [
-           'Id'
+        'Id'
         , 'general.name.title'
         , 'general.description.title'
         , 'general.enable'
@@ -55,39 +56,60 @@ export class FileUploadMedicalComponent implements OnInit {
         if (stateBtn === 'updateRegister')
             this.estadoBotao_updateRegister = estado;
     }
-    goBackToList() { 
+    goBackToList() {
         this.router.navigate(['/medical/manage/', { parentId: this.parentId }]);
     }
     newRegister(): void {
         this.router.navigate(['/medical/manage/fileaction', { parentId: this.parentId }]);
     }
     downloadRegister(idRegister: number): void {
-        
-        const fileName = 'file.jpg'; 
- 
+
         this.registerService.downloadFile(idRegister).subscribe({
-            next: (blob) => {
-
-                const url = window.URL.createObjectURL(blob);
-                console.log(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fileName ,//blob['fileDownloadName'];
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-
-
+            next: (response: HttpResponse<Blob>) => {
+                console.log(response);  
+                this.finalizeDownload(response);
                 //CaptureTologFunc('downloadFile-Medical', response);
-                 
             },
-            error: (err) => { this.modalErroAlert('Error of fileDownloadName.'); }
+            error: (err) => { this.modalErroAlert('Error of Download.'); console.log(err); }
         });
+    } 
+    
+    finalizeDownload(response: any): void {
+
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(new Blob([response.body], { type: response.body.type }));
+
+        const contentDisposition = response.headers.get('content-disposition');
+        const fileName = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
+        downloadLink.download = fileName;
+        downloadLink.click();
 
 
     }
+    finalizeDownload1(response: any): void {
 
+        const contentDisposition = response.headers.get('content-disposition');
+        const fileName = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
+        console.log(fileName); 
+
+
+        const fileName1 = 'file.jpg';
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName1;//blob['fileDownloadName'];
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        //console.log(this.getFileNameFromUrl(url));
+    }
+
+    private getFileNameFromUrl(url: string): string {
+        const index = url.lastIndexOf('/');
+
+        return url.substr(index + 1);
+    }
 
     viewRegister(idRegister: number): void {
         this.router.navigate(['/medical/manage/fileaction', { modeForm: 'view', parentId: this.parentId, id: idRegister }]);
@@ -107,14 +129,14 @@ export class FileUploadMedicalComponent implements OnInit {
         //let MedicalId: number = 1
         this.registerService.getAllByParentId(this.getMedicalId(), "medicalId").subscribe({
             next: (response: any) => {
-                this.listResult = response["data"];  
+                this.listResult = response["data"];
                 //this.loadConfigDataTablesLazzy();
                 //this.convertListToDataTableRowAndFill(response["data"]);  this.loadConfigDataTablesLazzy()
                 CaptureTologFunc('retrieveList-Medical', response);
             },
-           error: (err) => { this.showNotification('top', 'center', this.gettranslateInformationAsync('modalalert.notification.erro.connection'), 'danger'); }
-        }); 
-    } 
+            error: (err) => { this.showNotification('top', 'center', this.gettranslateInformationAsync('modalalert.notification.erro.connection'), 'danger'); }
+        });
+    }
     executeDeleteRegister(idRegister: number) {
         this.registerService.delete(idRegister).subscribe({
             next: (response: any) => {
@@ -187,7 +209,7 @@ export class FileUploadMedicalComponent implements OnInit {
         });
     }
     gettranslateInformationAsync(key: string): string {
-        let result = this.languageService.translateInformationAsync([key])[0];        
+        let result = this.languageService.translateInformationAsync([key])[0];
         return result;
     }
     showNotification(from, align, messageCustom: string, colorType: string) {
