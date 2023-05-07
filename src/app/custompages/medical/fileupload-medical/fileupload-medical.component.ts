@@ -66,50 +66,27 @@ export class FileUploadMedicalComponent implements OnInit {
 
         this.registerService.downloadFile(idRegister).subscribe({
             next: (response: HttpResponse<Blob>) => {
-                console.log(response);  
+                console.log(response);
                 this.finalizeDownload(response);
                 //CaptureTologFunc('downloadFile-Medical', response);
             },
             error: (err) => { this.modalErroAlert('Error of Download.'); console.log(err); }
         });
-    } 
-    
+    }
+    //https://nils-mehlhorn.de/posts/angular-file-download-progress/
     finalizeDownload(response: any): void {
 
         const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(new Blob([response.body], { type: response.body.type }));
-
+        const url = URL.createObjectURL(new Blob([response.body], { type: response.body.type }));
+        downloadLink.href = url;
         const contentDisposition = response.headers.get('content-disposition');
         const fileName = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
         downloadLink.download = fileName;
+        document.body.appendChild(downloadLink);
         downloadLink.click();
-
-
-    }
-    finalizeDownload1(response: any): void {
-
-        const contentDisposition = response.headers.get('content-disposition');
-        const fileName = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
-        console.log(fileName); 
-
-
-        const fileName1 = 'file.jpg';
-        const url = window.URL.createObjectURL(response);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName1;//blob['fileDownloadName'];
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        document.body.removeChild(downloadLink);
         window.URL.revokeObjectURL(url);
-        //console.log(this.getFileNameFromUrl(url));
-    }
-
-    private getFileNameFromUrl(url: string): string {
-        const index = url.lastIndexOf('/');
-
-        return url.substr(index + 1);
-    }
+    } 
 
     viewRegister(idRegister: number): void {
         this.router.navigate(['/medical/manage/fileaction', { modeForm: 'view', parentId: this.parentId, id: idRegister }]);

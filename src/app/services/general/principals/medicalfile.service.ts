@@ -28,7 +28,7 @@ export class MedicalFileService extends GenericService<ServiceResponse<MedicalFi
   downloadFile(fileId: number): Observable<HttpResponse<Blob>> {
     let headers = this.getHeaders();
     headers.set('Content-Type', 'application/json');
-
+    //headers.set('Referrer-Policy', 'no-referrer');    
     const options = {
       headers,
       //observe: 'response',

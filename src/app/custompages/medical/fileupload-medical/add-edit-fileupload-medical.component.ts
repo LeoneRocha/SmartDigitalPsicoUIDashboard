@@ -98,6 +98,7 @@ export class AddEditFileUploadMedicalComponent implements OnInit {
         if (this.isModeViewForm) {
             formsElement.controls['description'].disable();
             formsElement.controls['enableOpt'].disable();
+            formsElement.controls['file'].disable();            
         }
         this.registerId = Number(paramsUrl.get('id'));
     }
