@@ -40,7 +40,7 @@
                                         <td class="text-center">{{ row.id }}</td>
                                         <td>{{ row.medical?.name }}</td>
                                         <td>{{ row.description }}</td>
-                                        <td>{{ row.enable }}</td>
+                                        <td>{{ row.enable | customtextactive | translate}}</td>
                                         <td class="text-right">
                                             <a rel="tooltip" title="Download" class="btn btn-simple btn-success btn-icon"
                                                 (click)="downloadRegister(row.id)">

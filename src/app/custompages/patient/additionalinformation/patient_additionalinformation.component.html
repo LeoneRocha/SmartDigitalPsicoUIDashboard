@@ -40,7 +40,7 @@
                                         <td class="text-center">{{ row.id }}</td>
                                         <td>{{ row.patient?.name }}</td>
                                         <td>{{ row.followUp_Neurological | shortenString: 255 }}</td>
-                                        <td>{{ row.enable }}</td>
+                                        <td>{{ row.enable | customtextactive | translate}}</td>
                                         <td class="text-right">
                                             <a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon eye"
                                                 (click)="viewRegister(row.id)">
