@@ -23,6 +23,9 @@ import { PatientRecordComponent } from './record/patient_record.component';
 import { AddEditPatientRecordComponent } from './record/add-edit-patient_record.component';
 import { PatientRecordService } from 'app/services/general/principals/patientrecord.service';
 import { CustomPipesModule } from 'app/common/custompipe/custompipe.module';
+import { FileUploadPatientComponent } from './fileupload-patient/fileupload-patient.component';
+import { AddEditFileUploadPatientComponent } from './fileupload-patient/add-edit-fileupload-patient.component';
+import { PatientFileService } from 'app/services/general/principals/patientfile.service';
 
 @NgModule({
     imports: [
@@ -43,6 +46,8 @@ import { CustomPipesModule } from 'app/common/custompipe/custompipe.module';
         , AddEditPatientMedicationInformationComponent
         , PatientRecordComponent
         , AddEditPatientRecordComponent
+        , FileUploadPatientComponent
+        , AddEditFileUploadPatientComponent
     ]
     ,
     providers: [
@@ -54,6 +59,7 @@ import { CustomPipesModule } from 'app/common/custompipe/custompipe.module';
         , PatientHospitalizationInformationService
         , PatientMedicationInformationService
         , PatientRecordService
+        , PatientFileService
     ],
 })
 

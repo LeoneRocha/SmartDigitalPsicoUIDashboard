@@ -9,6 +9,8 @@ import { AddEditPatientMedicationInformationComponent } from './medicationinform
 import { PatientMedicationInformationComponent } from './medicationinformation/patient_medicationinformation.component';
 import { PatientRecordComponent } from './record/patient_record.component';
 import { AddEditPatientRecordComponent } from './record/add-edit-patient_record.component';
+import { FileUploadPatientComponent } from './fileupload-patient/fileupload-patient.component';
+import { AddEditFileUploadPatientComponent } from './fileupload-patient/add-edit-fileupload-patient.component';
 
 export const PatientRoutes: Routes = [{
     path: '',
@@ -61,6 +63,14 @@ export const PatientRoutes: Routes = [{
         path: 'recordaction',
         //title: 'navbar.patient',
         component: AddEditPatientRecordComponent
+    }, {
+        path: 'filelist', 
+        component: FileUploadPatientComponent,  
+    } ,
+    {
+        path: 'fileaction',
+        //title: 'navbar.patient',
+        component: AddEditFileUploadPatientComponent
     }
     ]
 }];

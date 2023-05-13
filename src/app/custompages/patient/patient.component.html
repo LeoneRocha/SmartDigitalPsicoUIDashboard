@@ -44,6 +44,11 @@
                                         <td>{{ row.email }}</td>
                                         <td>{{ row.enable | customtextactive | translate }}</td>
                                         <td class="text-left">
+                                            <button class="btn btn-primary btn-simple btn-icon" data-placement="left"
+                                                rel="tooltip" title="Files" type="button" data-original-title="File"
+                                                (click)="manageChildren(row.id, 'filelist')">
+                                                <i class="fa fa-files-o"></i>
+                                            </button>
                                             <button class="btn btn-info btn-simple btn-icon" data-placement="left"
                                                 rel="tooltip" title="Additional Information" type="button"
                                                 data-original-title="Additional Information"
