@@ -39,6 +39,17 @@ export const ROUTES: RouteInfo[] = [{
     ]
 },
 {
+    path: '/medical',
+    id: "medical-file",
+    title: 'general.file.title',
+    type: 'sub',
+    icontype: 'pe-7s-folder',
+    roleaccess: 'Medical',
+    children: [
+        { path: 'managefiles', title: 'general.file.title', ab: 'F' },
+    ]
+},
+{
     path: '/patient',
     id: "patient",
     title: 'navbar.patient',

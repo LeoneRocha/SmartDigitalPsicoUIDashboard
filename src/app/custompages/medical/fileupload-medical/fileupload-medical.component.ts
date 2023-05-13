@@ -9,6 +9,7 @@ import { LanguageService } from 'app/services/general/language.service';
 import { MedicalFileService } from 'app/services/general/principals/medicalfile.service';
 import { MedicalFileModel } from 'app/models/principalsmodel/MedicalFileModel';
 import { HttpResponse } from '@angular/common/http';
+import { AuthService } from 'app/services/auth/auth.service';
 declare var $: any;
 @Component({
     moduleId: module.id,
@@ -37,7 +38,8 @@ export class FileUploadMedicalComponent implements OnInit {
     constructor(@Inject(ActivatedRoute) private route: ActivatedRoute
         , @Inject(MedicalFileService) private registerService: MedicalFileService
         , @Inject(Router) private router: Router
-        , @Inject(LanguageService) private languageService: LanguageService) { }
+        , @Inject(LanguageService) private languageService: LanguageService
+        , @Inject(AuthService) private authService: AuthService) { }
     ngOnInit() {
         debugger;
         this.languageService.loadLanguage();
@@ -57,16 +59,31 @@ export class FileUploadMedicalComponent implements OnInit {
             this.estadoBotao_updateRegister = estado;
     }
     goBackToList() {
-        this.router.navigate(['/medical/manage/', { parentId: this.parentId }]);
+        let userLogger = this.authService.getLocalStorageUser();
+        let navigateUrl = '';
+        if (userLogger.typeUser === "Admin")
+            navigateUrl = '/medical/manage/';
+
+        if (userLogger.typeUser === "Medical")
+            navigateUrl = 'medical/filelist/';
+
+        this.router.navigate([navigateUrl, { parentId: this.parentId }]);
     }
     newRegister(): void {
-        this.router.navigate(['/medical/manage/fileaction', { parentId: this.parentId }]);
+        let userLogger = this.authService.getLocalStorageUser();
+        let navigateUrl = '';
+        if (userLogger.typeUser === "Admin")
+            navigateUrl = '/medical/manage/fileaction';
+
+        if (userLogger.typeUser === "Medical")
+            navigateUrl = 'medical/managefiles/fileaction';
+
+        this.router.navigate([navigateUrl, { parentId: this.parentId }]);
     }
     downloadRegister(idRegister: number): void {
 
         this.registerService.downloadFile(idRegister).subscribe({
             next: (response: HttpResponse<Blob>) => {
-                console.log(response);
                 this.finalizeDownload(response);
                 //CaptureTologFunc('downloadFile-Medical', response);
             },
@@ -86,21 +103,42 @@ export class FileUploadMedicalComponent implements OnInit {
         downloadLink.click();
         document.body.removeChild(downloadLink);
         window.URL.revokeObjectURL(url);
-    } 
+    }
 
     viewRegister(idRegister: number): void {
-        this.router.navigate(['/medical/manage/fileaction', { modeForm: 'view', parentId: this.parentId, id: idRegister }]);
+
+        let userLogger = this.authService.getLocalStorageUser();
+        let navigateUrl = '';
+        if (userLogger.typeUser === "Admin")
+            navigateUrl = '/medical/manage/fileaction';
+        
+        if (userLogger.typeUser === "Medical")
+            navigateUrl = '/medical/managefiles/fileaction';
+
+        this.router.navigate([navigateUrl, { modeForm: 'view', parentId: this.parentId, id: idRegister }]);
     }
     editRegister(idRegister: number): void {
-        this.router.navigate(['/medical/manage/fileaction', { modeForm: 'edit', parentId: this.parentId, id: idRegister }]);
+
+        let userLogger = this.authService.getLocalStorageUser();
+        let navigateUrl = '';
+        if (userLogger.typeUser === "Admin")
+            navigateUrl = '/medical/manage/fileaction';
+
+        if (userLogger.typeUser === "Medical")
+        navigateUrl = '/medical/managefiles/fileaction';
+
+        this.router.navigate([navigateUrl, { modeForm: 'edit', parentId: this.parentId, id: idRegister }]);
     }
     removeRegister(idRegister: number): void {
         this.modalAlertRemove(idRegister);
     }
     private getMedicalId(): number {
         let paramsUrl = this.route.snapshot.paramMap;
-        this.parentId = Number(paramsUrl.get('parentId'));
-        return this.parentId;
+        let medicalId: number = Number(paramsUrl.get('parentId'));
+        let medicalIdCurrent = this.authService.getMedicalId();
+        medicalId = medicalId > 0 ? medicalId : medicalIdCurrent;
+        this.parentId = medicalId;
+        return medicalId;
     }
     retrieveList(): void {
         //let MedicalId: number = 1

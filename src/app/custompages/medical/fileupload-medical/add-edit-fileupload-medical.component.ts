@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
 import { LanguageService } from 'app/services/general/language.service';
 import { MedicalFileModel } from 'app/models/principalsmodel/MedicalFileModel';
 import { MedicalFileService } from 'app/services/general/principals/medicalfile.service';
+import { AuthService } from 'app/services/auth/auth.service';
 
 
 declare var $: any;
@@ -45,6 +46,7 @@ export class AddEditFileUploadMedicalComponent implements OnInit {
         , @Inject(Router) private router: Router
         , @Inject(MedicalFileService) private registerService: MedicalFileService
         , @Inject(LanguageService) private languageService: LanguageService
+        , @Inject(AuthService) private authService: AuthService
     ) {
     }
     ngOnInit() {
@@ -223,7 +225,14 @@ export class AddEditFileUploadMedicalComponent implements OnInit {
     onSelect(selectedValue: string) {
     }
     goBackToList() {
-        this.router.navigate(['/medical/manage/filelist', { parentId: this.parentId }]);
+        let userLogger = this.authService.getLocalStorageUser();
+        let navigateUrl = '';
+        if (userLogger.typeUser === "Admin")
+            navigateUrl = '/medical/manage/filelist';
+
+        if (userLogger.typeUser === "Medical")
+            navigateUrl = 'medical/managefiles';  
+        this.router.navigate([navigateUrl, { parentId: this.parentId }]);
     }
     gettranslateInformationAsync(key: string): string {
         let result = this.languageService.translateInformationAsync([key])[0];

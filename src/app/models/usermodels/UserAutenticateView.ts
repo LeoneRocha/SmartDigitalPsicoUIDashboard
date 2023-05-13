@@ -7,5 +7,6 @@ export interface UserAutenticateView {
   name: string 
   roleGroups: RoleGroupModel[]
   medicalId?: number
+  typeUser? : string
   }
 

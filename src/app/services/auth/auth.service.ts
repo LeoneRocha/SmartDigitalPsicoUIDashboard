@@ -63,26 +63,42 @@ export class AuthService extends GenericService<ServiceResponse<UserAutenticateM
     const strUserAutenticate = localStorage.getItem(this.keyLocalStorage + '_user');
     let userLoaded: UserAutenticateView
     userLoaded = JSON.parse(strUserAutenticate);
+    userLoaded.typeUser = this.getTypeUser(userLoaded);
     return userLoaded;
   }
   getRolesUser(): RoleGroupModel[] {
     let userLoaded: UserAutenticateView = this.getLocalStorageUser();
-
     if (userLoaded != null && userLoaded != undefined)
       return userLoaded?.roleGroups;
 
     return null;
   }
+  getTypeUser(userLoaded: UserAutenticateView): string {
 
-  isUserContainsRole(roleCheck: string): boolean {
+    if (userLoaded === null && userLoaded === undefined)
+      return '';
+
+    if (this.isUserContainsRoleByUser("Admin", userLoaded?.roleGroups))
+      return 'Admin';
+
+    if (this.isUserContainsRoleByUser('Medical', userLoaded?.roleGroups))
+      return 'Medical';
+  }
+
+  private isUserContainsRoleByUser(roleCheck: string, roleGroups: RoleGroupModel[]): boolean {
     let isUserContainRole: boolean = false;
-    const userRoles: RoleGroupModel[] = this.getRolesUser();
+    const userRoles: RoleGroupModel[] = roleGroups;
     //const roleFinded: RoleGroup = userRoles.find(role => role?.rolePolicyClaimCode?.toUpperCase().trim() == roleCheck?.toUpperCase().trim());    
     //if (roleFinded) { isUserContainRole = true };
     if (userRoles != null && userRoles != undefined)
       isUserContainRole = userRoles?.some(role => role?.rolePolicyClaimCode === roleCheck);
-
     return isUserContainRole;
+  }
+
+  isUserContainsRole(roleCheck: string): boolean {
+    let isUserContainRole: boolean = false;
+    const userRoles: RoleGroupModel[] = this.getRolesUser();
+    return this.isUserContainsRoleByUser(roleCheck, userRoles);
   }
 
   removeLocalStorageUser() {
@@ -126,5 +142,4 @@ export class AuthService extends GenericService<ServiceResponse<UserAutenticateM
     // Return an observable with a user-facing error message.
     return throwError(() => new AppError(error));
   }
-
 }
