@@ -2,7 +2,7 @@ version: '3.4'
 name: sdpsic-ui-project
 services:
   dashui: 
-    image:  sdp_ui_dash_cloud_image_v2 
+    image:  sdp_ui_dash_cloud_image 
     container_name:  sdp_ui_dash_container
     build:
       context: .
