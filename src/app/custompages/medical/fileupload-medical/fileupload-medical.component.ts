@@ -65,7 +65,7 @@ export class FileUploadMedicalComponent implements OnInit {
             navigateUrl = '/medical/manage/';
 
         if (userLogger.typeUser === "Medical")
-            navigateUrl = 'medical/filelist/';
+            navigateUrl = 'medical/managefiles/';
 
         this.router.navigate([navigateUrl, { parentId: this.parentId }]);
     }
