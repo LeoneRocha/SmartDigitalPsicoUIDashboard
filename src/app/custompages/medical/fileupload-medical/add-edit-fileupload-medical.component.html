@@ -39,7 +39,7 @@
                                         <span class="star">*</span>
                                         <input type="file" (change)="onFileSelected($event)" #fileInput formControlName="file">
                                         <small [hidden]="!isValidFormDescription()" class="text-danger">
-                                            {{ "medical.file.description.required" | translate
+                                            {{ "general.file.required" | translate
                                             }}
                                         </small>
                                     </div>
