@@ -4,7 +4,7 @@ import { Inject } from '@angular/core';
 import { GenericService } from '../generic/generic.service';
 import { ServiceResponse } from 'app/models/ServiceResponse';
 import { environment } from 'environments/environment';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, throwError, Observable } from 'rxjs';
 import { AppError } from 'app/common/errohandler/app-error';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserAutenticateModel } from 'app/models/usermodels/UserAutenticateModel';
@@ -12,15 +12,16 @@ import { TokenAuth } from 'app/models/general/TokenAuth';
 import { UserAutenticateView } from 'app/models/usermodels/UserAutenticateView';
 import { RoleGroupModel } from 'app/models/simplemodel/RoleGroupModel';
 import { UserLoginModel } from 'app/models/usermodels/UserLoginModel';
+import { ActivatedRoute } from '@angular/router'; 
 
 const basePathUrl = '/Auth/v1';
 @Injectable()
 export class AuthService extends GenericService<ServiceResponse<UserAutenticateModel>, UserLoginModel, number> {
-
+  public userLoggin$: Observable<UserAutenticateModel>;
   private keyLocalStorage: string = "tokenjwt";
   private userAutenticate: UserAutenticateModel;
 
-  constructor(@Inject(HttpClient) http: HttpClient) {
+  constructor(@Inject(HttpClient) http: HttpClient, @Inject(ActivatedRoute) private route: ActivatedRoute) {
     super(http, `${environment.APIUrl + basePathUrl}`, '/');
   }
 
@@ -29,14 +30,29 @@ export class AuthService extends GenericService<ServiceResponse<UserAutenticateM
     let isAdminUser = this.isUserContainsRole('Admin');
     return isAdminUser ? 0 : userLoged.medicalId;
   }
-  login(credentials: UserLoginModel) {
-    let urlAut = `${environment.APIUrl + basePathUrl}/authenticate`;
+
+  loginAsync(credentials: UserLoginModel) {
+    let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
+    localStorage.setItem('returnUrl', returnUrl);
     //urlAut = '/api/authenticate'//Test Mock
     //JSON.stringify(credentials)  
+    let urlAut = `${environment.APIUrl + basePathUrl}/authenticate`;
+    this.userLoggin$ = this.httpLocal.post<ServiceResponse<UserAutenticateModel>>(urlAut, credentials).pipe(map(response => {
+      return  response.data;
+    }), catchError(this.customHandleErrorAuthService));
+  }
+
+  login(credentials: UserLoginModel) {
+    let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
+
+    //urlAut = '/api/authenticate'//Test Mock
+    //JSON.stringify(credentials)  
+    let urlAut = `${environment.APIUrl + basePathUrl}/authenticate`;
     return this.httpLocal.post<ServiceResponse<UserAutenticateModel>>(urlAut, credentials).pipe(map(response => {
       return this.processLoginApi(response);
     }), catchError(this.customHandleErrorAuthService));
   }
+
   processLoginApi(response: ServiceResponse<UserAutenticateModel>) {
     this.userAutenticate = response?.data;
     let token = this.userAutenticate.tokenAuth;
