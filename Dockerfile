@@ -5,10 +5,11 @@ WORKDIR /app
 # Copy the rest of the app files to the app directory
 COPY . .
 # Install the app dependencies
-RUN npm install  --force -g @angular/cli
+RUN npm install --force -g @angular/cli
+RUN npm install --force
+#RUN npm install @angular-builders/custom-webpack
 # Build the app for production
 RUN npm run build 
-##--prod
 
 ### ESTÁGIO 2: Executar ###   2 - Responsável por expor nossa aplicação smartdigitalpsico *  based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:latest 
