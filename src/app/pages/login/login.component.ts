@@ -1,8 +1,10 @@
 import { Component, OnInit, ElementRef, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppInformationVersionProductModel } from 'app/models/simplemodel/AppInformationVersionProductModel';
 import { UserLoginModel } from 'app/models/usermodels/UserLoginModel';
 import { AuthService } from 'app/services/auth/auth.service';
 import { LanguageService } from 'app/services/general/language.service';
+import { AppInformationVersionProductService } from 'app/services/general/simple/appinformationversionproduct.service';
 
 declare var $: any;
 
@@ -16,12 +18,14 @@ export class LoginComponent implements OnInit {
     test: Date = new Date();
     invalidLogin: boolean;
     public userLoginModel: UserLoginModel;
-
+    public apiInfo: AppInformationVersionProductModel;
+    
     constructor(
         @Inject(Router) private router: Router
         , @Inject(ActivatedRoute) private route: ActivatedRoute
         , @Inject(AuthService) private authService: AuthService
         , @Inject(LanguageService) private languageService: LanguageService
+        ,@Inject(AppInformationVersionProductService) private appInformationVersionProductService: AppInformationVersionProductService
         // @Inject(TranslateService) private translate: TranslateService
     ) {
 
@@ -41,6 +45,7 @@ export class LoginComponent implements OnInit {
             let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
             this.router.navigate([returnUrl || '/administrative/dashboard']);
         }
+        this.loadAppInfo();
     }
     checkFullPageBackgroundImage() {
         var $page = $('.full-page');
@@ -70,6 +75,11 @@ export class LoginComponent implements OnInit {
         //value="mock123adm"
         //doctor doctor123
 
+    }
+    loadAppInfo() {
+        this.appInformationVersionProductService.getAll().subscribe({
+            next: (response: AppInformationVersionProductModel[]) => { this.apiInfo = response[0]; console.log(this.apiInfo); }, error: (err) => { console.log(err); },
+        });
     }
 }
 //TODO:  ) TELAS DO MEDICO LOGADO.

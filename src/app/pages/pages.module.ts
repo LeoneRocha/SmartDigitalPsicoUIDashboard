@@ -11,6 +11,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { NgxTranslateModule } from 'app/translate/translate.module';
 import { LanguageService } from 'app/services/general/language.service';
 import { LogoutComponent } from './logout/logout.component';
+import { AppInformationVersionProductService } from 'app/services/general/simple/appinformationversionproduct.service';
 @NgModule({
     imports: [
         CommonModule,
@@ -28,7 +29,7 @@ import { LogoutComponent } from './logout/logout.component';
         LogoutComponent
     ] ,
     providers: [
-         LanguageService
+         LanguageService, AppInformationVersionProductService 
     ],
 })
 
