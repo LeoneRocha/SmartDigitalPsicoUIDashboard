@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core'; 
+import { AppInformationVersionProductModel } from 'app/models/simplemodel/AppInformationVersionProductModel';
+import { AppInformationVersionProductService } from 'app/services/general/simple/appinformationversionproduct.service';
 
 @Component({
     moduleId: module.id,
@@ -6,6 +8,20 @@ import { Component } from '@angular/core';
     templateUrl: 'footer.component.html'
 })
 
-export class FooterComponent{
-    test : Date = new Date();
+export class FooterComponent {
+
+    public apiInfo: AppInformationVersionProductModel;
+
+    test: Date = new Date();
+    constructor(@Inject(AppInformationVersionProductService) private appInformationVersionProductService: AppInformationVersionProductService) {
+
+    }
+    ngOnInit() {
+        this.loadAppInfo();
+    }
+    loadAppInfo() {
+        this.appInformationVersionProductService.getAll().subscribe({
+            next: (response: AppInformationVersionProductModel[]) => { this.apiInfo = response[0]; console.log(this.apiInfo); }, error: (err) => { console.log(err); },
+        });
+    }
 }
