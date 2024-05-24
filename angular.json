@@ -112,6 +112,9 @@
             "production": {
               "browserTarget": "pd-pro-angularcli:build:production"
             },
+            "homologation": {
+              "browserTarget": "pd-pro-angularcli:build:homologation"
+            },
             "development": {
               "browserTarget": "pd-pro-angularcli:build:development"
             },
