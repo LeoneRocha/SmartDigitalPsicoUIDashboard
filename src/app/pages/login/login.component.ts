@@ -5,6 +5,7 @@ import { UserLoginModel } from 'app/models/usermodels/UserLoginModel';
 import { AuthService } from 'app/services/auth/auth.service';
 import { LanguageService } from 'app/services/general/language.service';
 import { AppInformationVersionProductService } from 'app/services/general/simple/appinformationversionproduct.service';
+import { environment } from 'environments/environment';
 
 declare var $: any;
 
@@ -19,16 +20,18 @@ export class LoginComponent implements OnInit {
     invalidLogin: boolean;
     public userLoginModel: UserLoginModel;
     public apiInfo: AppInformationVersionProductModel;
-    
+    public uiVersionInfo: string;
+
+
     constructor(
         @Inject(Router) private router: Router
         , @Inject(ActivatedRoute) private route: ActivatedRoute
         , @Inject(AuthService) private authService: AuthService
         , @Inject(LanguageService) private languageService: LanguageService
-        ,@Inject(AppInformationVersionProductService) private appInformationVersionProductService: AppInformationVersionProductService
+        , @Inject(AppInformationVersionProductService) private appInformationVersionProductService: AppInformationVersionProductService
         // @Inject(TranslateService) private translate: TranslateService
     ) {
-
+        this.uiVersionInfo = environment.UIVersion;
     }
     ngOnInit() {
         this.languageService.loadLanguage();
