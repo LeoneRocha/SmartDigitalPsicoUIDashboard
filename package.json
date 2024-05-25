@@ -14,6 +14,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build --env=prod": "ng build --env=prod",
+    "build --env=homo": "ng build --env=homo",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
