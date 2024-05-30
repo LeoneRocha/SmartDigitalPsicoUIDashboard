@@ -125,7 +125,8 @@ export class FileUploadPatientComponent implements OnInit {
     }
     retrieveList(): void {
         //let patientId: number = 1
-        this.registerService.getAllByParentId(this.getPatientId(), "parentId").subscribe({
+        console.log(this.getPatientId())
+        this.registerService.getAllByParentId(this.getPatientId(), "patientId").subscribe({
             next: (response: any) => {
                 this.listResult = response["data"];
                 //this.loadConfigDataTablesLazzy();
