@@ -194,8 +194,7 @@ export class AddEditFileUploadMedicalComponent implements OnInit {
     getValuesForm(): FormData {
         let formElement = this.registerForm;
         const fd = new FormData();
-        //fd.append('file', this.registerForm.get('fileDetails').value, this.registerForm.get('fileDetails').value.name);
-        //console.log(this.registerForm.get('fileDetails'));
+        //fd.append('file', this.registerForm.get('fileDetails').value, this.registerForm.get('fileDetails').value.name); 
         //fd.append('fileDetails', this.fileToUpload, 'upload.blob'); 
         let nameFile = this.registerForm.get('file').value.name;
         let medicalId = this.parentId ? this.parentId : 0;

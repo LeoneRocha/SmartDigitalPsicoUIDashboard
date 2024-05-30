@@ -124,8 +124,7 @@ export class FileUploadPatientComponent implements OnInit {
         return patientId;
     }
     retrieveList(): void {
-        //let patientId: number = 1
-        console.log(this.getPatientId())
+        //let patientId: number = 1 
         this.registerService.getAllByParentId(this.getPatientId(), "patientId").subscribe({
             next: (response: any) => {
                 this.listResult = response["data"];

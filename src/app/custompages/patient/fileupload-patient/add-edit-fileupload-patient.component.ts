@@ -112,8 +112,7 @@ export class AddEditFileUploadPatientComponent implements OnInit {
     }
     addRegister() {
         //this.getValuesForm();
-        let formDataSend = this.getValuesForm();
-        //console.log(this.registerModel);        
+        let formDataSend = this.getValuesForm(); 
         this.registerService.upload(formDataSend).subscribe({
             next: (response: ServiceResponse<PatientFileModel>) => { this.processAddRegister(response); }, error: (err) => { this.processAddRegisterErro(err); },
         });
@@ -194,8 +193,7 @@ export class AddEditFileUploadPatientComponent implements OnInit {
     getValuesForm(): FormData {
         let formElement = this.registerForm;
         const fd = new FormData();
-        //fd.append('file', this.registerForm.get('fileDetails').value, this.registerForm.get('fileDetails').value.name);
-        //console.log(this.registerForm.get('fileDetails'));
+        //fd.append('file', this.registerForm.get('fileDetails').value, this.registerForm.get('fileDetails').value.name); 
         //fd.append('fileDetails', this.fileToUpload, 'upload.blob'); 
         let nameFile = this.registerForm.get('file').value.name;
         let patientId = this.parentId ? this.parentId : 0;
