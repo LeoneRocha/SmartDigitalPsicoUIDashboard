@@ -183,8 +183,7 @@ export class GenericDataTableGrid implements OnInit {
   /*
 
     loadConfigDataTables(listData: any, columnsData: any): void {
-
-    //console.log(columnsData);
+ 
     if (typeof listData !== 'undefined' && typeof listData !== null && listData.length > 0) {
       $('#datatables').DataTable({
         "pagingType": "full_numbers",

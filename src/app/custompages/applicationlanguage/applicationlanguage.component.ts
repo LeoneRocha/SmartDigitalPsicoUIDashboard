@@ -72,8 +72,7 @@ export class ApplicationLanguageComponent implements OnInit {
          let resultData = inputArray.map((item) => {
              return [item.id, item.description, item.language, item.enable];
          });
-         this.dataTable.dataRows = resultData;
-         //console.log(resultData);
+         this.dataTable.dataRows = resultData; 
      }
  */
     executeDeleteRegister(idRegister: number) {

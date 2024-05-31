@@ -77,8 +77,7 @@ export class SpecialtyComponent implements OnInit {
         });
         /*this.registerService.getAll().subscribe({
             next: (response: any) => {
-                this.listResult = response["data"];
-                //console.log(this.listResult);
+                this.listResult = response["data"]; 
                 this.loadConfigDataTablesLazzy();
                 //this.convertListToDataTableRowAndFill(response["data"]);  this.loadConfigDataTablesLazzy()
                 CaptureTologFunc('retrieveList-specialty', response);
@@ -92,7 +91,7 @@ export class SpecialtyComponent implements OnInit {
          let resultData = inputArray.map((item) => {
              return [item.id, item.description, item.language, item.enable];
          });
-         this.dataTable.dataRows = resultData;       //console.log(resultData);     } */
+         this.dataTable.dataRows = resultData;         */
     executeDeleteRegister(idRegister: number) {
         this.store.dispatch(invokeDeleteSpecialtyAPI({ id: idRegister, }));
         let apiStatus$ = this.appStore.pipe(select(selectAppState));
