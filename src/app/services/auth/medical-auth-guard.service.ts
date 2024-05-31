@@ -19,7 +19,6 @@ export class MedicalAuthGuard implements CanActivate {
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot): boolean | Promise<boolean> {
 		var isAuthenticated = this.authService.isUserContainsRole('Medical');
-
 		if (!isAuthenticated) {
 			this.router.navigate(['/authpages/no-access', { queryParams: { returnUrl: state.url } }]);
 		}

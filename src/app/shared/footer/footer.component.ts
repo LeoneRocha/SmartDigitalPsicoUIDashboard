@@ -21,7 +21,7 @@ export class FooterComponent {
     }
     loadAppInfo() {
         this.appInformationVersionProductService.getAll().subscribe({
-            next: (response: AppInformationVersionProductModel[]) => { this.apiInfo = response[0]; console.log(this.apiInfo); }, error: (err) => { console.log(err); },
+            next: (response: AppInformationVersionProductModel[]) => { this.apiInfo = response[0]; }, error: (err) => { console.log(err); },
         });
     }
 }
