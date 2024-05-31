@@ -4,6 +4,7 @@ import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { AdminAuthGuard, AdminOrMedicalAuthGuard } from './services/auth/admin-auth-guard.service';
 import { AuthGuard } from './services/auth/auth-guard.service';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { MedicalAuthGuard } from './services/auth/medical-auth-guard.service';
 
 export const AppRoutes: Routes = [
     {
@@ -59,7 +60,7 @@ export const AppRoutes: Routes = [
             loadChildren: () => import('./custompages/medical/medical.module').then(x => x.MedicalModule)
         },{
             path: 'managefiles',
-            canActivate: [AuthGuard],
+            canActivate: [AuthGuard, MedicalAuthGuard],
             loadChildren: () => import('./custompages/medical/medicalaccess.module').then(x => x.MedicalAccessModule)
         } 
         ]
@@ -69,7 +70,7 @@ export const AppRoutes: Routes = [
         component: AdminLayoutComponent,
         children: [{
             path: 'manage',
-            canActivate: [AuthGuard],
+            canActivate: [AuthGuard, MedicalAuthGuard],
             loadChildren: () => import('./custompages/patient/patient.module').then(x => x.PatientModule)
         }/*, {
             path: 'usermanagement',
