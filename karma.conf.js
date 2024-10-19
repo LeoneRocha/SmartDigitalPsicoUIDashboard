@@ -7,6 +7,7 @@ module.exports = function (config) {
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
+      require('karma-coverage'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
@@ -20,10 +21,15 @@ module.exports = function (config) {
 
     ],
     preprocessors: {
-
+      'src/**/*.js': ['coverage']
     },
     mime: {
       'text/x-typescript': ['ts', 'tsx']
+    },
+    coverageReporter: {
+      type: 'html',
+      dir: 'coverage/',
+      us
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, 'coverage'),
@@ -39,8 +45,8 @@ module.exports = function (config) {
       environment: 'dev'
     },
     reporters: config.angularCli && config.angularCli.codeCoverage
-      ? ['progress', 'coverage-istanbul', 'junit']
-      : ['progress', 'kjhtml', 'junit'], // Adicione 'junit' aos repórteres
+      ? ['progress', 'coverage-istanbul', 'coverage', 'junit']
+      : ['progress', 'kjhtml', 'coverage-istanbul', 'coverage', 'junit'],// Adicione 'junit' aos repórteres
     port: 9877, // Porta alterada
     colors: true,
     logLevel: config.LOG_WARN,

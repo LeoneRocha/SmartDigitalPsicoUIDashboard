@@ -2,3 +2,4 @@ node_modules
 .angular/
 dist/
 coverage/test-results.xml
+coverage/
