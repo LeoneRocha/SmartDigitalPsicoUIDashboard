@@ -1,6 +1,7 @@
 // componentemodelo.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentemodeloComponent } from './app.componentmodelo';
+//jasmine e karma
 
 describe('ComponentemodeloComponent', () => {
   let component: ComponentemodeloComponent;
