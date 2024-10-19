@@ -218,6 +218,22 @@
       "TitleAdd": "Agregar Médico",
       "TitleEdit": "Editar Médico",
       "TitleView": "Ver Médico"
+    },
+    "startWorkingTime": {
+      "title": "Hora de Inicio de Trabajo",
+      "required": "La Hora de Inicio de Trabajo es obligatoria"
+    },
+    "endWorkingTime": {
+      "title": "Hora de Fin de Trabajo",
+      "required": "La Hora de Fin de Trabajo es obligatoria"
+    },
+    "patientIntervalTimeMinutes": {
+      "title": "Minutos de Intervalo entre Pacientes",
+      "required": "Los Minutos de Intervalo entre Pacientes son obligatorios"
+    },
+    "workingDays": {
+      "title": "Días Laborales",
+      "required": "Los Días Laborales son obligatorios"
     }
   },
   "patient": {

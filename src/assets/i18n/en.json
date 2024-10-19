@@ -218,6 +218,22 @@
       "TitleAdd": "Add Medical",
       "TitleEdit": "Edit Medical",
       "TitleView": "View Medical"
+    },
+    "startWorkingTime": {
+      "title": "Start Working Time",
+      "required": "Start Working Time is required"
+    },
+    "endWorkingTime": {
+      "title": "End Working Time",
+      "required": "End Working Time is required"
+    },
+    "patientIntervalTimeMinutes": {
+      "title": "Patient Interval Time Minutes",
+      "required": "Patient Interval Time Minutes is required"
+    },
+    "workingDays": {
+      "title": "Working Days",
+      "required": "Working Days is required"
     }
   },
   "patient": {
