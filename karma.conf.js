@@ -41,11 +41,13 @@ module.exports = function (config) {
     reporters: config.angularCli && config.angularCli.codeCoverage
       ? ['progress', 'coverage-istanbul', 'junit']
       : ['progress', 'kjhtml', 'junit'], // Adicione 'junit' aos repórteres
-    port: 9876,
+    port: 9877, // Porta alterada
     colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
+    logLevel: config.LOG_WARN,
+    autoWatch: false, // Desativar autoWatch
+    singleRun: true, // Executar apenas uma vez
     browsers: ['ChromeHeadless'],
-    singleRun: false
+    concurrency: 4, // Ajuste de concurrency
+    browserNoActivityTimeout: 60000 // Ajuste de timeout
   });
 };
