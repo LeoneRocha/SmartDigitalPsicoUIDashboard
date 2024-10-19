@@ -17,11 +17,9 @@ module.exports = function (config) {
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    files: [
-
+    files: [ 
     ],
-    preprocessors: {
-      'src/**/*.js': ['coverage']
+    preprocessors: { 
     },
     mime: {
       'text/x-typescript': ['ts', 'tsx']
@@ -29,7 +27,8 @@ module.exports = function (config) {
     coverageReporter: {
       type: 'html',
       dir: 'coverage/',
-      us
+      subdir: '.',
+      includeAllSources: true
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, 'coverage'),
