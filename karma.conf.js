@@ -49,9 +49,9 @@ module.exports = function (config) {
     port: 9877, // Porta alterada
     colors: true,
     logLevel: config.LOG_WARN,
-    autoWatch: false, // Desativar autoWatch
-    singleRun: true, // Executar apenas uma vez
-    browsers: ['ChromeHeadless'],
+    autoWatch: false, // Desativar autoWatch true to local 
+    singleRun: true, // Executar apenas uma vez false to local 
+    browsers: ['ChromeHeadless'],// Chrome to local 
     concurrency: 4, // Ajuste de concurrency
     browserNoActivityTimeout: 60000 // Ajuste de timeout
   });
