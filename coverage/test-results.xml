@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<testsuite name="Chrome Headless 129.0.0.0 (Windows 10)" package="" timestamp="2024-10-19T19:39:43" id="0" hostname="RezorCrest" tests="3" errors="0" failures="0" time="0.03">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/129.0.0.0 Safari/537.36"/>
+  </properties>
+  <testcase name="ComponentemodeloComponent should have a default title" time="0.025" classname="ComponentemodeloComponent"/>
+  <testcase name="ComponentemodeloComponent should create" time="0.003" classname="ComponentemodeloComponent"/>
+  <testcase name="ComponentemodeloComponent should change the title when setTitle is called" time="0.002" classname="ComponentemodeloComponent"/>
+  <system-out>
+    <![CDATA[
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>
