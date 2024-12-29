@@ -111,10 +111,16 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
 
   sortTimeSlots(): void {
     this.calendarData.days.forEach(day => {
-      day.timeSlots.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+      day.timeSlots.sort((a, b) => {
+        const aTime = new Date(a.startTime);
+        const bTime = new Date(b.startTime);
+        const aTotalMinutes = aTime.getHours() * 60 + aTime.getMinutes();
+        const bTotalMinutes = bTime.getHours() * 60 + bTime.getMinutes();
+        return aTotalMinutes - bTotalMinutes;
+      });
     });
   }
-
+  
   modalSuccessAlert() {
     swal.fire({
       title: 'Calendário carregado com sucesso',
