@@ -23,6 +23,8 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
   userLoged: any;
   serviceResponse: ServiceResponse<CalendarDto>;
   
+  weekDays: string[] = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
   constructor(
     @Inject(ActivatedRoute) private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -50,18 +52,17 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
       medicalId: new FormControl('', [Validators.required]),
       month: new FormControl(new Date().getMonth() + 1, [Validators.required]),
       year: new FormControl(new Date().getFullYear(), [Validators.required]),
-      intervalInMinutes: new FormControl(60), // Valor padrão de 60 minutos
+      intervalInMinutes: new FormControl(60),
       filterDaysAndTimesWithAppointments: new FormControl(false),
       filterByDate: new FormControl()
     });
   }
 
   getParentId(): number {
-    
     const paramsUrl = this.route.snapshot.paramMap;
     this.parentId = Number(paramsUrl.get('parentId'));
     const userLogger = this.authService.getLocalStorageUser();
-    const medicalId = userLogger.typeUser === "Medical" && userLogger.medicalId  ? userLogger.medicalId : 0;
+    const medicalId = userLogger.typeUser === "Medical" && userLogger.medicalId ? userLogger.medicalId : 0;
     this.parentId = medicalId; 
     return medicalId;
   }
@@ -94,6 +95,7 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
       (response: ServiceResponse<CalendarDto>) => {
         if (response.success) {
           this.calendarData = response.data;
+          this.sortTimeSlots();
           this.errorMessage = null;
           this.modalSuccessAlert();
         } else {
@@ -105,6 +107,12 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
         console.error(error);
       }
     );
+  }
+
+  sortTimeSlots(): void {
+    this.calendarData.days.forEach(day => {
+      day.timeSlots.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+    });
   }
 
   modalSuccessAlert() {
