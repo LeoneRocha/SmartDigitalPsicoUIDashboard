@@ -1,35 +1,81 @@
 <div class="container mt-4">
-    <div *ngIf="calendarData; else loading">
-      <h2 class="mb-4">Calendário Mensal</h2>
-      <div *ngFor="let day of calendarData.days" class="card mb-3">
-        <div class="card-header">
-          <h3 class="card-title mb-0">{{ day.date | date }}</h3>
-        </div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li *ngFor="let timeSlot of day.timeSlots" class="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <span>{{ timeSlot.startTime | date:'shortTime' }} - {{ timeSlot.endTime | date:'shortTime' }}</span> 
-              </div>
-              <div>
-                <span class="badge" [ngClass]="{'badge-success': timeSlot.isAvailable, 'badge-secondary': !timeSlot.isAvailable}">
-                  {{ timeSlot.isAvailable ? 'Disponível' : 'Indisponível' }}
-                </span>
-              </div>
-            </li>
-          </ul>
-        </div>
+  <h2 class="mb-4">Calendário Mensal</h2>
+
+  <!-- Formulário de Filtro -->
+  <form [formGroup]="calendarForm" (ngSubmit)="getMonthlyCalendar()" class="mb-4">
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="medicalId">ID Médico</label>
+        <input type="number" id="medicalId" formControlName="medicalId" class="form-control"
+          placeholder="Digite o ID do Médico" disabled="true">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="month">Mês</label>
+        <input type="number" id="month" formControlName="month" class="form-control" placeholder="Digite o Mês">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="year">Ano</label>
+        <input type="number" id="year" formControlName="year" class="form-control" placeholder="Digite o Ano">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="intervalInMinutes">Intervalo (minutos)</label>
+        <input type="number" id="intervalInMinutes" formControlName="intervalInMinutes" class="form-control"
+          placeholder="Digite o Intervalo" disabled="true">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="filterByDate">Filtrar por Data</label>
+        <input type="date" id="filterByDate" formControlName="filterByDate" class="form-control">
       </div>
     </div>
-    <ng-template #loading>
-      <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Carregando...</span>
-        </div>
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="filterDaysAndTimesWithAppointments">Filtrar Dias e Horários com Compromissos</label>
+        <input type="checkbox" id="filterDaysAndTimesWithAppointments"
+          formControlName="filterDaysAndTimesWithAppointments" class="form-check-input">
       </div>
-    </ng-template>
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-      <p>{{ errorMessage }}</p>
+    </div>
+    <br /><br /><br />
+    <div class="form-row">
+      <div class="form-group col-md-1 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </div>
+    </div>
+  </form> 
+  <br /><br /><br />   <br /><br /><br />
+  <!-- Resultado da Busca -->
+  <div *ngIf="calendarData; else loading">
+    <div *ngFor="let day of calendarData.days" class="card mb-3">
+      <div class="card-header">
+        <h3 class="card-title mb-0">{{ day.date | date }}</h3>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let timeSlot of day.timeSlots"
+            class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <span>{{ timeSlot.startTime | date:'shortTime' }} - {{ timeSlot.endTime | date:'shortTime' }}</span>
+            </div>
+            <div>
+              <span class="badge"
+                [ngClass]="{'badge-success': timeSlot.isAvailable, 'badge-secondary': !timeSlot.isAvailable}">
+                {{ timeSlot.isAvailable ? 'Disponível' : 'Indisponível' }}
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-  
+
+  <ng-template #loading>
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Carregando...</span>
+      </div>
+    </div>
+  </ng-template>
+
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    <p>{{ errorMessage }}</p>
+  </div>
+</div>

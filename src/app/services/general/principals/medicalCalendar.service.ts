@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { environment } from 'environments/environment';
 import { GenericService } from 'app/services/generic/generic.service';
 import { GetMedicalCalendarDto } from 'app/models/medicalcalendar/GetMedicalCalendarDto';
@@ -43,7 +43,11 @@ export class MedicalCalendarService extends GenericService<ServiceResponse<GetMe
     }
 
     getMonthlyCalendar(criteria: CalendarCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
-        return this._http.post<ServiceResponse<CalendarDto>>(`${this.baseUrlLocal}/calendar`, criteria, { headers: this.getHeaders() });
+        let headers = this.getHeaders();
+        console.log('DEBUGGGGGGGGGGGGGGG - ');
+        console.log(criteria);
+        return this._http.post<ServiceResponse<CalendarDto>>(`${this.baseUrlLocal}/calendar`, criteria, { headers: headers })
+            .pipe(map(response => { return response; }), catchError(super.customHandleError));
     }
 
     getAvailableMedicalCalendar(criteria: CalendarCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
