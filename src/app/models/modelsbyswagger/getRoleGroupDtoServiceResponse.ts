@@ -9,8 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ErrorResponse } from './errorResponse';
+import { GetRoleGroupDto } from './getRoleGroupDto';
 
-export interface TimeZoneDisplay { 
-    id?: string;
-    name?: string;
+export interface GetRoleGroupDtoServiceResponse { 
+    data?: GetRoleGroupDto;
+    success?: boolean;
+    message?: string;
+    errors?: Array<ErrorResponse>;
+    unauthorized?: boolean;
 }

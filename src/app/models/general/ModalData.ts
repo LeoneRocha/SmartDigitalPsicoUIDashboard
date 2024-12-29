@@ -1,5 +1,3 @@
-import { SimpleModel } from "../contracts/SimpleModel";
-
  
 export declare interface ModalData {
     show:boolean;

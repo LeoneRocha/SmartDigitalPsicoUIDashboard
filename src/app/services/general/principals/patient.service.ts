@@ -13,5 +13,4 @@ export class PatientService extends GenericService<ServiceResponse<PatientModel>
   constructor(@Inject(HttpClient) http: HttpClient) {
     super(http, `${environment.APIUrl + basePathUrl}`, '/FindAll');
   }
-
-}
+}  

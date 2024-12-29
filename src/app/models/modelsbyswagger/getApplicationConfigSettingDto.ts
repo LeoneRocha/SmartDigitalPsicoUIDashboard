@@ -9,8 +9,14 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { HyperMediaLink } from './hyperMediaLink';
 
-export interface CultureDisplay { 
-    id?: string;
-    name?: string;
+export interface GetApplicationConfigSettingDto { 
+    id?: number;
+    enable?: boolean;
+    description?: string;
+    language?: string;
+    links?: Array<HyperMediaLink>;
+    endPointUrlStorageFiles?: string;
+    endPointUrlCache?: string;
 }

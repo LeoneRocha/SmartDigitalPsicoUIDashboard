@@ -1,5 +1,4 @@
 import { BaseEntityModel } from "../contracts/BaseEntityModel";
-import { ETypeAccreditation } from "../general/eTypeAccreditation";
 import { OfficeModel } from "../simplemodel/OfficeModel";
 import { SpecialtyModel } from "../simplemodel/SpecialtyModel";
 
