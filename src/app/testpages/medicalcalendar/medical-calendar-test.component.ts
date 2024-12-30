@@ -98,10 +98,7 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
       (response: ServiceResponse<CalendarDto>) => {
         if (response.success) {
           const daysResult = this.sortTimeSlots(response.data.days);
-          response.data.days = daysResult;
-          
-          //AINDA COM ERRO 
-          
+          response.data.days = daysResult; 
           this.calendarData = response.data
           console.log('------------------------getMonthlyCalendar-----------');
           console.log(this.calendarData.days);
