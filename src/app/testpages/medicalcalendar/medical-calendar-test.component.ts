@@ -1,14 +1,15 @@
 import { Component, OnInit, Inject, AfterContentInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
-import { CalendarDto } from 'app/models/medicalcalendar/CalendarDto';
+import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto'; 
 import { AuthService } from 'app/services/auth/auth.service';
 import swal from 'sweetalert2';
 import { ServiceResponse } from 'app/models/ServiceResponse';
 import { MedicalCalendarService } from 'app/services/general/principals/medicalCalendar.service';
 import * as moment from 'moment';
+import { CalendarDto } from 'app/models/medicalcalendar/CalendarDto';
 import { DayCalendarDto } from 'app/models/medicalcalendar/DayCalendarDto';
+import { TimeSlotDto } from 'app/models/medicalcalendar/TimeSlotDto';
 declare var $: any;
 
 @Component({
@@ -96,15 +97,10 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
     this.medicalCalendarService.getMonthlyCalendar(criteria).subscribe(
       (response: ServiceResponse<CalendarDto>) => {
         if (response.success) {
-
-          const daysResult = this.sortTimeSlots(response.data.days);
-          response.data.days = daysResult;
-
           this.calendarData = response.data;
+          this.calendarData.days = this.sortTimeSlots(this.calendarData.days);
           this.errorMessage = null;
           this.modalSuccessAlert();
-          console.log('------------------------ getMonthlyCalendar ---------------');
-          console.log(this.calendarData.days);
         } else {
           this.errorMessage = response.message;
         }
@@ -115,25 +111,20 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
       }
     );
   }
+
   sortTimeSlots(days: DayCalendarDto[]): DayCalendarDto[] {
     return days.map(day => {
       let timeIdCounter = 1;
       const sortedTimeSlots = day.timeSlots.sort((a, b) => {
         const aStartTime = moment.utc(a.startTime).toDate();
         const bStartTime = moment.utc(b.startTime).toDate();
-        const aEndTime = moment.utc(a.endTime).toDate();
-        const bEndTime = moment.utc(b.endTime).toDate();
-
-        const aTotalMinutes = (aEndTime.getTime() - aStartTime.getTime()) / 60000;
-        const bTotalMinutes = (bEndTime.getTime() - bStartTime.getTime()) / 60000;
-
+        const aTotalMinutes = aStartTime.getHours() * 60 + aStartTime.getMinutes();
+        const bTotalMinutes = bStartTime.getHours() * 60 + bStartTime.getMinutes();
         return aTotalMinutes - bTotalMinutes;
       }).map(timeSlot => ({ ...timeSlot, timeId: timeIdCounter++ }));  // Atribui ID incremental
       return { ...day, timeSlots: sortedTimeSlots };
     });
   }
-
-
 
   getDayByFormatDateToLocal(dateStr: string): number {
     return moment.utc(dateStr).date();
@@ -166,5 +157,9 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
       },
       buttonsStyling: false
     });
+  }
+
+  trackByTimeId(index: number, timeSlot: TimeSlotDto): number {
+    return timeSlot.timeId;
   }
 }

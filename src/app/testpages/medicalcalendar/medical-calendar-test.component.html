@@ -50,7 +50,7 @@
           <ul class="list-group list-group-flush">
             <li *ngFor="let timeSlot of day.timeSlots; trackBy: trackByTimeId" class="list-group-item d-flex justify-content-between align-items-center">
               <div>
-                <span>{{ formatDateToLocal(timeSlot.startTime) | date:'HH:mm' }} - {{ formatDateToLocal(timeSlot.endTime) | date:'HH:mm' }}</span>
+                <span title='{{ timeSlot.timeId }}'>{{ formatDateToLocal(timeSlot.startTime) | date:'HH:mm' }} - {{ formatDateToLocal(timeSlot.endTime) | date:'HH:mm' }}</span>
               </div>
               <div>
                 <span class="badge" [ngClass]="{'badge-success': timeSlot.isAvailable, 'badge-secondary': !timeSlot.isAvailable}">
