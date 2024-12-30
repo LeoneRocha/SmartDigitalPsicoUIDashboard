@@ -164,6 +164,18 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
   }
 
   trackByTimeId(index: number, timeSlot: TimeSlotDto): number {
-    return timeSlot.timeId;
+    return timeSlot.timeId;  
+  }
+  getDayName(dayIndex: number): string {
+    const dayNames = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    return dayNames[dayIndex];
+  }
+  getUniqueWeekDays(): number[] {
+    const uniqueDays = new Set<number>();
+    this.calendarData.days.forEach(day => {
+      const dayIndex = moment(day.date).day();
+      uniqueDays.add(dayIndex);
+    });
+    return Array.from(uniqueDays).sort();
   }
 }
