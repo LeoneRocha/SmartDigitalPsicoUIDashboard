@@ -69,6 +69,7 @@
     "jquery": "3.5.1",
     "jquery-validation": "^1.19.2",
     "jw-bootstrap-switch-ng2": "2.0.5",
+    "moment": "^2.30.1",
     "ng2-nouislider": "1.8.2",
     "ngx-chips": "2.2.2",
     "ngx-translate-messageformat-compiler": "^6.2.0",

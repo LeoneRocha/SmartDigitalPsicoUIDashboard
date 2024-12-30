@@ -6,4 +6,5 @@ export interface TimeSlotDto {
   isAvailable: boolean;
   medicalCalendar?: GetMedicalCalendarTimeSlotDto;
   isPast: boolean;
+  timeId?: number;
 }

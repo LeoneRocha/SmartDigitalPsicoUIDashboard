@@ -2,11 +2,13 @@ import { Component, OnInit, Inject, AfterContentInit, AfterViewInit } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
-import { CalendarDto } from 'app/models/medicalcalendar/CalendarDto'; 
+import { CalendarDto } from 'app/models/medicalcalendar/CalendarDto';
 import { AuthService } from 'app/services/auth/auth.service';
 import swal from 'sweetalert2';
 import { ServiceResponse } from 'app/models/ServiceResponse';
 import { MedicalCalendarService } from 'app/services/general/principals/medicalCalendar.service';
+import * as moment from 'moment';
+import { DayCalendarDto } from 'app/models/medicalcalendar/DayCalendarDto';
 declare var $: any;
 
 @Component({
@@ -22,7 +24,7 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
   parentId: number;
   userLoged: any;
   serviceResponse: ServiceResponse<CalendarDto>;
-  
+
   weekDays: string[] = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
   constructor(
@@ -63,7 +65,7 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
     this.parentId = Number(paramsUrl.get('parentId'));
     const userLogger = this.authService.getLocalStorageUser();
     const medicalId = userLogger.typeUser === "Medical" && userLogger.medicalId ? userLogger.medicalId : 0;
-    this.parentId = medicalId; 
+    this.parentId = medicalId;
     return medicalId;
   }
 
@@ -94,10 +96,15 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
     this.medicalCalendarService.getMonthlyCalendar(criteria).subscribe(
       (response: ServiceResponse<CalendarDto>) => {
         if (response.success) {
+
+          const daysResult = this.sortTimeSlots(response.data.days);
+          response.data.days = daysResult;
+
           this.calendarData = response.data;
-          this.sortTimeSlots();
           this.errorMessage = null;
           this.modalSuccessAlert();
+          console.log('------------------------ getMonthlyCalendar ---------------');
+          console.log(this.calendarData.days);
         } else {
           this.errorMessage = response.message;
         }
@@ -108,19 +115,34 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
       }
     );
   }
+  sortTimeSlots(days: DayCalendarDto[]): DayCalendarDto[] {
+    return days.map(day => {
+      let timeIdCounter = 1;
+      const sortedTimeSlots = day.timeSlots.sort((a, b) => {
+        const aStartTime = moment.utc(a.startTime).toDate();
+        const bStartTime = moment.utc(b.startTime).toDate();
+        const aEndTime = moment.utc(a.endTime).toDate();
+        const bEndTime = moment.utc(b.endTime).toDate();
 
-  sortTimeSlots(): void {
-    this.calendarData.days.forEach(day => {
-      day.timeSlots.sort((a, b) => {
-        const aTime = new Date(a.startTime);
-        const bTime = new Date(b.startTime);
-        const aTotalMinutes = aTime.getHours() * 60 + aTime.getMinutes();
-        const bTotalMinutes = bTime.getHours() * 60 + bTime.getMinutes();
+        const aTotalMinutes = (aEndTime.getTime() - aStartTime.getTime()) / 60000;
+        const bTotalMinutes = (bEndTime.getTime() - bStartTime.getTime()) / 60000;
+
         return aTotalMinutes - bTotalMinutes;
-      });
+      }).map(timeSlot => ({ ...timeSlot, timeId: timeIdCounter++ }));  // Atribui ID incremental
+      return { ...day, timeSlots: sortedTimeSlots };
     });
   }
-  
+
+
+
+  getDayByFormatDateToLocal(dateStr: string): number {
+    return moment.utc(dateStr).date();
+  }
+
+  formatDateToLocal(dateStr: string): moment.Moment {
+    return moment.utc(dateStr);
+  }
+
   modalSuccessAlert() {
     swal.fire({
       title: 'Calendário carregado com sucesso',

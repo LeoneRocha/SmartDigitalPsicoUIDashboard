@@ -31,7 +31,7 @@
         <input type="checkbox" id="filterDaysAndTimesWithAppointments" formControlName="filterDaysAndTimesWithAppointments" class="form-check-input">
       </div>
       <br /><br /><br />   <br /><br /><br />
-      <div class="form-group col-md-1 d-flex align-items-end">
+            <div class="form-group col-md-1 d-flex align-items-end">
         <button type="submit" class="btn btn-primary">Buscar</button>
       </div>
     </div>
@@ -46,11 +46,11 @@
       </div>
       <div class="calendar-body">
         <div *ngFor="let day of calendarData.days" class="calendar-day">
-          <div class="day-number">{{ day.date | date: 'd' }}</div>
+          <div class="day-number">{{ getDayByFormatDateToLocal(day.date) }}</div>
           <ul class="list-group list-group-flush">
-            <li *ngFor="let timeSlot of day.timeSlots" class="list-group-item d-flex justify-content-between align-items-center">
+            <li *ngFor="let timeSlot of day.timeSlots; trackBy: trackByTimeId" class="list-group-item d-flex justify-content-between align-items-center">
               <div>
-                <span>{{ timeSlot.startTime | date:'HH:mm' }} - {{ timeSlot.endTime | date:'HH:mm' }}</span>
+                <span>{{ formatDateToLocal(timeSlot.startTime) | date:'HH:mm' }} - {{ formatDateToLocal(timeSlot.endTime) | date:'HH:mm' }}</span>
               </div>
               <div>
                 <span class="badge" [ngClass]="{'badge-success': timeSlot.isAvailable, 'badge-secondary': !timeSlot.isAvailable}">

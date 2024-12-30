@@ -43,9 +43,7 @@ export class MedicalCalendarService extends GenericService<ServiceResponse<GetMe
     }
 
     getMonthlyCalendar(criteria: CalendarCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
-        let headers = this.getHeaders();
-        console.log('DEBUGGGGGGGGGGGGGGG - ');
-        console.log(criteria);
+        let headers = this.getHeaders(); 
         return this._http.post<ServiceResponse<CalendarDto>>(`${this.baseUrlLocal}/calendar`, criteria, { headers: headers })
             .pipe(map(response => { return response; }), catchError(super.customHandleError));
     }
