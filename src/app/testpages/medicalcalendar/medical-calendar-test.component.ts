@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, AfterContentInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto'; 
+import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
 import { AuthService } from 'app/services/auth/auth.service';
 import swal from 'sweetalert2';
 import { ServiceResponse } from 'app/models/ServiceResponse';
@@ -97,9 +97,12 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
     this.medicalCalendarService.getMonthlyCalendar(criteria).subscribe(
       (response: ServiceResponse<CalendarDto>) => {
         if (response.success) {
-          this.calendarData = response.data;
-          this.calendarData.days = this.sortTimeSlots(this.calendarData.days);
-
+          const daysResult = this.sortTimeSlots(response.data.days);
+          response.data.days = daysResult;
+          
+          //AINDA COM ERRO 
+          
+          this.calendarData = response.data
           console.log('------------------------getMonthlyCalendar-----------');
           console.log(this.calendarData.days);
           this.errorMessage = null;
@@ -115,14 +118,18 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
     );
   }
 
-  sortTimeSlots(days: DayCalendarDto[]): DayCalendarDto[] {
+    sortTimeSlots(days: DayCalendarDto[]): DayCalendarDto[] {
     return days.map(day => {
       let timeIdCounter = 1;
       const sortedTimeSlots = day.timeSlots.sort((a, b) => {
         const aStartTime = moment.utc(a.startTime).toDate();
         const bStartTime = moment.utc(b.startTime).toDate();
-        const aTotalMinutes = aStartTime.getHours() * 60 + aStartTime.getMinutes();
-        const bTotalMinutes = bStartTime.getHours() * 60 + bStartTime.getMinutes();
+        const aEndTime = moment.utc(a.endTime).toDate();
+        const bEndTime = moment.utc(b.endTime).toDate();
+
+        const aTotalMinutes = (aEndTime.getTime() - aStartTime.getTime()) / 60000;
+        const bTotalMinutes = (bEndTime.getTime() - bStartTime.getTime()) / 60000;
+
         return aTotalMinutes - bTotalMinutes;
       }).map(timeSlot => ({ ...timeSlot, timeId: timeIdCounter++ }));  // Atribui ID incremental
       return { ...day, timeSlots: sortedTimeSlots };
