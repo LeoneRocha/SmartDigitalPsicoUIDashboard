@@ -25,7 +25,6 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
   parentId: number;
   userLoged: any;
   serviceResponse: ServiceResponse<CalendarDto>;
-
   weekDays: string[] = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
   constructor(
@@ -103,8 +102,10 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
       (response: ServiceResponse<CalendarDto>) => {
         if (response.success) {
           const daysResult = this.sortTimeSlots(response.data.days);
-          response.data.days = daysResult; 
+          response.data.days = daysResult.map(day => this.addDayOfWeek(day)); 
           this.calendarData = response.data;
+          console.log('----------------------getMonthlyCalendar-------------------------');
+          console.log( this.calendarData);
           this.errorMessage = null;
           this.modalSuccessAlert();
         } else {
@@ -128,6 +129,13 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
       }).map(timeSlot => ({ ...timeSlot, timeId: timeIdCounter++ }));  // Atribui ID incremental
       return { ...day, timeSlots: sortedTimeSlots };
     });
+  }
+
+  addDayOfWeek(day: DayCalendarDto): DayCalendarDto {
+    const dayIndex = moment(day.date).utc().day();
+    const dayNames = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    day.dayOfWeek = dayNames[dayIndex];
+    return day;
   }
 
   getDayByFormatDateToLocal(dateStr: string): number {
@@ -164,16 +172,18 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
   }
 
   trackByTimeId(index: number, timeSlot: TimeSlotDto): number {
-    return timeSlot.timeId;  
+    return timeSlot.timeId;
   }
+
   getDayName(dayIndex: number): string {
     const dayNames = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
     return dayNames[dayIndex];
   }
+
   getUniqueWeekDays(): number[] {
     const uniqueDays = new Set<number>();
     this.calendarData.days.forEach(day => {
-      const dayIndex = moment(day.date).day();
+      const dayIndex = moment(day.date).utc().day();
       uniqueDays.add(dayIndex);
     });
     return Array.from(uniqueDays).sort();
