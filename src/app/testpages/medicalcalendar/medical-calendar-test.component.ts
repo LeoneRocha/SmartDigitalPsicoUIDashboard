@@ -94,14 +94,17 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
     const criteria: CalendarCriteriaDto = this.calendarForm.value;
     criteria.userIdLogged = this.userLoged.id;
 
+    // Configurar filterByDate como null se estiver vazio
+    if (!criteria.filterByDate) {
+      criteria.filterByDate = null;
+    }
+
     this.medicalCalendarService.getMonthlyCalendar(criteria).subscribe(
       (response: ServiceResponse<CalendarDto>) => {
         if (response.success) {
           const daysResult = this.sortTimeSlots(response.data.days);
           response.data.days = daysResult; 
-          this.calendarData = response.data
-          console.log('------------------------getMonthlyCalendar-----------');
-          console.log(this.calendarData.days);
+          this.calendarData = response.data;
           this.errorMessage = null;
           this.modalSuccessAlert();
         } else {
@@ -115,19 +118,13 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
     );
   }
 
-    sortTimeSlots(days: DayCalendarDto[]): DayCalendarDto[] {
+  sortTimeSlots(days: DayCalendarDto[]): DayCalendarDto[] {
     return days.map(day => {
       let timeIdCounter = 1;
       const sortedTimeSlots = day.timeSlots.sort((a, b) => {
         const aStartTime = moment.utc(a.startTime).toDate();
         const bStartTime = moment.utc(b.startTime).toDate();
-        const aEndTime = moment.utc(a.endTime).toDate();
-        const bEndTime = moment.utc(b.endTime).toDate();
-
-        const aTotalMinutes = (aEndTime.getTime() - aStartTime.getTime()) / 60000;
-        const bTotalMinutes = (bEndTime.getTime() - bStartTime.getTime()) / 60000;
-
-        return aTotalMinutes - bTotalMinutes;
+        return aStartTime.getTime() - bStartTime.getTime();
       }).map(timeSlot => ({ ...timeSlot, timeId: timeIdCounter++ }));  // Atribui ID incremental
       return { ...day, timeSlots: sortedTimeSlots };
     });
