@@ -127,7 +127,10 @@
       "TitleView": "View File",
       "title": "File",
       "required":  "File is required"
-    }
+    },  
+    "calendar": {       
+     "title": "Calendar" 
+   }
   },
   "appsetting": {
     "title": "Configuration",

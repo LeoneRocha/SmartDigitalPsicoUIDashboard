@@ -39,8 +39,8 @@ export const ROUTES: RouteInfo[] = [{
     ]
 },
 {
-    id: "medical-file",
-    title: 'MY CALENDAR TODO',
+    id: "medical-calendar",
+    title: 'general.calendar.title',
     path: '/medical/calendar',
     type: 'link',
     icontype: 'pe-7s-date',

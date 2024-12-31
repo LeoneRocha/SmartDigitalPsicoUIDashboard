@@ -127,6 +127,9 @@
       "TitleView": "Ver archivo",
       "title": "Archivo",
       "required": "Se requiere archivo"
+    },
+    "calendar": {
+      "title": "Calendario"
     }
   },
   "appsetting": {

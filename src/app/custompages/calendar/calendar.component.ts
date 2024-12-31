@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import swal from 'sweetalert2';
-
+//https://fullcalendar.io/demos
 declare var $: any;
 
 @Component({
