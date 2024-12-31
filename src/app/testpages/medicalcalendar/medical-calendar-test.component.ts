@@ -8,8 +8,8 @@ import { ServiceResponse } from 'app/models/ServiceResponse';
 import { MedicalCalendarService } from 'app/services/general/principals/medicalCalendar.service';
 import * as moment from 'moment';
 import { CalendarDto } from 'app/models/medicalcalendar/CalendarDto';
-import { DayCalendarDto } from 'app/models/medicalcalendar/DayCalendarDto';
 import { TimeSlotDto } from 'app/models/medicalcalendar/TimeSlotDto';
+import { DateHelper } from 'app/helpers/date-helper';
 declare var $: any;
 
 @Component({
@@ -101,11 +101,11 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
     this.medicalCalendarService.getMonthlyCalendar(criteria).subscribe(
       (response: ServiceResponse<CalendarDto>) => {
         if (response.success) {
-          const daysResult = this.sortTimeSlots(response.data.days);
-          response.data.days = daysResult.map(day => this.addDayOfWeek(day)); 
+          const daysResult = DateHelper.sortTimeSlots(response.data.days);
+          response.data.days = DateHelper.fillAddDayOfWeek(daysResult);
           this.calendarData = response.data;
-          console.log('----------------------getMonthlyCalendar-------------------------');
-          console.log( this.calendarData);
+          //console.log('----------------------getMonthlyCalendar-------------------------');
+          //console.log(this.calendarData);
           this.errorMessage = null;
           this.modalSuccessAlert();
         } else {
@@ -117,25 +117,6 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
         console.error(error);
       }
     );
-  }
-
-  sortTimeSlots(days: DayCalendarDto[]): DayCalendarDto[] {
-    return days.map(day => {
-      let timeIdCounter = 1;
-      const sortedTimeSlots = day.timeSlots.sort((a, b) => {
-        const aStartTime = moment.utc(a.startTime).toDate();
-        const bStartTime = moment.utc(b.startTime).toDate();
-        return aStartTime.getTime() - bStartTime.getTime();
-      }).map(timeSlot => ({ ...timeSlot, timeId: timeIdCounter++ }));  // Atribui ID incremental
-      return { ...day, timeSlots: sortedTimeSlots };
-    });
-  }
-
-  addDayOfWeek(day: DayCalendarDto): DayCalendarDto {
-    const dayIndex = moment(day.date).utc().day();
-    const dayNames = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-    day.dayOfWeek = dayNames[dayIndex];
-    return day;
   }
 
   getDayByFormatDateToLocal(dateStr: string): number {
@@ -176,16 +157,10 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
   }
 
   getDayName(dayIndex: number): string {
-    const dayNames = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-    return dayNames[dayIndex];
+    return DateHelper.getDayName(dayIndex);
   }
 
   getUniqueWeekDays(): number[] {
-    const uniqueDays = new Set<number>();
-    this.calendarData.days.forEach(day => {
-      const dayIndex = moment(day.date).utc().day();
-      uniqueDays.add(dayIndex);
-    });
-    return Array.from(uniqueDays).sort();
+    return DateHelper.getUniqueWeekDays(this.calendarData.days);
   }
 }

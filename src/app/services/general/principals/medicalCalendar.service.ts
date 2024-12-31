@@ -12,8 +12,8 @@ import { AppointmentCriteriaDto } from 'app/models/medicalcalendar/AppointmentCr
 import { AppointmentDto } from 'app/models/medicalcalendar/AppointmentDto';
 import { ServiceResponse } from 'app/models/ServiceResponse';
 
-const basePathUrl = '/medical/v1/medicalcalendar';
 
+const basePathUrl = '/medical/v1/medicalcalendar';
 @Injectable({
     providedIn: 'root',
 })
@@ -43,7 +43,7 @@ export class MedicalCalendarService extends GenericService<ServiceResponse<GetMe
     }
 
     getMonthlyCalendar(criteria: CalendarCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
-        let headers = this.getHeaders(); 
+        let headers = this.getHeaders();
         return this._http.post<ServiceResponse<CalendarDto>>(`${this.baseUrlLocal}/calendar`, criteria, { headers: headers })
             .pipe(map(response => { return response; }), catchError(super.customHandleError));
     }
@@ -57,5 +57,5 @@ export class MedicalCalendarService extends GenericService<ServiceResponse<GetMe
     }
     getAppointments(criteria: AppointmentCriteriaDto): Observable<ServiceResponse<AppointmentDto[]>> {
         return this._http.post<ServiceResponse<AppointmentDto[]>>(`${this.baseUrlLocal}/appointment/get`, criteria, { headers: this.getHeaders() });
-    }
+    }  
 }
