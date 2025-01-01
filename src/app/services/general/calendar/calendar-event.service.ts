@@ -13,13 +13,16 @@ import { DeleteMedicalCalendarDto } from 'app/models/modelsbyswagger/deleteMedic
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
 import { PatientService } from '../principals/patient.service';
+import { PatientModel } from 'app/models/principalsmodel/PatientModel'; 
+import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalendarEventService {
-  constructor(private medicalCalendarService: MedicalCalendarService
-    , @Inject(PatientService) private patientService: PatientService
+  constructor(
+    private medicalCalendarService: MedicalCalendarService,
+    @Inject(PatientService) private patientService: PatientService
   ) { }
 
   getCalendarEvents(criteria: CalendarCriteriaDto): Observable<ICalendarEvent[]> {
@@ -30,7 +33,34 @@ export class CalendarEventService {
         return [];
       })
     );
-  } 
+  }
+
+  getPatientsByMedicalId(medicalId: number): Observable<DropDownEntityModelSelect[]> {
+    return this.patientService.getAllByParentId(medicalId, 'medicalId').pipe(
+      map((response: ServiceResponse<PatientModel>[]) =>
+        response["data"].map(patient => ({
+          id: patient.id,
+          text: `${patient.firstName} ${patient.lastName}`
+        }))
+      ),
+      catchError(error => {
+        console.error('Erro ao carregar pacientes do médico', error);
+        return [];
+      })
+    );
+  }
+
+
+  getPatientsByMedicalId1(medicalId: number): Observable<PatientModel[]> {
+    return this.patientService.getAllByParentId(medicalId, 'medicalId').pipe(
+      map((response: any) => response.data),
+      catchError(error => {
+        console.error('Erro ao carregar pacientes do médico', error);
+        return [];
+      })
+    );
+  }
+
   addCalendarEvent(event: ICalendarEvent): Observable<ServiceResponse<GetMedicalCalendarDto>> {
     const newAppointment = this.mapToAddAppointmentDto(event);
     console.log('-------------------- addCalendarEvent --------------------');
