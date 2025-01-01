@@ -7,7 +7,7 @@ export class DateHelper {
         const y = today.getFullYear();
         const m = today.getMonth();
         const d = today.getDate();
-        const dateActual = new Date(Date.UTC(y, m, d, 0, 0, 0, 0));
+        const dateActual = new Date(y, m, d, 0, 0, 0, 0);
         return dateActual;
     }
     static convertStringToDate(dateStr: string): Date {

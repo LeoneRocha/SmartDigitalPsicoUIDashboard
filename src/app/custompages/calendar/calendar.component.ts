@@ -38,6 +38,9 @@ export class CalendarComponent implements OnInit {
 
 	loadDataFromApi(): void {
 		const criteria: CalendarCriteriaDto = this.createCriteria();
+		console.log('-------------------- loadDataFromApi --------------------');
+		console.log(criteria);
+
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEvents();
