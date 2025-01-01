@@ -12,50 +12,69 @@ import { AppointmentCriteriaDto } from 'app/models/medicalcalendar/AppointmentCr
 import { AppointmentDto } from 'app/models/medicalcalendar/AppointmentDto';
 import { ServiceResponse } from 'app/models/ServiceResponse';
 
-
 const basePathUrl = '/medical/v1/medicalcalendar';
+
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class MedicalCalendarService extends GenericService<ServiceResponse<GetMedicalCalendarDto>, GetMedicalCalendarDto, number> {
-    private readonly _http: HttpClient;
-    private readonly baseUrlLocal: string = `${environment.APIUrl + basePathUrl}`;
+  private readonly _http: HttpClient;
+  private readonly baseUrlLocal: string = `${environment.APIUrl + basePathUrl}`;
 
-    constructor(@Inject(HttpClient) http: HttpClient) {
-        super(http, `${environment.APIUrl + basePathUrl}`, '/FindAll');
-        this._http = http;
-    }
+  constructor(@Inject(HttpClient) http: HttpClient) {
+    super(http, `${environment.APIUrl + basePathUrl}`, '/FindAll');
+    this._http = http;
+  }
 
-    findByID(id: number): Observable<ServiceResponse<GetMedicalCalendarDto>> {
-        return this._http.get<ServiceResponse<GetMedicalCalendarDto>>(`${this.baseUrlLocal}/schedule/${id}`, { headers: this.getHeaders() });
-    }
+  private makePostRequest<T>(url: string, body: any): Observable<ServiceResponse<T>> {
+    return this._http.post<ServiceResponse<T>>(url, body, { headers: this.getHeaders() })
+      .pipe(
+        map(response => response),
+        catchError(super.customHandleError)
+      );
+  }
 
-    create(newEntity: GetMedicalCalendarDto): Observable<ServiceResponse<GetMedicalCalendarDto>> {
-        return this._http.post<ServiceResponse<GetMedicalCalendarDto>>(`${this.baseUrlLocal}/schedule`, newEntity, { headers: this.getHeaders() });
-    }
+  findByID(id: number): Observable<ServiceResponse<GetMedicalCalendarDto>> {
+    return this._http.get<ServiceResponse<GetMedicalCalendarDto>>(`${this.baseUrlLocal}/schedule/${id}`, { headers: this.getHeaders() })
+      .pipe(
+        map(response => response),
+        catchError(super.customHandleError)
+      );
+  }
 
-    updateAny(updateEntity: UpdateMedicalCalendarDto): Observable<ServiceResponse<GetMedicalCalendarDto>> {
-        return this._http.put<ServiceResponse<GetMedicalCalendarDto>>(`${this.baseUrlLocal}/schedule`, updateEntity, { headers: this.getHeaders() });
-    }
+  create(newEntity: GetMedicalCalendarDto): Observable<ServiceResponse<GetMedicalCalendarDto>> {
+    return this.makePostRequest<GetMedicalCalendarDto>(`${this.baseUrlLocal}/schedule`, newEntity);
+  }
 
-    deleteByRequest(request: UpdateMedicalCalendarDto): Observable<ServiceResponse<boolean>> {
-        return this.httpLocal.delete<ServiceResponse<boolean>>(`${this.baseUrlLocal}/schedule`, { headers: this.getHeaders(), body: request });
-    }
+  updateAny(updateEntity: UpdateMedicalCalendarDto): Observable<ServiceResponse<GetMedicalCalendarDto>> {
+    return this._http.put<ServiceResponse<GetMedicalCalendarDto>>(`${this.baseUrlLocal}/schedule`, updateEntity, { headers: this.getHeaders() })
+      .pipe(
+        map(response => response),
+        catchError(super.customHandleError)
+      );
+  }
 
-    getMonthlyCalendar(criteria: CalendarCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
-        let headers = this.getHeaders();
-        return this._http.post<ServiceResponse<CalendarDto>>(`${this.baseUrlLocal}/calendar`, criteria, { headers: headers })
-            .pipe(map(response => { return response; }), catchError(super.customHandleError));
-    }
+  deleteByRequest(request: UpdateMedicalCalendarDto): Observable<ServiceResponse<boolean>> {
+    return this.httpLocal.delete<ServiceResponse<boolean>>(`${this.baseUrlLocal}/schedule`, { headers: this.getHeaders(), body: request })
+      .pipe(
+        map(response => response),
+        catchError(super.customHandleError)
+      );
+  }
 
-    getAvailableMedicalCalendar(criteria: CalendarCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
-        return this._http.post<ServiceResponse<CalendarDto>>(`${this.baseUrlLocal}/available`, criteria, { headers: this.getHeaders() });
-    }
+  getMonthlyCalendar(criteria: CalendarCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
+    return this.makePostRequest<CalendarDto>(`${this.baseUrlLocal}/calendar`, criteria);
+  }
 
-    sendAppointments(criteria: ScheduleCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
-        return this._http.post<ServiceResponse<CalendarDto>>(`${this.baseUrlLocal}/appointment/send`, criteria, { headers: this.getHeaders() });
-    }
-    getAppointments(criteria: AppointmentCriteriaDto): Observable<ServiceResponse<AppointmentDto[]>> {
-        return this._http.post<ServiceResponse<AppointmentDto[]>>(`${this.baseUrlLocal}/appointment/get`, criteria, { headers: this.getHeaders() });
-    }  
+  getAvailableMedicalCalendar(criteria: CalendarCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
+    return this.makePostRequest<CalendarDto>(`${this.baseUrlLocal}/available`, criteria);
+  }
+
+  sendAppointments(criteria: ScheduleCriteriaDto): Observable<ServiceResponse<CalendarDto>> {
+    return this.makePostRequest<CalendarDto>(`${this.baseUrlLocal}/appointment/send`, criteria);
+  }
+
+  getAppointments(criteria: AppointmentCriteriaDto): Observable<ServiceResponse<AppointmentDto[]>> {
+    return this.makePostRequest<AppointmentDto[]>(`${this.baseUrlLocal}/appointment/get`, criteria);
+  }
 }

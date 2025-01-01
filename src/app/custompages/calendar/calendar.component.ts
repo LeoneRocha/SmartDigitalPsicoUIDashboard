@@ -57,7 +57,7 @@ export class CalendarComponent implements OnInit {
 			year: y,
 			intervalInMinutes: 60,
 			filterDaysAndTimesWithAppointments: false,
-			filterByDate: today,
+			filterByDate: null,
 			userIdLogged: this.userLoged?.id
 		};
 		return criteria;
