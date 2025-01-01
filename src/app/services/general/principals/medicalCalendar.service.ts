@@ -11,6 +11,8 @@ import { ScheduleCriteriaDto } from 'app/models/medicalcalendar/ScheduleCriteria
 import { AppointmentCriteriaDto } from 'app/models/medicalcalendar/AppointmentCriteriaDto';
 import { AppointmentDto } from 'app/models/medicalcalendar/AppointmentDto';
 import { ServiceResponse } from 'app/models/ServiceResponse';
+import { ActionMedicalCalendarDtoBase } from 'app/models/medicalcalendar/ActionMedicalCalendarDtoBase';
+import { DeleteMedicalCalendarDto } from 'app/models/modelsbyswagger/deleteMedicalCalendarDto';
 
 const basePathUrl = '/medical/v1/medicalcalendar';
 
@@ -42,7 +44,7 @@ export class MedicalCalendarService extends GenericService<ServiceResponse<GetMe
       );
   }
 
-  create(newEntity: GetMedicalCalendarDto): Observable<ServiceResponse<GetMedicalCalendarDto>> {
+  create(newEntity: ActionMedicalCalendarDtoBase): Observable<ServiceResponse<GetMedicalCalendarDto>> {
     return this.makePostRequest<GetMedicalCalendarDto>(`${this.baseUrlLocal}/schedule`, newEntity);
   }
 
@@ -54,7 +56,7 @@ export class MedicalCalendarService extends GenericService<ServiceResponse<GetMe
       );
   }
 
-  deleteByRequest(request: UpdateMedicalCalendarDto): Observable<ServiceResponse<boolean>> {
+  deleteByRequest(request: DeleteMedicalCalendarDto): Observable<ServiceResponse<boolean>> {
     return this.httpLocal.delete<ServiceResponse<boolean>>(`${this.baseUrlLocal}/schedule`, { headers: this.getHeaders(), body: request })
       .pipe(
         map(response => response),
