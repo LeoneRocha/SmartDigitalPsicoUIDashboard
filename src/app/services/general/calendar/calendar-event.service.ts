@@ -17,7 +17,7 @@ import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalenda
   providedIn: 'root',
 })
 export class CalendarEventService {
-  constructor(private medicalCalendarService: MedicalCalendarService) {}
+  constructor(private medicalCalendarService: MedicalCalendarService) { }
 
   getCalendarEvents(criteria: CalendarCriteriaDto): Observable<ICalendarEvent[]> {
     return this.medicalCalendarService.getMonthlyCalendar(criteria).pipe(
@@ -31,6 +31,8 @@ export class CalendarEventService {
 
   addCalendarEvent(event: ICalendarEvent): Observable<ServiceResponse<GetMedicalCalendarDto>> {
     const newAppointment = this.mapToAddAppointmentDto(event);
+    console.log('-------------------- addCalendarEvent --------------------');
+    console.log(newAppointment);
     return this.medicalCalendarService.create(newAppointment);
   }
 
@@ -67,14 +69,16 @@ export class CalendarEventService {
       title: slot.isAvailable ? 'Available' : 'Not Available',
       start: DateHelper.convertToLocalTime(slot.startTime),
       end: DateHelper.convertToLocalTime(slot.endTime),
-      className: slot.isAvailable ? 'event-green' : 'event-gray', 
+      className: slot.isAvailable ? 'event-green' : 'event-gray',
     };
   }
 
   private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
-    return { 
+    //TODO RECUPERAR O ID DO MEDICO 
+    // TODO ABRIR UMA MODAL QUE SEJA POSSIVEL INCLUIR MAIS CAMPOS E FORMULARIOS ESCOLHAR A HORA DENTRO --- POSTERIONENTE BLOQUEAR SO HORARIO DO PROPRIO MEDICO 
+    return {
       enable: true,
-      id: event.id,
+      id: 0,
       title: event.title,
       startDateTime: event.start,
       endDateTime: event.end,
