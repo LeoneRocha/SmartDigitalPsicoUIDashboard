@@ -6,4 +6,6 @@ export interface ICalendarEvent {
     className: string;
     id?: number;
     url?: string;
+    medicalId?:number;
+    patientId?:number;
   }

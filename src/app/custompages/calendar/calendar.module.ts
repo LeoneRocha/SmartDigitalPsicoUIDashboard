@@ -9,6 +9,9 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid'; 
 import timeGridPlugin  from '@fullcalendar/timegrid'; 
 import interactionPlugin from '@fullcalendar/interaction'; 
+import { MedicalCalendarService } from 'app/services/general/principals/medicalCalendar.service';
+import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
+import { PatientService } from 'app/services/general/principals/patient.service';
 FullCalendarModule.registerPlugins([ 
   dayGridPlugin,
   interactionPlugin,
@@ -21,7 +24,12 @@ FullCalendarModule.registerPlugins([
         FormsModule,
         FullCalendarModule
     ],
-    declarations: [CalendarComponent]
+    declarations: [CalendarComponent],
+    providers: [
+      , MedicalCalendarService
+      , CalendarEventService
+      , PatientService 
+  ]
 })
 
 export class CalendarModule {}

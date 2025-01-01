@@ -12,12 +12,15 @@ import { GetMedicalCalendarDto } from 'app/models/medicalcalendar/GetMedicalCale
 import { DeleteMedicalCalendarDto } from 'app/models/modelsbyswagger/deleteMedicalCalendarDto';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
+import { PatientService } from '../principals/patient.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalendarEventService {
-  constructor(private medicalCalendarService: MedicalCalendarService) { }
+  constructor(private medicalCalendarService: MedicalCalendarService
+    , @Inject(PatientService) private patientService: PatientService
+  ) { }
 
   getCalendarEvents(criteria: CalendarCriteriaDto): Observable<ICalendarEvent[]> {
     return this.medicalCalendarService.getMonthlyCalendar(criteria).pipe(
@@ -27,8 +30,7 @@ export class CalendarEventService {
         return [];
       })
     );
-  }
-
+  } 
   addCalendarEvent(event: ICalendarEvent): Observable<ServiceResponse<GetMedicalCalendarDto>> {
     const newAppointment = this.mapToAddAppointmentDto(event);
     console.log('-------------------- addCalendarEvent --------------------');
@@ -74,7 +76,6 @@ export class CalendarEventService {
   }
 
   private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
-    //TODO RECUPERAR O ID DO MEDICO 
     // TODO ABRIR UMA MODAL QUE SEJA POSSIVEL INCLUIR MAIS CAMPOS E FORMULARIOS ESCOLHAR A HORA DENTRO --- POSTERIONENTE BLOQUEAR SO HORARIO DO PROPRIO MEDICO 
     return {
       enable: true,
@@ -93,7 +94,7 @@ export class CalendarEventService {
       recurrenceType: ERecurrenceCalendarType.None,
       recurrenceCount: 0,
       recurrenceEndDate: null,
-      medicalId: 0, //TODO
+      medicalId: event.medicalId,
       patientId: null,
       createdUserId: null,
       modifyUserId: null
@@ -118,7 +119,7 @@ export class CalendarEventService {
       recurrenceType: ERecurrenceCalendarType.None,
       recurrenceCount: 0,
       recurrenceEndDate: null,
-      medicalId: 0, //TODO
+      medicalId: event.medicalId,
       patientId: null,
       createdUserId: null,
       modifyUserId: null,
