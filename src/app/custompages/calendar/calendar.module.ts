@@ -22,7 +22,8 @@ FullCalendarModule.registerPlugins([
         CommonModule,
         RouterModule.forChild(CalendarRoutes),
         FormsModule,
-        FullCalendarModule
+        FullCalendarModule,
+        ReactiveFormsModule // Adicione isto
     ],
     declarations: [CalendarComponent],
     providers: [

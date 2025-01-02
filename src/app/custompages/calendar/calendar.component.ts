@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import swal from 'sweetalert2';
@@ -7,11 +8,12 @@ import { CalendarEventService } from 'app/services/general/calendar/calendar-eve
 import { AuthService } from 'app/services/auth/auth.service';
 import { DateHelper } from 'app/helpers/date-helper';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
-
+import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
+import * as moment from 'moment';
+import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 //https://fullcalendar.io/demos
 //or  https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
 declare var $: any;
-
 @Component({
 	moduleId: module.id,
 	selector: 'calendar-cmp',
@@ -23,8 +25,23 @@ export class CalendarComponent implements OnInit {
 	calendarOptions: CalendarOptions;
 	parentId: number;
 	userLoged: any;
+	eventForm: FormGroup;
+	isEditMode = false;
+	selectedEventId: number;
+	patients: DropDownEntityModelSelect[] = [];
+
+	// Variáveis locais para i18n
+	labelPatient = 'Patient';
+	labelTitle = 'Title';
+	labelStartDate = 'Start Date';
+	labelEndDate = 'End Date';
+	labelSelectPatient = 'Select Patient';
+	labelCreateEvent = 'Create an Event';
+	labelEditEvent = 'Edit Event';
+	labelSave = 'Save';
 
 	constructor(
+		private fb: FormBuilder,
 		@Inject(CalendarEventService) private calendarEventService: CalendarEventService,
 		@Inject(Router) private router: Router,
 		@Inject(ActivatedRoute) private route: ActivatedRoute,
@@ -34,8 +51,17 @@ export class CalendarComponent implements OnInit {
 	ngOnInit(): void {
 		this.loadDefCalendar();
 		this.loadDataFromApi();
+		this.initForm();
+		this.loadPatients();
 	}
-
+	initForm(): void {
+		this.eventForm = this.fb.group({
+			title: ['', Validators.required],
+			start: ['', Validators.required],
+			end: [''],
+			patientId: ['', Validators.required]
+		});
+	}
 	loadDataFromApi(): void {
 		const criteria: CalendarCriteriaDto = this.createCriteria();
 		console.log('-------------------- loadDataFromApi --------------------');
@@ -46,7 +72,18 @@ export class CalendarComponent implements OnInit {
 			this.updateCalendarEvents();
 		});
 	}
-
+	loadPatients(): void {
+		const medicalId: number = this.getParentId();
+		this.calendarEventService.getPatientsByMedicalId(medicalId).subscribe({
+			next: (response: DropDownEntityModelSelect[]) => {
+				this.patients = response;
+				const criteria: CalendarCriteriaDto = this.createCriteria();
+			},
+			error: (err) => {
+				console.error('Erro ao carregar pacientes do médico', err);
+			}
+		});
+	}
 	createCriteria(): CalendarCriteriaDto {
 		this.userLoged = this.authService.getLocalStorageUser();
 		const today = DateHelper.newDateUTC();
@@ -63,7 +100,6 @@ export class CalendarComponent implements OnInit {
 		};
 		return criteria;
 	}
-
 	getParentId(): number {
 		const userLogger = this.authService.getLocalStorageUser();
 		const paramsUrl = this.route.snapshot.paramMap;
@@ -72,7 +108,6 @@ export class CalendarComponent implements OnInit {
 		this.parentId = medicalId;
 		return medicalId;
 	}
-
 	loadDefCalendar(): void {
 		this.calendarOptions = {
 			headerToolbar: {
@@ -101,75 +136,104 @@ export class CalendarComponent implements OnInit {
 					titleFormat: { month: 'short', year: 'numeric', day: 'numeric' }
 				}
 			},
-			dateClick: this.addEvent.bind(this),
-			eventClick: this.editEvent.bind(this),
+			dateClick: this.openAddEventModal.bind(this),
+			eventClick: this.openEditEventModal.bind(this),
 			eventDrop: this.updateEvent.bind(this),
 			eventResize: this.updateEvent.bind(this),
 		};
 	}
 
-	addEvent(event): void {
-		swal
-			.fire({
-				title: 'Create an Event',
-				customClass: {
-					confirmButton: 'btn btn-fill btn-primary',
-					cancelButton: 'btn btn-default',
-					input: 'swl-input'
-				},
-				showCancelButton: true,
-				confirmButtonText: 'Save',
-				input: 'text',
-				inputPlaceholder: 'Event Title'
-			})
-			.then(result => {
-				if (result.isConfirmed) {
-					const newEvent = {
-						id: null,
-						title: result.value,
-						start: event.date,
-						end: event.date,
-						className: 'event-default',
-						//medicalId: this.getParentId()
-					};
-					this.calendarEventService.addCalendarEvent(newEvent).subscribe(response => {
-						newEvent.id = response.data.id;
-						this.fullcalendar.getApi().addEvent(newEvent);
-					});
-				}
-			});
+	getFormCalendar(): string {
+		const formHtml = FormHelperCalendar.getFormHtml(this.eventForm, this.patients, {
+			labelPatient: this.labelPatient,
+			labelTitle: this.labelTitle,
+			labelStartDate: this.labelStartDate,
+			labelEndDate: this.labelEndDate,
+			labelSelectPatient: this.labelSelectPatient
+		});
+		return formHtml;
+	}
+	openAddEventModal(arg): void {
+		this.isEditMode = false;
+		this.eventForm.reset();
+		this.eventForm.patchValue({
+			start: moment(arg.date).format('YYYY-MM-DDTHH:mm:ss'),
+			end: moment(arg.date).format('YYYY-MM-DDTHH:mm:ss'),
+		});
+		const formHtml = this.getFormCalendar();
+		swal.fire({
+			title: 'Create an Event',
+			html: formHtml,
+			focusConfirm: false,
+			showCancelButton: true,
+			confirmButtonText: 'Save',
+			preConfirm: () => this.saveEventFromSwal()
+		});
+	}
+	openEditEventModal(arg): void {
+		this.isEditMode = true;
+		const event = arg.event;
+		this.selectedEventId = event.id;
+		this.eventForm.patchValue({
+			title: event.title,
+			start: moment(event.start).format('YYYY-MM-DDTHH:mm:ss'),
+			end: event.end ? moment(event.end).format('YYYY-MM-DDTHH:mm:ss') : '',
+			patientId: event.extendedProps.patientId
+		});
+		const formHtml = this.getFormCalendar();
+
+		swal.fire({
+			title: this.labelCreateEvent,
+			html: formHtml,
+			focusConfirm: false,
+			showCancelButton: true,
+			confirmButtonText: this.labelSave,
+			preConfirm: () => this.saveEventFromSwal()
+		});
 	}
 
-	editEvent(eventInfo): void {
-		swal
-			.fire({
-				title: 'Edit Event',
-				input: 'text',
-				inputValue: eventInfo.event.title,
-				showCancelButton: true,
-				confirmButtonText: 'Save',
-				customClass: {
-					confirmButton: 'btn btn-fill btn-primary',
-					cancelButton: 'btn btn-default'
-				}
-			})
-			.then(result => {
-				if (result.isConfirmed) {
-					const updatedEvent: ICalendarEvent = {
-						id: eventInfo.event.id,
-						title: result.value,
-						start: eventInfo.event.start,
-						end: eventInfo.event.end,
-						className: eventInfo.event.classNames[0],
-						//medicalId: this.getParentId()
-					};
-					this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe(() => {
-						eventInfo.event.setProp('title', result.value);
-					});
-				}
+	saveEventFromSwal(): void {
+		const title = (document.getElementById('swal-title') as HTMLInputElement).value;
+		const start = (document.getElementById('swal-start') as HTMLInputElement).value;
+		const end = (document.getElementById('swal-end') as HTMLInputElement).value;
+		const patientId = (document.getElementById('swal-patient') as HTMLSelectElement).value;
+		const formData = {
+			title,
+			start,
+			end,
+			patientId
+		};
+		const newEvent: ICalendarEvent = {
+			title: formData.title,
+			start: new Date(formData.start),
+			end: formData.end ? new Date(formData.end) : null,
+			className: 'event-default',
+			medicalId: this.getParentId(),
+			patientId: Number(formData.patientId)
+		};
+		const newEventInput = {
+			title: formData.title,
+			start: new Date(formData.start),
+			end: formData.end ? new Date(formData.end) : null,
+			className: 'event-default',
+			medicalId: this.getParentId(),
+			patientId: Number(formData.patientId)
+		};
+		if (this.isEditMode) {
+			newEvent.id = this.selectedEventId;
+			this.calendarEventService.updateCalendarEvent(newEvent).subscribe(() => {
+				const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
+				event.setProp('title', formData.title);
+				event.setStart(new Date(formData.start));
+				event.setEnd(new Date(formData.end));
 			});
+		} else {
+			this.calendarEventService.addCalendarEvent(newEvent).subscribe(response => {
+				newEvent.id = response.data.id;
+				this.fullcalendar.getApi().addEvent(newEventInput);
+			});
+		}
 	}
-
 	updateEvent(eventInfo): void {
 		const updatedEvent: ICalendarEvent = {
 			id: eventInfo.event.id,
@@ -177,11 +241,11 @@ export class CalendarComponent implements OnInit {
 			start: eventInfo.event.start,
 			end: eventInfo.event.end,
 			className: eventInfo.event.classNames[0],
-			//medicalId: this.getParentId()
+			medicalId: this.getParentId(),
+			//patientId: eventInfo.event.extendedProps.patientId
 		};
 		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe();
 	}
-
 	deleteEvent(eventId: number): void {
 		this.calendarEventService.deleteCalendarEvent(eventId).subscribe(() => {
 			const event = this.fullcalendar.getApi().getEventById(eventId.toString());
@@ -190,7 +254,6 @@ export class CalendarComponent implements OnInit {
 			}
 		});
 	}
-
 	updateCalendarEvents(): void {
 		if (this.fullcalendar && this.fullcalendar.getApi()) {
 			this.fullcalendar.getApi().removeAllEvents();

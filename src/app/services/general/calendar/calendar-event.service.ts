@@ -40,7 +40,7 @@ export class CalendarEventService {
       map((response: ServiceResponse<PatientModel>[]) =>
         response["data"].map(patient => ({
           id: patient.id,
-          text: `${patient.firstName} ${patient.lastName}`
+          text: patient.name
         }))
       ),
       catchError(error => {
