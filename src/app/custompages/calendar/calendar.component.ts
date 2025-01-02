@@ -222,8 +222,7 @@ export class CalendarComponent implements OnInit {
 			medicalId: this.getParentId(),
 			patientId: Number(formData.patientId)
 		};
-
-		console.log('-------------------- saveEventFromSwal --------------------');
+		console.log('----------------------saveEventFromSwal-------------------------');
 		console.log(newEvent);
 
 		if (this.isEditMode) {

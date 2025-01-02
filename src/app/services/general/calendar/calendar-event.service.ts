@@ -62,9 +62,7 @@ export class CalendarEventService {
   }
 
   addCalendarEvent(event: ICalendarEvent): Observable<ServiceResponse<GetMedicalCalendarDto>> {
-    const newAppointment = this.mapToAddAppointmentDto(event);
-    console.log('-------------------- addCalendarEvent --------------------');
-    console.log(newAppointment);
+    const newAppointment = this.mapToAddAppointmentDto(event);    
     return this.medicalCalendarService.create(newAppointment);
   }
 

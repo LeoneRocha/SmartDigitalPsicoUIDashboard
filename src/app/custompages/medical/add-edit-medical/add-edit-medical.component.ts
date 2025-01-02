@@ -314,9 +314,7 @@ export class AddEditMedicalComponent implements OnInit {
             endWorkingTime: formElement.controls['endWorkingTime']?.value + ":00",
             workingDays: formElement.controls['workingDays']?.value,
             patientIntervalTimeMinutes: formElement.controls['patientIntervalTimeMinutes']?.value
-        };
-        console.log('getValuesForm');
-        console.log(this.registerModel);
+        }; 
     }
 
     setSpecialtiesOptsChecked(modelEntity): void {
