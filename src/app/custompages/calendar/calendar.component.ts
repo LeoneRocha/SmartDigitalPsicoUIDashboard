@@ -11,6 +11,7 @@ import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
 import * as moment from 'moment';
 import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
+import { ErrorHelper } from 'app/helpers/error-helper';
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
 declare var $: any;
@@ -62,7 +63,7 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 	loadDataFromApi(): void {
-		const criteria: CalendarCriteriaDto = this.createCriteria();		 
+		const criteria: CalendarCriteriaDto = this.createCriteria();
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEvents();
@@ -147,14 +148,14 @@ export class CalendarComponent implements OnInit {
 		}, inputDateIsoString);
 		return formHtml;
 	}
-	openAddEventModal(arg): void { 
+	openAddEventModal(arg): void {
 		this.isEditMode = false;
 		this.eventForm.reset();
 		this.eventForm.patchValue({
 			dateEvent: arg.dateStr,
-			title: '',
-			startTime: '',
-			endTime: ''
+			title: 'Teste',
+			startTime: '11:00',
+			endTime: '12:00'
 		});
 		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr);
 		swal.fire({
@@ -187,19 +188,23 @@ export class CalendarComponent implements OnInit {
 			preConfirm: () => this.saveEventFromSwal(event.start)
 		});
 	}
+	// Dentro do método saveEventFromSwal
 	saveEventFromSwal(dateStr: string): void {
 		const title = (document.getElementById('swal-title') as HTMLInputElement).value;
 		const startTime = (document.getElementById('swal-startTime') as HTMLInputElement).value;
 		const endTime = (document.getElementById('swal-endTime') as HTMLInputElement).value;
 		const patientId = (document.getElementById('swal-patient') as HTMLSelectElement).value;
+
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
+
 		const formData = {
 			title,
 			start: startDateTime,
 			end: endDateTime,
 			patientId
 		};
+
 		const newEvent: ICalendarEvent = {
 			title: formData.title,
 			start: formData.start,
@@ -208,6 +213,7 @@ export class CalendarComponent implements OnInit {
 			medicalId: this.getParentId(),
 			patientId: Number(formData.patientId)
 		};
+
 		const newEventInput: any = {
 			title: formData.title,
 			start: formData.start,
@@ -216,24 +222,37 @@ export class CalendarComponent implements OnInit {
 			medicalId: this.getParentId(),
 			patientId: Number(formData.patientId)
 		};
+
 		console.log('-------------------- saveEventFromSwal --------------------');
 		console.log(newEvent);
+
 		if (this.isEditMode) {
 			newEvent.id = this.selectedEventId;
-			
-			this.calendarEventService.updateCalendarEvent(newEvent).subscribe(() => {
-				const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
-				event.setProp('title', formData.title);
-				event.setStart(new Date(newEvent.start));
-				event.setEnd(newEvent.end ? new Date(newEvent.end) : null);
+
+			this.calendarEventService.updateCalendarEvent(newEvent).subscribe({
+				next: () => {
+					const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
+					event.setProp('title', formData.title);
+					event.setStart(new Date(newEvent.start));
+					event.setEnd(newEvent.end ? new Date(newEvent.end) : null);
+				},
+				error: (err) => {
+					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
+				}
 			});
 		} else {
-			this.calendarEventService.addCalendarEvent(newEvent).subscribe(response => {
-				newEvent.id = response.data.id;
-				this.fullcalendar.getApi().addEvent(newEventInput);
+			this.calendarEventService.addCalendarEvent(newEvent).subscribe({
+				next: (response) => {
+					newEvent.id = response.data.id;
+					this.fullcalendar.getApi().addEvent(newEventInput);
+				},
+				error: (err) => {
+					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
+				}
 			});
 		}
 	}
+
 	updateEvent(eventInfo): void {
 		const updatedEvent: ICalendarEvent = {
 			id: eventInfo.event.id,

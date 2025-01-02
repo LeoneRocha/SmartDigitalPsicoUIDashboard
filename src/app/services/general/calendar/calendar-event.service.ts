@@ -13,9 +13,9 @@ import { DeleteMedicalCalendarDto } from 'app/models/modelsbyswagger/deleteMedic
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
 import { PatientService } from '../principals/patient.service';
-import { PatientModel } from 'app/models/principalsmodel/PatientModel'; 
+import { PatientModel } from 'app/models/principalsmodel/PatientModel';
 import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
-
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root',
 })
@@ -107,7 +107,8 @@ export class CalendarEventService {
 
   private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     // TODO ABRIR UMA MODAL QUE SEJA POSSIVEL INCLUIR MAIS CAMPOS E FORMULARIOS ESCOLHAR A HORA DENTRO --- POSTERIONENTE BLOQUEAR SO HORARIO DO PROPRIO MEDICO 
-    return {
+
+    let newEntity: ActionMedicalCalendarDtoBase = {
       enable: true,
       id: 0,
       title: event.title,
@@ -129,6 +130,11 @@ export class CalendarEventService {
       createdUserId: null,
       modifyUserId: null
     };
+    // Convert dates to UTC format
+    newEntity.startDateTime = moment(newEntity.startDateTime).utc(true).toDate();
+    newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate();
+
+    return newEntity;
   }
 
   private mapToUpdateAppointmentDto(event: ICalendarEvent): UpdateMedicalCalendarDto {
