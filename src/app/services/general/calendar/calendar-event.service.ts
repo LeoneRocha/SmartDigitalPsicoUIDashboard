@@ -124,8 +124,8 @@ export class CalendarEventService {
       recurrenceType: ERecurrenceCalendarType.None,
       recurrenceCount: 0,
       recurrenceEndDate: null,
-      medicalId: event.medicalId,
-      patientId: null,
+      medicalId: event.medicalId ?? 0,
+      patientId: event.patientId ?? 0,
       createdUserId: null,
       modifyUserId: null
     };

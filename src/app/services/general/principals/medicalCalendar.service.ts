@@ -44,11 +44,7 @@ export class MedicalCalendarService extends GenericService<ServiceResponse<GetMe
       );
   }
 
-  create(newEntity: ActionMedicalCalendarDtoBase): Observable<ServiceResponse<GetMedicalCalendarDto>> {
-
-    console.log('-------------------- MedicalCalendarService - create --------------------');
-    console.log(newEntity);
-
+  create(newEntity: ActionMedicalCalendarDtoBase): Observable<ServiceResponse<GetMedicalCalendarDto>> { 
     return this.makePostRequest<GetMedicalCalendarDto>(`${this.baseUrlLocal}/schedule`, newEntity);
   }
 
