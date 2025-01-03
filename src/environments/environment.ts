@@ -7,6 +7,6 @@ export const environment = {
   production: false,
   EnableCaptureResponseTolog: false,
   APIUrl: 'https://localhost:7242/api',
-  UIVersion: '2024.05.31'
+  UIVersion: '2025.01.02.01'
 };
   
