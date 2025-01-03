@@ -68,6 +68,8 @@ export class CalendarComponent implements OnInit {
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEvents();
+			console.log('----------------------loadDataFromApi - eventsData-------------------------');
+			console.log(this.eventsData);
 		});
 	}
 	loadPatients(): void {
@@ -172,14 +174,19 @@ export class CalendarComponent implements OnInit {
 		this.isEditMode = true;
 		const event = arg.event;
 		this.selectedEventId = event.id;
+		//TODO AQUI DEVEMOS PESQUISAR NO MES CARREGADO E BUSCAR PELO ID PARA REPOR O TITLE CORRETAMENTE
+		console.log('----------------------openEditEventModal - selectedEventId-------------------------');
+		console.log(this.selectedEventId);
+
+		const startDateTime = moment(event.start);
 		this.eventForm.patchValue({
 			title: event.title,
-			dateEvent: moment(event.start).format('YYYY-MM-DD'),
-			startTime: moment(event.start).format('HH:mm'),
+			dateEvent: startDateTime.format('YYYY-MM-DD'),
+			startTime: startDateTime.format('HH:mm'),
 			endTime: event.end ? moment(event.end).format('HH:mm') : '',
 			patientId: event.extendedProps.patientId
 		});
-		const formHtml = this.getFormCalendar(this.eventForm, event.start.format('YYYY-MM-DD'));
+		const formHtml = this.getFormCalendar(this.eventForm, startDateTime.format('YYYY-MM-DD'));
 		swal.fire({
 			title: this.labelEditEvent,
 			html: formHtml,

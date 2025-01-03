@@ -1,3 +1,5 @@
+import { GetMedicalCalendarTimeSlotDto } from "../medicalcalendar/GetMedicalCalendarTimeSlotDto";
+
 export interface ICalendarEvent {
     title: string;
     start: Date;
@@ -8,4 +10,5 @@ export interface ICalendarEvent {
     url?: string;
     medicalId?:number;
     patientId?:number;
+    medicalCalendar?: GetMedicalCalendarTimeSlotDto;
   }

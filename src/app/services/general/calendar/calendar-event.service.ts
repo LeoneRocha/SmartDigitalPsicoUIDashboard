@@ -16,6 +16,7 @@ import { PatientService } from '../principals/patient.service';
 import { PatientModel } from 'app/models/principalsmodel/PatientModel';
 import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
 import * as moment from 'moment';
+import { TimeSlotDto } from 'app/models/medicalcalendar/TimeSlotDto';
 @Injectable({
   providedIn: 'root',
 })
@@ -89,19 +90,44 @@ export class CalendarEventService {
       .map(this.mapToCalendarEvent);
   }
 
-  private isSlotValid(slot: any): boolean {
+  private isSlotValid(slot: TimeSlotDto): boolean {
     return slot.isAvailable || slot.medicalCalendar !== null;
   }
 
-  private mapToCalendarEvent(slot: any): ICalendarEvent {
+  private mapToCalendarEvent(slot: TimeSlotDto): ICalendarEvent {
     return {
-      id: slot.id,
-      title: slot.isAvailable ? 'Available' : 'Not Available',
+      id: slot.medicalCalendar ? slot.medicalCalendar?.id : 0,
+      title: slot.medicalCalendar ? slot.medicalCalendar.patientName : (slot.isAvailable ? 'Available' : 'Not Available'),
       start: DateHelper.convertToLocalTime(slot.startTime),
       end: DateHelper.convertToLocalTime(slot.endTime),
       className: slot.isAvailable ? 'event-green' : 'event-gray',
+      medicalCalendar: slot.medicalCalendar ? {
+        patientId: slot.medicalCalendar.patientId,
+        patientName: slot.medicalCalendar.patientName,
+        title: slot.medicalCalendar.title,
+        startDateTime: slot.medicalCalendar.startDateTime,
+        endDateTime: slot.medicalCalendar.endDateTime,
+        isAllDay: slot.medicalCalendar.isAllDay,
+        status: slot.medicalCalendar.status,
+        colorCategoryHexa: slot.medicalCalendar.colorCategoryHexa,
+        isPushedCalendar: slot.medicalCalendar.isPushedCalendar,
+        timeZone: slot.medicalCalendar.timeZone,
+        location: slot.medicalCalendar.location,
+        description: slot.medicalCalendar.description,
+        recurrenceDays: slot.medicalCalendar.recurrenceDays,
+        recurrenceType: slot.medicalCalendar.recurrenceType,
+        recurrenceEndDate: slot.medicalCalendar.recurrenceEndDate,
+        recurrenceCount: slot.medicalCalendar.recurrenceCount,
+        id: slot.medicalCalendar.id,
+        enable: slot.medicalCalendar.enable,
+        links: [],
+        medical: null,
+        tokenRecurrence: slot.medicalCalendar.tokenRecurrence,
+        patient: null
+      } : null
     };
   }
+  
 
   private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     // TODO ABRIR UMA MODAL QUE SEJA POSSIVEL INCLUIR MAIS CAMPOS E FORMULARIOS ESCOLHAR A HORA DENTRO --- POSTERIONENTE BLOQUEAR SO HORARIO DO PROPRIO MEDICO 
