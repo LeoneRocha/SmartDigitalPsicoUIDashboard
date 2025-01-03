@@ -12,6 +12,7 @@ import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityMode
 import * as moment from 'moment';
 import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 import { ErrorHelper } from 'app/helpers/error-helper';
+import { SuccessHelper } from 'app/helpers/success-helper';
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
 declare var $: any;
@@ -229,11 +230,12 @@ export class CalendarComponent implements OnInit {
 			newEvent.id = this.selectedEventId;
 
 			this.calendarEventService.updateCalendarEvent(newEvent).subscribe({
-				next: () => {
+				next: (response) => {
 					const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
 					event.setProp('title', formData.title);
 					event.setStart(new Date(newEvent.start));
 					event.setEnd(newEvent.end ? new Date(newEvent.end) : null);
+					SuccessHelper.displaySuccess(response);
 				},
 				error: (err) => {
 					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
@@ -244,6 +246,7 @@ export class CalendarComponent implements OnInit {
 				next: (response) => {
 					newEvent.id = response.data.id;
 					this.fullcalendar.getApi().addEvent(newEventInput);
+					SuccessHelper.displaySuccess(response);
 				},
 				error: (err) => {
 					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
