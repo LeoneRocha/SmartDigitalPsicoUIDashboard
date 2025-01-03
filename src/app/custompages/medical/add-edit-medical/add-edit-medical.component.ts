@@ -39,9 +39,19 @@ export class AddEditMedicalComponent implements OnInit {
     estadoBotao_goBackToList = 'inicial';
     estadoBotao_addRegister = 'inicial';
     estadoBotao_updateRegister = 'inicial';
-    public officesOpts: OfficeModel[];  ///ServiceResponse<OfficeModel>[];
-    public specialtiesOpts: SpecialtyModel[];  //ServiceResponse<OfficeModel>[];  
+    public officesOpts: OfficeModel[];
+    public specialtiesOpts: SpecialtyModel[];
     public typeAccreditationOpts = ETypeAccreditationOptions;
+
+    public daysOfWeeksOpts = [
+        { value: 0, name: 'Sunday', selected: false },
+        { value: 1, name: 'Monday', selected: false },
+        { value: 2, name: 'Tuesday', selected: false },
+        { value: 3, name: 'Wednesday', selected: false },
+        { value: 4, name: 'Thursday', selected: false },
+        { value: 5, name: 'Friday', selected: false },
+        { value: 6, name: 'Saturday', selected: false }
+    ];
 
     constructor(@Inject(ActivatedRoute) private route: ActivatedRoute
         , private fb: FormBuilder
@@ -52,7 +62,7 @@ export class AddEditMedicalComponent implements OnInit {
         , @Inject(LanguageService) private languageService: LanguageService
     ) {
 
-    } 
+    }
     ngOnInit() {
         this.languageService.loadLanguage();
         this.gerateFormRegister();
@@ -68,8 +78,8 @@ export class AddEditMedicalComponent implements OnInit {
         this.loadBoostrap();
 
     }
-     //https://netbasal.com/implementing-grouping-checkbox-behavior-with-angular-reactive-forms-9ba4e3ab3965
-     animarBotao(estado: string, stateBtn: string) {
+    //https://netbasal.com/implementing-grouping-checkbox-behavior-with-angular-reactive-forms-9ba4e3ab3965
+    animarBotao(estado: string, stateBtn: string) {
         if (stateBtn === 'goBackToList')
             this.estadoBotao_goBackToList = estado;
 
@@ -123,6 +133,10 @@ export class AddEditMedicalComponent implements OnInit {
             formsElement.controls['officeId'].disable();
             formsElement.controls['specialtiesIds'].disable();
             formsElement.controls['enableOpt'].disable();
+            formsElement.controls['startWorkingTime'].disable();
+            formsElement.controls['endWorkingTime'].disable();
+            formsElement.controls['workingDays'].disable();
+            formsElement.controls['patientIntervalTimeMinutes'].disable();
         }
         this.registerId = Number(paramsUrl.get('id'));
     }
@@ -193,6 +207,10 @@ export class AddEditMedicalComponent implements OnInit {
             officeId: responseData?.office?.id,
             specialtiesIds: responseData?.specialties.map(ent => Number(ent.id) ?? null),
             enable: responseData?.enable,
+            startWorkingTime: responseData?.startWorkingTime,
+            endWorkingTime: responseData?.endWorkingTime,
+            workingDays: responseData?.workingDays,
+            patientIntervalTimeMinutes: responseData?.patientIntervalTimeMinutes,
         };
         let modelEntity = this.registerModel;
         formsElement.controls['name'].setValue(modelEntity?.name);
@@ -201,10 +219,26 @@ export class AddEditMedicalComponent implements OnInit {
         formsElement.controls['typeAccreditation'].setValue(modelEntity?.typeAccreditation);
         formsElement.controls['officeId'].setValue(modelEntity?.officeId);
         formsElement.controls['enableOpt'].setValue(modelEntity?.enable);
+        formsElement.controls['startWorkingTime'].setValue(modelEntity?.startWorkingTime);
+        formsElement.controls['endWorkingTime'].setValue(modelEntity?.endWorkingTime);
+        formsElement.controls['patientIntervalTimeMinutes'].setValue(modelEntity?.patientIntervalTimeMinutes);
+
         //todo:ver como melhorar isso precisarei carregar os compos via store do redux antes de gerar o html 
         setTimeout(() => { this.setSpecialtiesOptsChecked(modelEntity); }, 500);
+        setTimeout(() => { this.setWorkingDaysOptsChecked(modelEntity); }, 500);
 
+        this.registerForm.patchValue({
+            ...modelEntity,
+            startWorkingTime: this.formatTime(modelEntity.startWorkingTime),
+            endWorkingTime: this.formatTime(modelEntity.endWorkingTime)
+        }); 
     }
+
+    formatTime(time: string): string {
+        const [hours, minutes] = time.split(':');
+        return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    }
+
     isValidFormName(): boolean {
         let isRequired = this.registerForm.get('name').errors?.required;
         return this.registerForm.controls['name'].touched && this.registerForm.controls['name'].invalid && isRequired;
@@ -230,6 +264,24 @@ export class AddEditMedicalComponent implements OnInit {
         let isRequired = this.registerForm.get('specialtiesIds').errors?.required;
         return this.registerForm.controls['specialtiesIds'].touched && this.registerForm.controls['specialtiesIds'].invalid && isRequired;
     }
+
+    isValidFormStartWorkingTime(): boolean {
+        const control = this.registerForm.get('startWorkingTime');
+        return control && control.invalid && (control.dirty || control.touched);
+    }
+    isValidFormEndWorkingTime(): boolean {
+        const control = this.registerForm.get('endWorkingTime');
+        return control && control.invalid && (control.dirty || control.touched);
+    }
+    isValidFormWorkingDays(): boolean {
+        let isRequired = this.registerForm.get('workingDays').errors?.required;
+        return this.registerForm.controls['workingDays'].touched && this.registerForm.controls['workingDays'].invalid && isRequired;
+    }
+    isValidFormPatientIntervalTimeMinutes(): boolean {
+        let isRequired = this.registerForm.get('patientIntervalTimeMinutes').errors?.required;
+        return this.registerForm.controls['patientIntervalTimeMinutes'].touched && this.registerForm.controls['patientIntervalTimeMinutes'].invalid && isRequired;
+    }
+
     gerateFormRegister() {
         this.registerForm = this.fb.group({
             id: new FormControl<number>(0),
@@ -240,10 +292,15 @@ export class AddEditMedicalComponent implements OnInit {
             officeId: new FormControl<number>(null, [Validators.required]),//Quando for numerico a validacao deve ser do tipo 
             specialtiesIds: this.fb.array<number>([]),
             enableOpt: new FormControl<boolean>(false, Validators.required),
+            startWorkingTime: new FormControl('08:00', [Validators.required, Validators.pattern(/^([0-1]\d|2[0-3]):([0-5]\d)$/)]),
+            endWorkingTime: new FormControl('18:00', [Validators.required, Validators.pattern(/^([0-1]\d|2[0-3]):([0-5]\d)$/)]),
+            workingDays: this.fb.array<number>([]),
+            patientIntervalTimeMinutes: new FormControl<number>(null, [Validators.required]),//Quando for numerico a validacao deve ser do tipo 
         });
     }
     getValuesForm() {
         let formElement = this.registerForm;
+
         this.registerModel = {
             id: this.registerId ? this.registerId : 0,
             name: formElement.controls['name']?.value,
@@ -253,7 +310,11 @@ export class AddEditMedicalComponent implements OnInit {
             officeId: Number(formElement.controls['officeId']?.value),
             specialtiesIds: formElement.controls['specialtiesIds']?.value,
             enable: formElement.controls['enableOpt']?.value,
-        };
+            startWorkingTime: formElement.controls['startWorkingTime']?.value + ":00",
+            endWorkingTime: formElement.controls['endWorkingTime']?.value + ":00",
+            workingDays: formElement.controls['workingDays']?.value,
+            patientIntervalTimeMinutes: formElement.controls['patientIntervalTimeMinutes']?.value
+        }; 
     }
 
     setSpecialtiesOptsChecked(modelEntity): void {
@@ -267,6 +328,33 @@ export class AddEditMedicalComponent implements OnInit {
                 }
             });
         }
+        // Inicializa o FormArray com os valores selecionados
+        const specialtiesFormArray = this.registerForm.get('specialtiesIds') as FormArray;
+        this.specialtiesOpts.forEach((specialty) => {
+            if (specialty.selected) {
+                specialtiesFormArray.push(new FormControl(specialty.id));
+            }
+        });
+    }
+
+    setWorkingDaysOptsChecked(modelEntity): void {
+        if (modelEntity?.workingDays) {
+            modelEntity?.workingDays.forEach(wd => {
+                if (this.daysOfWeeksOpts && this.daysOfWeeksOpts.length > 0) {
+                    const valueOpt = this.daysOfWeeksOpts.find(opt => opt.value === wd);
+                    if (valueOpt) {
+                        valueOpt.selected = true;
+                    }
+                }
+            });
+        }
+        // Inicializa o FormArray com os valores selecionados
+        const daysOfWeeksFormArray = this.registerForm.get('workingDays') as FormArray;
+        this.daysOfWeeksOpts.forEach((opt) => {
+            if (opt.selected) {
+                daysOfWeeksFormArray.push(new FormControl(opt.value));
+            }
+        });
     }
 
     createEmptyRegister(): void {
@@ -278,7 +366,11 @@ export class AddEditMedicalComponent implements OnInit {
             typeAccreditation: 0,
             officeId: 0,
             specialtiesIds: [],
-            enable: false
+            enable: false,
+            startWorkingTime: '',
+            endWorkingTime: '',
+            workingDays: [],
+            patientIntervalTimeMinutes: 0
         }
     }
     onSelect(selectedValue: string) {
@@ -287,7 +379,7 @@ export class AddEditMedicalComponent implements OnInit {
         this.router.navigate(['/medical/manage/']);
     }
     gettranslateInformationAsync(key: string): string {
-        let result = this.languageService.translateInformationAsync([key])[0]; 
+        let result = this.languageService.translateInformationAsync([key])[0];
         return result;
     }
     modalSuccessAlert() {
@@ -301,7 +393,7 @@ export class AddEditMedicalComponent implements OnInit {
             },
             icon: "success"
         });
-    } 
+    }
     modalErroAlert(msgErro: string, response: ServiceResponse<MedicalModel>) {
         swal.fire({
             title: msgErro,
@@ -313,8 +405,8 @@ export class AddEditMedicalComponent implements OnInit {
             buttonsStyling: false
         });
     }
-    onCheckboxChange(e) {
-        const checkArray: FormArray = this.registerForm.get('specialtiesIds') as FormArray;
+    onCheckboxChange(e, controlName) {
+        const checkArray: FormArray = this.registerForm.get(controlName) as FormArray;
         if (e.target.checked) {
             checkArray.push(new FormControl(e.target.value));
         } else {
@@ -326,6 +418,22 @@ export class AddEditMedicalComponent implements OnInit {
                 }
                 i++;
             });
-        } //https://www.positronx.io/angular-checkbox-tutorial/          
+        }
+        this.logFormErrors(this.registerForm);
+    }
+    getSelectedCheckboxes(controlName) {
+        const selectedValues = (this.registerForm.get(controlName) as FormArray).value;
+        return selectedValues;
+    }
+
+    logFormErrors(group: FormGroup): void {
+        Object.keys(group.controls).forEach(key => {
+            const control = group.get(key);
+            if (control instanceof FormControl) {
+                console.log(`Control: ${key}, Valid: ${control.valid}`);
+            } else if (control instanceof FormGroup) {
+                this.logFormErrors(control);
+            }
+        });
     }
 }

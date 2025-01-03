@@ -7,38 +7,52 @@ module.exports = function (config) {
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
+      require('karma-coverage'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
+      require('karma-junit-reporter'), // Adicione este plugin
       require('@angular-devkit/build-angular/plugins/karma')
     ],
-    client:{
+    client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    files: [
-      
+    files: [ 
     ],
-    preprocessors: {
-      
+    preprocessors: { 
     },
     mime: {
-      'text/x-typescript': ['ts','tsx']
+      'text/x-typescript': ['ts', 'tsx']
+    },
+    coverageReporter: {
+      type: 'html',
+      dir: 'coverage/',
+      subdir: '.',
+      includeAllSources: true
     },
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
+      dir: require('path').join(__dirname, 'coverage'),
+      reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
+    },
+    junitReporter: { // Configuração do JUnit Reporter
+      outputDir: require('path').join(__dirname, 'coverage'), // Diretório de saída
+      outputFile: 'test-results.xml', // Nome do arquivo de saída
+      useBrowserName: false // Não incluir o nome do navegador no arquivo
     },
     angularCli: {
       environment: 'dev'
     },
     reporters: config.angularCli && config.angularCli.codeCoverage
-              ? ['progress', 'coverage-istanbul']
-              : ['progress', 'kjhtml'],
-    port: 9876,
+      ? ['progress', 'coverage-istanbul', 'coverage', 'junit']
+      : ['progress', 'kjhtml', 'coverage-istanbul', 'coverage', 'junit'],// Adicione 'junit' aos repórteres
+    port: 9877, // Porta alterada
     colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false
+    logLevel: config.LOG_WARN,
+    autoWatch: false, // Desativar autoWatch true to local 
+    singleRun: true, // Executar apenas uma vez false to local 
+    browsers: ['ChromeHeadless'],// Chrome to local 
+    concurrency: 4, // Ajuste de concurrency
+    browserNoActivityTimeout: 60000 // Ajuste de timeout
   });
 };

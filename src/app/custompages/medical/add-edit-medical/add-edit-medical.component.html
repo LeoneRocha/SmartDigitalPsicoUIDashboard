@@ -98,30 +98,14 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <!--  <select data-title="Select" data-menu-style="dropdown-blue"
-                                            data-style="btn-default btn-block" class="form-control"
-                                            name="specialtiesIds" formControlName="specialtiesIds"
-                                            [ngClass]="!isValidFormSpecialtiesIds() ? '' : 'error'" required
-                                            (change)="onSelect($event.target.value)">
-                                            <option value="">Select</option>
-                                            <option *ngFor="let c of specialtiesOpts" [value]="c.id">{{ c.description }}
-                                            </option>
-                                        </select><select multiple data-title="Select" data-menu-style="dropdown-blue"
-                                            data-style="btn-default btn-block" class="form-control"
-                                            name="specialtiesIds" formControlName="specialtiesIds"
-                                            [ngClass]="!isValidFormSpecialtiesIds() ? '' : 'error'" required
-                                            (change)="onSelect($event.target.value)">
-                                            <option value="">Select</option>
-                                            <option *ngFor="let c of specialtiesOpts" [value]="c.id">{{ c.description }}
-                                            </option> 
-                                        </select>  -->
                                         <label for="specialtiesIds"> {{ "specialty.titles" | translate }}:</label> <span
                                             class="star">*</span>
                                         <div *ngFor="let data of specialtiesOpts; let i=index">
                                             <div class="checkbox checkbox-inline">
-                                                <input [id]="'checkbox' + data.id" type="checkbox" [value]="data.id"
-                                                    (change)="onCheckboxChange($event)" [checked]="data.selected" [disabled]="this.isModeViewForm" />
-                                                <label [for]="'checkbox' + data.id">
+                                                <input [id]="'checkbox_specialtiesIds' + data.id" type="checkbox"
+                                                    [value]="data.id" (change)="onCheckboxChange($event, 'specialtiesIds')"
+                                                    [checked]="data.selected" [disabled]="this.isModeViewForm" />
+                                                <label [for]="'checkbox_specialtiesIds' + data.id">
                                                     {{data.description}}
                                                 </label>
                                             </div>
@@ -132,6 +116,69 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-4"><!-- startWorkingTime - ini -->
+                                    <div class="form-group">
+                                        <label for="startWorkingTime">{{ "medical.startWorkingTime.title" | translate }}
+                                        </label> <span class="star">*</span>
+                                        <input type="time" class="form-control" id="startWorkingTime"
+                                            name="startWorkingTime" formControlName="startWorkingTime" maxlength="5"
+                                            [ngClass]="isValidFormStartWorkingTime() ? 'error' : ''"  />
+                                        <small [hidden]="!isValidFormStartWorkingTime()" class="text-danger">
+                                            {{ "medical.startWorkingTime.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div><!-- startWorkingTime - end -->
+                                <div class="col-md-4"><!-- endWorkingTime - ini -->
+                                    <div class="form-group">
+                                        <label for="endWorkingTime">{{ "medical.endWorkingTime.title" | translate }}: </label>
+                                        <span class="star">*</span>
+                                        <input type="time" class="form-control" id="endWorkingTime"
+                                            name="endWorkingTime" formControlName="endWorkingTime" maxlength="5"
+                                            [ngClass]="isValidFormEndWorkingTime() ? 'error' : ''" />
+                                        <small [hidden]="!isValidFormEndWorkingTime()" class="text-danger">
+                                            {{ "medical.endWorkingTime.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div> <!-- endWorkingTime - end -->
+                                <div class="col-md-4"><!-- patientIntervalTimeMinutes - ini -->
+                                    <div class="form-group">
+                                        <label for="patientIntervalTimeMinutes">{{ "medical.patientIntervalTimeMinutes.title" | translate }}:
+                                        </label> <span class="star">*</span>
+                                        <input type="number" min="0" max="120" class="form-control"
+                                            id="patientIntervalTimeMinutes" name="patientIntervalTimeMinutes"
+                                            formControlName="patientIntervalTimeMinutes" maxlength="5"
+                                            [ngClass]="!isValidFormPatientIntervalTimeMinutes() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormPatientIntervalTimeMinutes()" class="text-danger">
+                                            {{ "medical.patientIntervalTimeMinutes.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div><!-- patientIntervalTimeMinutes - end -->
+                            </div>
+                            <div class="row"><!-- workingDays - ini -->
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="workingDays">{{ "medical.workingDays.title" | translate }}: </label> <span
+                                            class="star">*</span>
+                                        <div formArrayName="workingDays">
+                                            <div *ngFor="let day of daysOfWeeksOpts; let i=index">
+                                                <div class="checkbox checkbox-inline">
+                                                    <input [id]="'ckboxworkingDays' + day.value" type="checkbox"
+                                                        [value]="day.value"
+                                                        (change)="onCheckboxChange($event,'workingDays')"
+                                                        [checked]="day.selected" [disabled]="this.isModeViewForm" />
+                                                    <label [for]="'ckboxworkingDays' + day.value">
+                                                        {{day.name}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <small [hidden]="!isValidFormWorkingDays()" class="text-danger">
+                                            {{ "medical.workingDays.required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div> <!-- workingDays - end -->
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">

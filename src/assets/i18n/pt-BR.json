@@ -127,6 +127,9 @@
       "TitleView": "Ver arquivo",
       "title": "Arquivo",
       "required": "Arquivo é obrigatório"
+    },
+    "calendar": {
+      "title": "Calendário"
     }
   },
   "appsetting": {
@@ -217,6 +220,22 @@
       "TitleAdd": "Adicionar Médico",
       "TitleEdit": "Editar Médico",
       "TitleView": "Visualizar Médico"
+    },
+    "startWorkingTime": {
+      "title": "Hora de Início do Trabalho",
+      "required": "A Hora de Início do Trabalho é obrigatória"
+    },
+    "endWorkingTime": {
+      "title": "Hora de Término do Trabalho",
+      "required": "A Hora de Término do Trabalho é obrigatória"
+    },
+    "patientIntervalTimeMinutes": {
+      "title": "Minutos de Intervalo entre Pacientes",
+      "required": "Os Minutos de Intervalo entre Pacientes são obrigatórios"
+    },
+    "workingDays": {
+      "title": "Dias de Trabalho",
+      "required": "Os Dias de Trabalho são obrigatórios"
     }
   },
   "patient": {

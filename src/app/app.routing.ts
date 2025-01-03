@@ -58,11 +58,16 @@ export const AppRoutes: Routes = [
             path: 'manage',
             canActivate: [AuthGuard, AdminAuthGuard],
             loadChildren: () => import('./custompages/medical/medical.module').then(x => x.MedicalModule)
-        },{
+        }, {
             path: 'managefiles',
             canActivate: [AuthGuard, MedicalAuthGuard],
             loadChildren: () => import('./custompages/medical/medicalaccess.module').then(x => x.MedicalAccessModule)
-        } 
+        }
+        , {
+            path: 'calendar',//http://localhost:4200/medical/calendar
+            canActivate: [AuthGuard, MedicalAuthGuard],
+            loadChildren: () => import('./custompages/calendar/calendar.module').then(x => x.CalendarModule)
+        }
         ]
     },
     {
@@ -82,16 +87,23 @@ export const AppRoutes: Routes = [
     {
         path: 'pages',
         component: AdminLayoutComponent,
-        children: [{
-            path: 'user',
-            canActivate: [AuthGuard],
-            loadChildren: () => import('./userpage/user.module').then(x => x.UserModule)
-        }, {
-            path: 'userprofile',
-            //title: 'userprofile.title',
-            canActivate: [AuthGuard],
-            loadChildren: () => import('./custompages/userprofile/userprofile.module').then(x => x.UserProfileModule)
-        }]
+        children: [
+            {
+                path: 'user',
+                canActivate: [AuthGuard],
+                loadChildren: () => import('./userpage/user.module').then(x => x.UserModule)
+            }, {
+                path: 'userprofile',
+                //title: 'userprofile.title',
+                canActivate: [AuthGuard],
+                loadChildren: () => import('./custompages/userprofile/userprofile.module').then(x => x.UserProfileModule)
+            }, {
+                path: 'testecalendar',//http://localhost:4200/pages/testecalendar
+                //title: 'userprofile.title',
+                canActivate: [AuthGuard],
+                loadChildren: () => import('./testpages/medicalcalendar/medical-calendar-test.module').then(x => x.MedicalCalendarTestModule)
+            }
+        ]
     },
     {
         path: 'authpages',
@@ -102,7 +114,7 @@ export const AppRoutes: Routes = [
         }]
     },
     {
-        path: '**',  
+        path: '**',
         component: NotFoundComponent
     }
 ];

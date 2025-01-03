@@ -22,3 +22,4 @@ export interface PatientModel extends BaseEntityModel, BaseEntityMedicalChildMod
     emergencyContactPhoneNumber: string,
     maritalStatus: number
 } 
+

@@ -39,6 +39,14 @@ export const ROUTES: RouteInfo[] = [{
     ]
 },
 {
+    id: "medical-calendar",
+    title: 'general.calendar.title',
+    path: '/medical/calendar',
+    type: 'link',
+    icontype: 'pe-7s-date',
+    roleaccess: 'Medical' 
+}, 
+{
     path: '/medical',
     id: "medical-file",
     title: 'general.file.title',
@@ -96,5 +104,5 @@ export const ROUTES: RouteInfo[] = [{
         { path: 'user', title: 'navbar.userpage', ab: 'UM' },
         { path: 'userprofile', title: 'navbar.userpage', ab: 'UP' },
     ]
-}, */ 
+}, */
 ];
