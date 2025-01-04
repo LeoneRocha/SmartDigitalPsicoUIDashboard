@@ -178,6 +178,8 @@ export class CalendarComponent implements OnInit {
 		// Buscar o evento correspondente em this.eventsData pelo ID
 		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
 		const startDateTime = moment(event.start);
+		const endTimeDateTime = moment(event.end);
+
 		let tiltleEvent = 'Digite aqui';
 		if (selectedEvent && selectedEvent.medicalCalendar) {
 			tiltleEvent = selectedEvent && selectedEvent.medicalCalendar && selectedEvent.medicalCalendar?.patientName ? selectedEvent.medicalCalendar?.title : selectedEvent.medicalCalendar?.patientName;
@@ -186,7 +188,7 @@ export class CalendarComponent implements OnInit {
 			title: tiltleEvent,
 			dateEvent: eventDateString,
 			startTime: startDateTime.format('HH:mm'),
-			endTime: event.end ? moment(selectedEvent.end).format('HH:mm') : '',
+			endTime: endTimeDateTime.format('HH:mm'),
 			patientId: event.extendedProps.patientId
 		});
 		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
@@ -231,7 +233,7 @@ export class CalendarComponent implements OnInit {
 			className: 'event-default',
 			medicalId: this.getParentId(),
 			patientId: Number(formData.patientId)
-		}; 
+		};
 
 		if (this.isEditMode && this.selectedEventId > 0) {
 			newEvent.id = this.selectedEventId;
@@ -244,7 +246,7 @@ export class CalendarComponent implements OnInit {
 					event.setEnd(newEvent.end ? new Date(newEvent.end) : null);
 					SuccessHelper.displaySuccess(response);
 				},
-				error: (err) => { 
+				error: (err) => {
 					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
 				}
 			});
@@ -255,7 +257,7 @@ export class CalendarComponent implements OnInit {
 					this.fullcalendar.getApi().addEvent(newEventInput);
 					SuccessHelper.displaySuccess(response);
 				},
-				error: (err) => { 
+				error: (err) => {
 					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
 				}
 			});
