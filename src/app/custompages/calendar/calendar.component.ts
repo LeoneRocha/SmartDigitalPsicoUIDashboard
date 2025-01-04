@@ -160,7 +160,7 @@ export class CalendarComponent implements OnInit {
 			startTime: '11:00',
 			endTime: '12:00'
 		});
-		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStrm, null);
+		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
 		swal.fire({
 			title: this.labelCreateEvent,
 			html: formHtml,
@@ -173,31 +173,30 @@ export class CalendarComponent implements OnInit {
 	openEditEventModal(arg): void {
 		this.isEditMode = true;
 		const event = arg.event;
+		const eventDateString = moment(event.start).format('YYYY-MM-DD');
 		this.selectedEventId = event.id;
 		// Buscar o evento correspondente em this.eventsData pelo ID
 		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
-		console.log('----------------------openEditEventModal - selectedEvent-------------------------');
-		console.log(this.selectedEventId);
-		console.log(selectedEvent);
 		const startDateTime = moment(event.start);
-		if (selectedEvent) {
-			const tiltleEvent = selectedEvent && selectedEvent.medicalCalendar && selectedEvent.medicalCalendar?.patientName ? selectedEvent.medicalCalendar?.title: selectedEvent.medicalCalendar?.patientName;
-			this.eventForm.patchValue({
-				title: tiltleEvent,
-				dateEvent: startDateTime.format('YYYY-MM-DD'),
-				startTime: startDateTime.format('HH:mm'),
-				endTime: event.end ? moment(selectedEvent.end).format('HH:mm') : '',
-				patientId: event.extendedProps.patientId
-			});
+		let tiltleEvent = 'Digite aqui';
+		if (selectedEvent && selectedEvent.medicalCalendar) {
+			tiltleEvent = selectedEvent && selectedEvent.medicalCalendar && selectedEvent.medicalCalendar?.patientName ? selectedEvent.medicalCalendar?.title : selectedEvent.medicalCalendar?.patientName;
 		}
-		const formHtml = this.getFormCalendar(this.eventForm, startDateTime.format('YYYY-MM-DD'), selectedEvent);
+		this.eventForm.patchValue({
+			title: tiltleEvent,
+			dateEvent: eventDateString,
+			startTime: startDateTime.format('HH:mm'),
+			endTime: event.end ? moment(selectedEvent.end).format('HH:mm') : '',
+			patientId: event.extendedProps.patientId
+		});
+		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
 		swal.fire({
-			title: this.labelEditEvent,
+			title: this.selectedEventId > 0 ? this.labelEditEvent : this.labelCreateEvent,
 			html: formHtml,
 			focusConfirm: false,
 			showCancelButton: true,
 			confirmButtonText: this.labelSave,
-			preConfirm: () => this.saveEventFromSwal(event.start)
+			preConfirm: () => this.saveEventFromSwal(eventDateString)
 		});
 	}
 	// Dentro do método saveEventFromSwal
@@ -206,7 +205,6 @@ export class CalendarComponent implements OnInit {
 		const startTime = (document.getElementById('swal-startTime') as HTMLInputElement).value;
 		const endTime = (document.getElementById('swal-endTime') as HTMLInputElement).value;
 		const patientId = (document.getElementById('swal-patient') as HTMLSelectElement).value;
-
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
 
@@ -233,11 +231,9 @@ export class CalendarComponent implements OnInit {
 			className: 'event-default',
 			medicalId: this.getParentId(),
 			patientId: Number(formData.patientId)
-		};
-		console.log('----------------------saveEventFromSwal-------------------------');
-		console.log(newEvent);
+		}; 
 
-		if (this.isEditMode) {
+		if (this.isEditMode && this.selectedEventId > 0) {
 			newEvent.id = this.selectedEventId;
 
 			this.calendarEventService.updateCalendarEvent(newEvent).subscribe({
@@ -248,7 +244,7 @@ export class CalendarComponent implements OnInit {
 					event.setEnd(newEvent.end ? new Date(newEvent.end) : null);
 					SuccessHelper.displaySuccess(response);
 				},
-				error: (err) => {
+				error: (err) => { 
 					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
 				}
 			});
@@ -259,7 +255,7 @@ export class CalendarComponent implements OnInit {
 					this.fullcalendar.getApi().addEvent(newEventInput);
 					SuccessHelper.displaySuccess(response);
 				},
-				error: (err) => {
+				error: (err) => { 
 					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
 				}
 			});
