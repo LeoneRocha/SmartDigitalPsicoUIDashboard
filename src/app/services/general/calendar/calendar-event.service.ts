@@ -49,8 +49,7 @@ export class CalendarEventService {
         return [];
       })
     );
-  }
-
+  } 
 
   getPatientsByMedicalId1(medicalId: number): Observable<PatientModel[]> {
     return this.patientService.getAllByParentId(medicalId, 'medicalId').pipe(
@@ -126,8 +125,7 @@ export class CalendarEventService {
         patient: null
       } : null
     };
-  }
-  
+  }  
 
   private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     // TODO ABRIR UMA MODAL QUE SEJA POSSIVEL INCLUIR MAIS CAMPOS E FORMULARIOS ESCOLHAR A HORA DENTRO --- POSTERIONENTE BLOQUEAR SO HORARIO DO PROPRIO MEDICO 

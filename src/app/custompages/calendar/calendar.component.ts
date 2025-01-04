@@ -141,14 +141,14 @@ export class CalendarComponent implements OnInit {
 			eventResize: this.updateEvent.bind(this),
 		};
 	}
-	getFormCalendar(eventForm: any, inputDateIsoString: string): string {
+	getFormCalendar(eventForm: any, inputDateIsoString: string, selectedEvent: any): string {
 		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, {
 			labelPatient: this.labelPatient,
 			labelTitle: this.labelTitle,
 			labelStartTime: this.labelStartTime,
 			labelEndTime: this.labelEndTime,
 			labelSelectPatient: this.labelSelectPatient
-		}, inputDateIsoString);
+		}, inputDateIsoString, selectedEvent);
 		return formHtml;
 	}
 	openAddEventModal(arg): void {
@@ -160,7 +160,7 @@ export class CalendarComponent implements OnInit {
 			startTime: '11:00',
 			endTime: '12:00'
 		});
-		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr);
+		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStrm, null);
 		swal.fire({
 			title: this.labelCreateEvent,
 			html: formHtml,
@@ -174,19 +174,23 @@ export class CalendarComponent implements OnInit {
 		this.isEditMode = true;
 		const event = arg.event;
 		this.selectedEventId = event.id;
-		//TODO AQUI DEVEMOS PESQUISAR NO MES CARREGADO E BUSCAR PELO ID PARA REPOR O TITLE CORRETAMENTE
-		console.log('----------------------openEditEventModal - selectedEventId-------------------------');
+		// Buscar o evento correspondente em this.eventsData pelo ID
+		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
+		console.log('----------------------openEditEventModal - selectedEvent-------------------------');
 		console.log(this.selectedEventId);
-
+		console.log(selectedEvent);
 		const startDateTime = moment(event.start);
-		this.eventForm.patchValue({
-			title: event.title,
-			dateEvent: startDateTime.format('YYYY-MM-DD'),
-			startTime: startDateTime.format('HH:mm'),
-			endTime: event.end ? moment(event.end).format('HH:mm') : '',
-			patientId: event.extendedProps.patientId
-		});
-		const formHtml = this.getFormCalendar(this.eventForm, startDateTime.format('YYYY-MM-DD'));
+		if (selectedEvent) {
+			const tiltleEvent = selectedEvent && selectedEvent.medicalCalendar && selectedEvent.medicalCalendar?.patientName ? selectedEvent.medicalCalendar?.title: selectedEvent.medicalCalendar?.patientName;
+			this.eventForm.patchValue({
+				title: tiltleEvent,
+				dateEvent: startDateTime.format('YYYY-MM-DD'),
+				startTime: startDateTime.format('HH:mm'),
+				endTime: event.end ? moment(selectedEvent.end).format('HH:mm') : '',
+				patientId: event.extendedProps.patientId
+			});
+		}
+		const formHtml = this.getFormCalendar(this.eventForm, startDateTime.format('YYYY-MM-DD'), selectedEvent);
 		swal.fire({
 			title: this.labelEditEvent,
 			html: formHtml,
