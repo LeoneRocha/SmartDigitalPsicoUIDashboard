@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
@@ -46,7 +46,8 @@ export class CalendarComponent implements OnInit {
 		@Inject(CalendarEventService) private calendarEventService: CalendarEventService,
 		@Inject(Router) private router: Router,
 		@Inject(ActivatedRoute) private route: ActivatedRoute,
-		@Inject(AuthService) private authService: AuthService
+		@Inject(AuthService) private authService: AuthService,
+		private cdr: ChangeDetectorRef
 	) { }
 	ngOnInit(): void {
 		this.loadDefCalendar();
@@ -54,6 +55,14 @@ export class CalendarComponent implements OnInit {
 		this.initForm();
 		this.loadPatients();
 	}
+	
+	reloadComponent() {
+		const currentUrl = this.router.url;
+		this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+		  this.router.navigate([currentUrl]);
+		});
+	  }
+
 	initForm(): void {
 		this.eventForm = this.fb.group({
 			title: ['', Validators.required],
@@ -152,13 +161,17 @@ export class CalendarComponent implements OnInit {
 		return formHtml;
 	}
 	openAddEventModal(arg): void {
+		const startDateTime = moment(new Date());
+		const endTimeDateTime = moment(new Date().setHours(startDateTime.hour() + 1));
+		let tiltleEvent = 'Digite aqui';
+
 		this.isEditMode = false;
 		this.eventForm.reset();
 		this.eventForm.patchValue({
 			dateEvent: arg.dateStr,
-			title: 'Teste',
-			startTime: '11:00',
-			endTime: '12:00'
+			title: tiltleEvent,
+			startTime: startDateTime.format('HH:mm'),
+			endTime: endTimeDateTime.format('HH:mm'),
 		});
 		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
 		swal.fire({
@@ -265,16 +278,52 @@ export class CalendarComponent implements OnInit {
 	}
 
 	updateEvent(eventInfo): void {
-		const updatedEvent: ICalendarEvent = {
+		this.selectedEventId = eventInfo.event.id;
+		const title = eventInfo.event.title;
+		const startTime = eventInfo.event.start;
+		const endTime = eventInfo.event.end;
+		const patientId = eventInfo.event.extendedProps.patientId;
+		const startDateTime = moment(startTime).toDate();
+		const endDateTime = endTime ? moment(endTime).toDate() : null;
+		const formData = {
 			id: eventInfo.event.id,
-			title: eventInfo.event.title,
-			start: eventInfo.event.start,
-			end: eventInfo.event.end,
-			className: eventInfo.event.classNames[0],
-			medicalId: this.getParentId(),
-			patientId: eventInfo.event.extendedProps.patientId
+			title,
+			start: startDateTime,
+			end: endDateTime,
+			patientId
 		};
-		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe();
+		const updatedEvent: ICalendarEvent = {
+			id: formData.id,
+			title: formData.title,
+			start: formData.start,
+			end: formData.end,
+			className: 'event-default',
+			medicalId: this.getParentId(),
+			patientId: Number(formData.patientId)
+		};
+		// Buscar o evento correspondente em this.eventsData pelo ID
+		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
+		if (selectedEvent && selectedEvent.medicalCalendar) {
+			updatedEvent.patientId = selectedEvent.medicalCalendar?.patientId;
+		}
+		console.log('----------------------updateEvent - updatedEvent-------------------------');
+		console.log(updatedEvent);
+		if (this.selectedEventId > 0) {
+			updatedEvent.id = this.selectedEventId;
+			this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
+				next: (response) => {
+					const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
+					event.setProp('title', formData.title);
+					event.setStart(new Date(updatedEvent.start));
+					event.setEnd(updatedEvent.end ? new Date(updatedEvent.end) : null);
+					SuccessHelper.displaySuccess(response);
+					this.reloadComponent();
+				},
+				error: (err) => {
+					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
+				}
+			});
+		}
 	}
 	deleteEvent(eventId: number): void {
 		this.calendarEventService.deleteCalendarEvent(eventId).subscribe(() => {
