@@ -3,4 +3,6 @@ export interface CalendarCriteriaDtoBase {
     month: number;
     year: number;
     userIdLogged: number;
+    startDate?: Date;
+    endDate?: Date;
   }

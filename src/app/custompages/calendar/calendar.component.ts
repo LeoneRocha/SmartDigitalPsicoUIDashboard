@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions, DatesSetArg, FullCalendarComponent } from '@fullcalendar/angular';
 import swal from 'sweetalert2';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
@@ -19,7 +19,8 @@ declare var $: any;
 @Component({
 	moduleId: module.id,
 	selector: 'calendar-cmp',
-	templateUrl: 'calendar.component.html'
+	templateUrl: 'calendar.component.html',
+	styleUrls: ['calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
 	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
@@ -51,17 +52,17 @@ export class CalendarComponent implements OnInit {
 	) { }
 	ngOnInit(): void {
 		this.loadDefCalendar();
-		this.loadDataFromApi();
+		//this.loadDataFromApi(null);
 		this.initForm();
 		this.loadPatients();
 	}
-	
+
 	reloadComponent() {
 		const currentUrl = this.router.url;
-		this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-		  this.router.navigate([currentUrl]);
+		this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+			this.router.navigate([currentUrl]);
 		});
-	  }
+	}
 
 	initForm(): void {
 		this.eventForm = this.fb.group({
@@ -72,13 +73,15 @@ export class CalendarComponent implements OnInit {
 			dateEvent: [new Date(), Validators.required]  // Novo campo para a data do evento
 		});
 	}
-	loadDataFromApi(): void {
-		const criteria: CalendarCriteriaDto = this.createCriteria();
+	loadDataFromApi(startDateTime?: Date, endDateTime?: Date): void {
+		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
+		console.log('----------------------loadDataFromApi - criteria-------------------------');
+		console.log(criteria);
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEvents();
 			console.log('----------------------loadDataFromApi - eventsData-------------------------');
-			console.log(this.eventsData);
+			//console.log(this.eventsData);
 		});
 	}
 	loadPatients(): void {
@@ -92,7 +95,8 @@ export class CalendarComponent implements OnInit {
 			}
 		});
 	}
-	createCriteria(): CalendarCriteriaDto {
+
+	createCriteria(startDateTime?: Date, endDateTime?: Date): CalendarCriteriaDto {
 		this.userLoged = this.authService.getLocalStorageUser();
 		const today = DateHelper.newDateUTC();
 		const y = today.getFullYear();
@@ -104,8 +108,11 @@ export class CalendarComponent implements OnInit {
 			intervalInMinutes: 60,
 			filterDaysAndTimesWithAppointments: false,
 			filterByDate: null,
-			userIdLogged: this.userLoged?.id
-		};
+			userIdLogged: this.userLoged?.id,
+			startDate : moment(startDateTime).toDate(),
+			endDate : moment(endDateTime).toDate(),
+		}; 
+
 		return criteria;
 	}
 	getParentId(): number {
@@ -148,7 +155,40 @@ export class CalendarComponent implements OnInit {
 			eventClick: this.openEditEventModal.bind(this),
 			eventDrop: this.updateEvent.bind(this),
 			eventResize: this.updateEvent.bind(this),
+			//eventContent: this.renderEventContent.bind(this) // Adiciona o método renderEventContent
+			datesSet: this.handleDatesSet.bind(this) // Adiciona o evento datesSet
 		};
+	}
+	renderEventContent(eventInfo) {
+		const deleteIcon = document.createElement('span');
+		deleteIcon.innerHTML = '🗑️';
+		deleteIcon.classList.add('delete-event');
+		deleteIcon.addEventListener('click', (e) => {
+			e.stopPropagation(); // Para evitar o disparo do eventClick
+			this.handleDeleteEvent(eventInfo.event);
+		});
+		const title = document.createElement('span');
+		title.innerHTML = eventInfo.event.title;
+		const eventEl = document.createElement('div');
+		eventEl.appendChild(title);
+		eventEl.appendChild(deleteIcon);
+		return { domNodes: [eventEl] };
+	}
+	handleDeleteEvent(event) {
+		//this.calendarComponent.getApi().getEventById(event.id).remove();
+		console.log('----------------------handleDeleteEvent - event-------------------------');
+		console.log(event.id);
+		// Aqui você pode adicionar a lógica para apagar o evento do servidor, se necessário
+	}
+
+	handleDatesSet(arg: DatesSetArg) {
+		const start = arg.start;
+		const end = arg.end;
+		console.log('----------------------handleDatesSet - arg-------------------------');
+		console.log(arg);
+
+		// Atualiza os critérios com base nas novas datas
+		this.loadDataFromApi(start, end);
 	}
 	getFormCalendar(eventForm: any, inputDateIsoString: string, selectedEvent: any): string {
 		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, {
@@ -222,7 +262,7 @@ export class CalendarComponent implements OnInit {
 		const patientId = (document.getElementById('swal-patient') as HTMLSelectElement).value;
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
-
+		
 		const formData = {
 			title,
 			start: startDateTime,
@@ -333,10 +373,12 @@ export class CalendarComponent implements OnInit {
 			}
 		});
 	}
+
 	updateCalendarEvents(): void {
 		if (this.fullcalendar && this.fullcalendar.getApi()) {
 			this.fullcalendar.getApi().removeAllEvents();
 			this.fullcalendar.getApi().addEventSource(this.eventsData);
 		}
 	}
+
 }

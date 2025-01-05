@@ -1,0 +1,10 @@
+.fc-event-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fc-event .delete-event {
+  margin-left: 8px;
+  cursor: pointer;
+}
