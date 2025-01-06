@@ -11,8 +11,7 @@ export class ErrorHelper {
       }
       errorMessagesArray.push(message.split('|').pop());
     }
-    const errorMessages = errorMessagesArray.join('\n');
-    console.log(errorMessages);
+    const errorMessages = errorMessagesArray.join('\n'); 
     swal.fire({
       icon: 'error',
       title: errorResponse.message,

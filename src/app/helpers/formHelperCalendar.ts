@@ -1,8 +1,10 @@
 import { FormGroup } from '@angular/forms';
 
 export class FormHelperCalendar {
-  public static getFormHtml(form: FormGroup, patients: any[], labels: any, date: string): string {
-    const patientsOptions = patients.map(p => `<option value="${p.id}">${p.text}</option>`).join('');
+  public static getFormHtml(form: FormGroup, patients: any[], labels: any, date: string, selectedEvent: any): string {
+    const patientsOptions = patients.map(p => 
+      `<option value="${p.id}" ${selectedEvent && selectedEvent.medicalCalendar && p.id === selectedEvent.medicalCalendar.patientId ? 'selected' : ''}>${p.text}</option>`
+    ).join('');
     return `
       <form>
         <div class="form-group">

@@ -103,9 +103,7 @@ export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, A
         if (response.success) {
           const daysResult = DateHelper.sortTimeSlots(response.data.days);
           response.data.days = DateHelper.fillAddDayOfWeek(daysResult);
-          this.calendarData = response.data;
-          //console.log('----------------------getMonthlyCalendar-------------------------');
-          //console.log(this.calendarData);
+          this.calendarData = response.data; 
           this.errorMessage = null;
           this.modalSuccessAlert();
         } else {

@@ -51,7 +51,6 @@ export class CalendarEventService {
     );
   }
 
-
   getPatientsByMedicalId1(medicalId: number): Observable<PatientModel[]> {
     return this.patientService.getAllByParentId(medicalId, 'medicalId').pipe(
       map((response: any) => response.data),
@@ -63,7 +62,7 @@ export class CalendarEventService {
   }
 
   addCalendarEvent(event: ICalendarEvent): Observable<ServiceResponse<GetMedicalCalendarDto>> {
-    const newAppointment = this.mapToAddAppointmentDto(event);    
+    const newAppointment = this.mapToAddAppointmentDto(event);
     return this.medicalCalendarService.create(newAppointment);
   }
 
@@ -127,7 +126,6 @@ export class CalendarEventService {
       } : null
     };
   }
-  
 
   private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     // TODO ABRIR UMA MODAL QUE SEJA POSSIVEL INCLUIR MAIS CAMPOS E FORMULARIOS ESCOLHAR A HORA DENTRO --- POSTERIONENTE BLOQUEAR SO HORARIO DO PROPRIO MEDICO 
@@ -162,7 +160,8 @@ export class CalendarEventService {
   }
 
   private mapToUpdateAppointmentDto(event: ICalendarEvent): UpdateMedicalCalendarDto {
-    return {
+
+    let newEntity: UpdateMedicalCalendarDto = {
       enable: true,
       id: event.id,
       title: event.title,
@@ -179,12 +178,17 @@ export class CalendarEventService {
       recurrenceType: ERecurrenceCalendarType.None,
       recurrenceCount: 0,
       recurrenceEndDate: null,
-      medicalId: event.medicalId,
-      patientId: null,
+      medicalId: event.medicalId ?? 0,
+      patientId: event.patientId ?? 0,
       createdUserId: null,
       modifyUserId: null,
       updateSeries: false,
       tokenRecurrence: ''
     };
+    // Convert dates to UTC format
+    newEntity.startDateTime = moment(newEntity.startDateTime).utc(true).toDate();
+    newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate();
+
+    return newEntity;
   }
 }
