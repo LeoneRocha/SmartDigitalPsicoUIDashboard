@@ -23,6 +23,7 @@ declare var $: any;
 	styleUrls: ['calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
+	//#region Variables	   
 	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
 	eventsData;
 	calendarOptions: CalendarOptions;
@@ -41,7 +42,9 @@ export class CalendarComponent implements OnInit {
 	labelCreateEvent = 'Adicionar horario';
 	labelEditEvent = 'Editar horario';
 	labelSave = 'Save';
+	//#endregion Variables
 
+	//#region Constructor
 	constructor(
 		private fb: FormBuilder,
 		@Inject(CalendarEventService) private calendarEventService: CalendarEventService,
@@ -50,6 +53,9 @@ export class CalendarComponent implements OnInit {
 		@Inject(AuthService) private authService: AuthService,
 		private cdr: ChangeDetectorRef
 	) { }
+	//#endregion Constructor
+
+	//#region Lifecycle Hooks
 	ngOnInit(): void {
 		this.loadDefCalendar();
 		//this.loadDataFromApi(null);
@@ -63,66 +69,9 @@ export class CalendarComponent implements OnInit {
 			this.router.navigate([currentUrl]);
 		});
 	}
+	//#endregion Lifecycle Hooks
 
-	initForm(): void {
-		this.eventForm = this.fb.group({
-			title: ['', Validators.required],
-			startTime: ['', Validators.required],
-			endTime: [''],
-			patientId: ['', Validators.required],
-			dateEvent: [new Date(), Validators.required]  // Novo campo para a data do evento
-		});
-	}
-	loadDataFromApi(startDateTime?: Date, endDateTime?: Date): void {
-		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
-		console.log('----------------------loadDataFromApi - criteria-------------------------');
-		console.log(criteria);
-		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
-			this.eventsData = events;
-			this.updateCalendarEvents();
-			console.log('----------------------loadDataFromApi - eventsData-------------------------');
-			//console.log(this.eventsData);
-		});
-	}
-	loadPatients(): void {
-		const medicalId: number = this.getParentId();
-		this.calendarEventService.getPatientsByMedicalId(medicalId).subscribe({
-			next: (response: DropDownEntityModelSelect[]) => {
-				this.patients = response;
-			},
-			error: (err) => {
-				console.error('Erro ao carregar pacientes do médico', err);
-			}
-		});
-	}
-
-	createCriteria(startDateTime?: Date, endDateTime?: Date): CalendarCriteriaDto {
-		this.userLoged = this.authService.getLocalStorageUser();
-		const today = DateHelper.newDateUTC();
-		const y = today.getFullYear();
-		const m = today.getMonth();
-		const criteria: CalendarCriteriaDto = {
-			medicalId: this.getParentId(),
-			month: m + 1,
-			year: y,
-			intervalInMinutes: 60,
-			filterDaysAndTimesWithAppointments: false,
-			filterByDate: null,
-			userIdLogged: this.userLoged?.id,
-			startDate : moment(startDateTime).toDate(),
-			endDate : moment(endDateTime).toDate(),
-		}; 
-
-		return criteria;
-	}
-	getParentId(): number {
-		const userLogger = this.authService.getLocalStorageUser();
-		const paramsUrl = this.route.snapshot.paramMap;
-		this.parentId = Number(paramsUrl.get('parentId'));
-		const medicalId = userLogger.typeUser === "Medical" && userLogger.medicalId ? userLogger.medicalId : 0;
-		this.parentId = medicalId;
-		return medicalId;
-	}
+	//#region FULL CALENDAR 
 	loadDefCalendar(): void {
 		this.calendarOptions = {
 			headerToolbar: {
@@ -159,6 +108,15 @@ export class CalendarComponent implements OnInit {
 			datesSet: this.handleDatesSet.bind(this) // Adiciona o evento datesSet
 		};
 	}
+	updateCalendarEvents(): void {
+		if (this.fullcalendar && this.fullcalendar.getApi()) {
+			this.fullcalendar.getApi().removeAllEvents();
+			this.fullcalendar.getApi().addEventSource(this.eventsData);
+		}
+	}
+	//#endregion FULL CALENDAR 
+
+	//#region FULL CALENDAR - EVENTS
 	renderEventContent(eventInfo) {
 		const deleteIcon = document.createElement('span');
 		deleteIcon.innerHTML = '🗑️';
@@ -176,30 +134,71 @@ export class CalendarComponent implements OnInit {
 	}
 	handleDeleteEvent(event) {
 		//this.calendarComponent.getApi().getEventById(event.id).remove();
-		console.log('----------------------handleDeleteEvent - event-------------------------');
-		console.log(event.id);
 		// Aqui você pode adicionar a lógica para apagar o evento do servidor, se necessário
 	}
 
 	handleDatesSet(arg: DatesSetArg) {
 		const start = arg.start;
 		const end = arg.end;
-		console.log('----------------------handleDatesSet - arg-------------------------');
-		console.log(arg);
-
 		// Atualiza os critérios com base nas novas datas
 		this.loadDataFromApi(start, end);
 	}
-	getFormCalendar(eventForm: any, inputDateIsoString: string, selectedEvent: any): string {
-		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, {
-			labelPatient: this.labelPatient,
-			labelTitle: this.labelTitle,
-			labelStartTime: this.labelStartTime,
-			labelEndTime: this.labelEndTime,
-			labelSelectPatient: this.labelSelectPatient
-		}, inputDateIsoString, selectedEvent);
-		return formHtml;
+	updateEvent(eventInfo): void {
+		this.selectedEventId = eventInfo.event.id;
+		const title = eventInfo.event.title;
+		const startTime = eventInfo.event.start;
+		const endTime = eventInfo.event.end;
+		const patientId = eventInfo.event.extendedProps.patientId;
+		const startDateTime = moment(startTime).toDate();
+		const endDateTime = endTime ? moment(endTime).toDate() : null;
+		const formData = {
+			id: eventInfo.event.id,
+			title,
+			start: startDateTime,
+			end: endDateTime,
+			patientId
+		};
+		const updatedEvent: ICalendarEvent = {
+			id: formData.id,
+			title: formData.title,
+			start: formData.start,
+			end: formData.end,
+			className: 'event-default',
+			medicalId: this.getParentId(),
+			patientId: Number(formData.patientId)
+		};
+		// Buscar o evento correspondente em this.eventsData pelo ID
+		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
+		if (selectedEvent && selectedEvent.medicalCalendar) {
+			updatedEvent.patientId = selectedEvent.medicalCalendar?.patientId;
+		}
+		if (this.selectedEventId > 0) {
+			updatedEvent.id = this.selectedEventId;
+			this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
+				next: (response) => {
+					const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
+					event.setProp('title', formData.title);
+					event.setStart(new Date(updatedEvent.start));
+					event.setEnd(updatedEvent.end ? new Date(updatedEvent.end) : null);
+					SuccessHelper.displaySuccess(response);
+					this.reloadComponent();
+				},
+				error: (err) => {
+					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
+				}
+			});
+		}
 	}
+
+	deleteEvent(eventId: number): void {
+		this.calendarEventService.deleteCalendarEvent(eventId).subscribe(() => {
+			const event = this.fullcalendar.getApi().getEventById(eventId.toString());
+			if (event) {
+				event.remove();
+			}
+		});
+	}
+
 	openAddEventModal(arg): void {
 		const startDateTime = moment(new Date());
 		const endTimeDateTime = moment(new Date().setHours(startDateTime.hour() + 1));
@@ -254,15 +253,72 @@ export class CalendarComponent implements OnInit {
 			preConfirm: () => this.saveEventFromSwal(eventDateString)
 		});
 	}
-	// Dentro do método saveEventFromSwal
+
+	//#endregion FULL CALENDAR - EVENTS
+
+	//#region ACTIONS E LOAD API DATA   
+	loadPatients(): void {
+		const medicalId: number = this.getParentId();
+		this.calendarEventService.getPatientsByMedicalId(medicalId).subscribe({
+			next: (response: DropDownEntityModelSelect[]) => {
+				this.patients = response;
+			},
+			error: (err) => {
+				console.error('Erro ao carregar pacientes do médico', err);
+			}
+		});
+	}
+	loadDataFromApi(startDateTime?: Date, endDateTime?: Date): void {
+		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
+		console.log('----------------------loadDataFromApi - criteria-------------------------');
+		console.log(criteria);
+		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
+			this.eventsData = events;
+			this.updateCalendarEvents();
+		});
+	}
 	saveEventFromSwal(dateStr: string): void {
+		const newEventData = this.getEventData(dateStr);
+		const newEvent = newEventData.event;
+		const newEventInput = newEventData.eventInput;
+		if (this.isEditMode && this.selectedEventId > 0) {
+			newEvent.id = this.selectedEventId;
+
+			this.calendarEventService.updateCalendarEvent(newEvent).subscribe({
+				next: (response) => {
+					const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
+					event.setProp('title', newEvent.title);
+					event.setStart(new Date(newEvent.start));
+					event.setEnd(newEvent.end ? new Date(newEvent.end) : null);
+					SuccessHelper.displaySuccess(response);
+				},
+				error: (err) => {
+					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
+				}
+			});
+		} else {
+			this.calendarEventService.addCalendarEvent(newEvent).subscribe({
+				next: (response) => {
+					newEvent.id = response.data.id;
+					this.fullcalendar.getApi().addEvent(newEventInput);
+					SuccessHelper.displaySuccess(response);
+				},
+				error: (err) => {
+					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
+				}
+			});
+		}
+	}
+	//#endregion ACTIONS E LOAD API DATA 
+
+	//#region AUXILIAR   
+	getEventData(dateStr: string): any {
 		const title = (document.getElementById('swal-title') as HTMLInputElement).value;
 		const startTime = (document.getElementById('swal-startTime') as HTMLInputElement).value;
 		const endTime = (document.getElementById('swal-endTime') as HTMLInputElement).value;
 		const patientId = (document.getElementById('swal-patient') as HTMLSelectElement).value;
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
-		
 		const formData = {
 			title,
 			start: startDateTime,
@@ -288,97 +344,53 @@ export class CalendarComponent implements OnInit {
 			patientId: Number(formData.patientId)
 		};
 
-		if (this.isEditMode && this.selectedEventId > 0) {
-			newEvent.id = this.selectedEventId;
-
-			this.calendarEventService.updateCalendarEvent(newEvent).subscribe({
-				next: (response) => {
-					const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
-					event.setProp('title', formData.title);
-					event.setStart(new Date(newEvent.start));
-					event.setEnd(newEvent.end ? new Date(newEvent.end) : null);
-					SuccessHelper.displaySuccess(response);
-				},
-				error: (err) => {
-					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
-				}
-			});
-		} else {
-			this.calendarEventService.addCalendarEvent(newEvent).subscribe({
-				next: (response) => {
-					newEvent.id = response.data.id;
-					this.fullcalendar.getApi().addEvent(newEventInput);
-					SuccessHelper.displaySuccess(response);
-				},
-				error: (err) => {
-					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
-				}
-			});
-		}
+		return { event: newEvent, eventInput: newEventInput };
 	}
-
-	updateEvent(eventInfo): void {
-		this.selectedEventId = eventInfo.event.id;
-		const title = eventInfo.event.title;
-		const startTime = eventInfo.event.start;
-		const endTime = eventInfo.event.end;
-		const patientId = eventInfo.event.extendedProps.patientId;
-		const startDateTime = moment(startTime).toDate();
-		const endDateTime = endTime ? moment(endTime).toDate() : null;
-		const formData = {
-			id: eventInfo.event.id,
-			title,
-			start: startDateTime,
-			end: endDateTime,
-			patientId
-		};
-		const updatedEvent: ICalendarEvent = {
-			id: formData.id,
-			title: formData.title,
-			start: formData.start,
-			end: formData.end,
-			className: 'event-default',
-			medicalId: this.getParentId(),
-			patientId: Number(formData.patientId)
-		};
-		// Buscar o evento correspondente em this.eventsData pelo ID
-		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
-		if (selectedEvent && selectedEvent.medicalCalendar) {
-			updatedEvent.patientId = selectedEvent.medicalCalendar?.patientId;
-		}
-		console.log('----------------------updateEvent - updatedEvent-------------------------');
-		console.log(updatedEvent);
-		if (this.selectedEventId > 0) {
-			updatedEvent.id = this.selectedEventId;
-			this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
-				next: (response) => {
-					const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
-					event.setProp('title', formData.title);
-					event.setStart(new Date(updatedEvent.start));
-					event.setEnd(updatedEvent.end ? new Date(updatedEvent.end) : null);
-					SuccessHelper.displaySuccess(response);
-					this.reloadComponent();
-				},
-				error: (err) => {
-					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
-				}
-			});
-		}
-	}
-	deleteEvent(eventId: number): void {
-		this.calendarEventService.deleteCalendarEvent(eventId).subscribe(() => {
-			const event = this.fullcalendar.getApi().getEventById(eventId.toString());
-			if (event) {
-				event.remove();
-			}
+	initForm(): void {
+		this.eventForm = this.fb.group({
+			title: ['', Validators.required],
+			startTime: ['', Validators.required],
+			endTime: [''],
+			patientId: ['', Validators.required],
+			dateEvent: [new Date(), Validators.required]  // Novo campo para a data do evento
 		});
 	}
+	createCriteria(startDateTime?: Date, endDateTime?: Date): CalendarCriteriaDto {
+		this.userLoged = this.authService.getLocalStorageUser();
+		const today = DateHelper.newDateUTC();
+		const y = today.getFullYear();
+		const m = today.getMonth();
+		const criteria: CalendarCriteriaDto = {
+			medicalId: this.getParentId(),
+			month: m + 1,
+			year: y,
+			intervalInMinutes: 60,
+			filterDaysAndTimesWithAppointments: false,
+			filterByDate: null,
+			userIdLogged: this.userLoged?.id,
+			startDate: moment(startDateTime).toDate(),
+			endDate: moment(endDateTime).toDate(),
+		};
 
-	updateCalendarEvents(): void {
-		if (this.fullcalendar && this.fullcalendar.getApi()) {
-			this.fullcalendar.getApi().removeAllEvents();
-			this.fullcalendar.getApi().addEventSource(this.eventsData);
-		}
+		return criteria;
 	}
-
+	getParentId(): number {
+		const userLogger = this.authService.getLocalStorageUser();
+		const paramsUrl = this.route.snapshot.paramMap;
+		this.parentId = Number(paramsUrl.get('parentId'));
+		const medicalId = userLogger.typeUser === "Medical" && userLogger.medicalId ? userLogger.medicalId : 0;
+		this.parentId = medicalId;
+		return medicalId;
+	}
+	getFormCalendar(eventForm: any, inputDateIsoString: string, selectedEvent: any): string {
+		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, {
+			labelPatient: this.labelPatient,
+			labelTitle: this.labelTitle,
+			labelStartTime: this.labelStartTime,
+			labelEndTime: this.labelEndTime,
+			labelSelectPatient: this.labelSelectPatient
+		}, inputDateIsoString, selectedEvent);
+		return formHtml;
+	}
+	//#endregion AUXILIAR 
 }
