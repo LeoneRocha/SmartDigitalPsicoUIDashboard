@@ -129,7 +129,17 @@
       "required": "Se requiere archivo"
     },
     "calendar": {
-      "title": "Calendario"
+      "title": "Calendario",
+      "labelPatient": "Paciente",
+      "labelTitle": "Título",
+      "labelStartTime": "Hora de inicio",
+      "labelEndTime": "Hora de fin",
+      "labelSelectPatient": "Seleccionar paciente",
+      "labelCreateEvent": "Agregar evento",
+      "labelEditEvent": "Editar evento",
+      "labelSave": "Guardar",
+      "labelIsAvailable": "Disponible",
+      "labelIsNotAvailable": "No disponible"
     }
   },
   "appsetting": {

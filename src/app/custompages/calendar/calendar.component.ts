@@ -13,6 +13,9 @@ import * as moment from 'moment';
 import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 import { ErrorHelper } from 'app/helpers/error-helper';
 import { SuccessHelper } from 'app/helpers/success-helper';
+import { LanguageService } from 'app/services/general/language.service';
+import localesAll from '@fullcalendar/core/locales-all';
+
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
 declare var $: any;
@@ -51,8 +54,11 @@ export class CalendarComponent implements OnInit {
 		@Inject(Router) private router: Router,
 		@Inject(ActivatedRoute) private route: ActivatedRoute,
 		@Inject(AuthService) private authService: AuthService,
-		private cdr: ChangeDetectorRef
-	) { }
+		private cdr: ChangeDetectorRef,
+		private readonly languageService: LanguageService
+	) { 
+
+	}
 	//#endregion Constructor
 
 	//#region Lifecycle Hooks
@@ -60,7 +66,17 @@ export class CalendarComponent implements OnInit {
 		this.loadDefCalendar();
 		//this.loadDataFromApi(null);
 		this.initForm();
-		this.loadPatients();
+		this.loadPatientsFromService();
+
+		this.labelPatient =	this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
+		this.labelTitle =	this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
+		this.labelStartTime =	this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
+		this.labelEndTime =	this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
+		this.labelSelectPatient =	this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
+		this.labelCreateEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
+		this.labelEditEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
+		this.labelSave =	this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
+ 
 	}
 
 	reloadComponent() {
@@ -81,6 +97,8 @@ export class CalendarComponent implements OnInit {
 			},
 			initialView: 'dayGridMonth',
 			initialEvents: this.eventsData,
+			locales: localesAll, // Adicione todos os idiomas
+			locale: this.languageService.getLanguageToLocalStorage().toLowerCase(), // Defina o idioma padrão aqui
 			weekends: true,
 			editable: true,
 			selectable: true,
@@ -108,7 +126,7 @@ export class CalendarComponent implements OnInit {
 			datesSet: this.handleDatesSet.bind(this) // Adiciona o evento datesSet
 		};
 	}
-	updateCalendarEvents(): void {
+	updateCalendarEventsComponent(): void {
 		if (this.fullcalendar && this.fullcalendar.getApi()) {
 			this.fullcalendar.getApi().removeAllEvents();
 			this.fullcalendar.getApi().addEventSource(this.eventsData);
@@ -141,7 +159,7 @@ export class CalendarComponent implements OnInit {
 		const start = arg.start;
 		const end = arg.end;
 		// Atualiza os critérios com base nas novas datas
-		this.loadDataFromApi(start, end);
+		this.loadDataFromService(start, end);
 	}
 	updateEvent(eventInfo): void {
 		this.selectedEventId = eventInfo.event.id;
@@ -174,29 +192,8 @@ export class CalendarComponent implements OnInit {
 		}
 		if (this.selectedEventId > 0) {
 			updatedEvent.id = this.selectedEventId;
-			this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
-				next: (response) => {
-					const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
-					event.setProp('title', formData.title);
-					event.setStart(new Date(updatedEvent.start));
-					event.setEnd(updatedEvent.end ? new Date(updatedEvent.end) : null);
-					SuccessHelper.displaySuccess(response);
-					this.reloadComponent();
-				},
-				error: (err) => {
-					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
-				}
-			});
+			this.updateCalendarEventFromService(updatedEvent);
 		}
-	}
-
-	deleteEvent(eventId: number): void {
-		this.calendarEventService.deleteCalendarEvent(eventId).subscribe(() => {
-			const event = this.fullcalendar.getApi().getEventById(eventId.toString());
-			if (event) {
-				event.remove();
-			}
-		});
 	}
 
 	openAddEventModal(arg): void {
@@ -257,7 +254,7 @@ export class CalendarComponent implements OnInit {
 	//#endregion FULL CALENDAR - EVENTS
 
 	//#region ACTIONS E LOAD API DATA   
-	loadPatients(): void {
+	loadPatientsFromService(): void {
 		const medicalId: number = this.getParentId();
 		this.calendarEventService.getPatientsByMedicalId(medicalId).subscribe({
 			next: (response: DropDownEntityModelSelect[]) => {
@@ -268,13 +265,13 @@ export class CalendarComponent implements OnInit {
 			}
 		});
 	}
-	loadDataFromApi(startDateTime?: Date, endDateTime?: Date): void {
+	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
 		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
 		console.log('----------------------loadDataFromApi - criteria-------------------------');
 		console.log(criteria);
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
-			this.updateCalendarEvents();
+			this.updateCalendarEventsComponent();
 		});
 	}
 	saveEventFromSwal(dateStr: string): void {
@@ -283,31 +280,46 @@ export class CalendarComponent implements OnInit {
 		const newEventInput = newEventData.eventInput;
 		if (this.isEditMode && this.selectedEventId > 0) {
 			newEvent.id = this.selectedEventId;
-
-			this.calendarEventService.updateCalendarEvent(newEvent).subscribe({
-				next: (response) => {
-					const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
-					event.setProp('title', newEvent.title);
-					event.setStart(new Date(newEvent.start));
-					event.setEnd(newEvent.end ? new Date(newEvent.end) : null);
-					SuccessHelper.displaySuccess(response);
-				},
-				error: (err) => {
-					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
-				}
-			});
+			this.updateCalendarEventFromService(newEvent);
 		} else {
-			this.calendarEventService.addCalendarEvent(newEvent).subscribe({
-				next: (response) => {
-					newEvent.id = response.data.id;
-					this.fullcalendar.getApi().addEvent(newEventInput);
-					SuccessHelper.displaySuccess(response);
-				},
-				error: (err) => {
-					ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
-				}
-			});
+			this.addCalendarEventFromService(newEvent, newEventInput);
 		}
+	}
+	addCalendarEventFromService(newEvent: any, newEventInput: any): void {
+		this.calendarEventService.addCalendarEvent(newEvent).subscribe({
+			next: (response) => {
+				newEvent.id = response.data.id;
+				this.fullcalendar.getApi().addEvent(newEventInput);
+				SuccessHelper.displaySuccess(response);
+			},
+			error: (err) => {
+				ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
+			}
+		});
+	}
+
+	updateCalendarEventFromService(updatedEvent: any): void {
+		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
+			next: (response) => {
+				const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
+				event.setProp('title', updatedEvent.title);
+				event.setStart(new Date(updatedEvent.start));
+				event.setEnd(updatedEvent.end ? new Date(updatedEvent.end) : null);
+				SuccessHelper.displaySuccess(response);
+				this.reloadComponent();
+			},
+			error: (err) => {
+				ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
+			}
+		});
+	}
+	deleteEventFromService(eventId: number): void {
+		this.calendarEventService.deleteCalendarEvent(eventId).subscribe(() => {
+			const event = this.fullcalendar.getApi().getEventById(eventId.toString());
+			if (event) {
+				event.remove();
+			}
+		});
 	}
 	//#endregion ACTIONS E LOAD API DATA 
 

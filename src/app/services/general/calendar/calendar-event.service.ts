@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, catchError, map } from 'rxjs';
+import { Observable, catchError, firstValueFrom, map } from 'rxjs';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
 import { CalendarDto } from 'app/models/medicalcalendar/CalendarDto';
 import { ServiceResponse } from 'app/models/ServiceResponse';
@@ -17,6 +17,7 @@ import { PatientModel } from 'app/models/principalsmodel/PatientModel';
 import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
 import * as moment from 'moment';
 import { TimeSlotDto } from 'app/models/medicalcalendar/TimeSlotDto';
+import { LanguageService } from '../language.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -24,7 +25,9 @@ export class CalendarEventService {
   constructor(
     private medicalCalendarService: MedicalCalendarService,
     @Inject(PatientService) private patientService: PatientService
-  ) { }
+    , private readonly languageService: LanguageService
+  ) {
+  }
 
   getCalendarEvents(criteria: CalendarCriteriaDto): Observable<ICalendarEvent[]> {
     return this.medicalCalendarService.getMonthlyCalendar(criteria).pipe(
@@ -84,19 +87,19 @@ export class CalendarEventService {
   }
 
   private filterAndMapTimeSlots(timeSlots: any[]): ICalendarEvent[] {
+    const isAvailableLabel = this.languageService.getTranslateInformationAsync('general.calendar.labelIsAvailable');
+    const isNotAvailableLabel = this.languageService.getTranslateInformationAsync('general.calendar.labelIsNotAvailable');
     return timeSlots
       .filter(this.isSlotValid)
-      .map(this.mapToCalendarEvent);
+      .map(data => this.mapToCalendarEvent(data, isAvailableLabel, isNotAvailableLabel));
   }
-
   private isSlotValid(slot: TimeSlotDto): boolean {
     return slot.isAvailable || slot.medicalCalendar !== null;
   }
-
-  private mapToCalendarEvent(slot: TimeSlotDto): ICalendarEvent {
+  private mapToCalendarEvent(slot: TimeSlotDto, isAvailableLabel: string, isNotAvailableLabel: string): ICalendarEvent {
     return {
       id: slot.medicalCalendar ? slot.medicalCalendar?.id : 0,
-      title: slot.medicalCalendar ? slot.medicalCalendar.patientName : (slot.isAvailable ? 'Available' : 'Not Available'),
+      title: slot.medicalCalendar ? slot.medicalCalendar.patientName : (slot.isAvailable ? isAvailableLabel : isNotAvailableLabel),
       start: DateHelper.convertToLocalTime(slot.startTime),
       end: DateHelper.convertToLocalTime(slot.endTime),
       className: slot.isAvailable ? 'event-green' : 'event-gray',
