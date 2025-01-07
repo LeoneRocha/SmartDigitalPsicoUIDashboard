@@ -13,6 +13,7 @@ import * as moment from 'moment';
 import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 import { ErrorHelper } from 'app/helpers/error-helper';
 import { SuccessHelper } from 'app/helpers/success-helper';
+import { LanguageService } from 'app/services/general/language.service';
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
 declare var $: any;
@@ -51,8 +52,11 @@ export class CalendarComponent implements OnInit {
 		@Inject(Router) private router: Router,
 		@Inject(ActivatedRoute) private route: ActivatedRoute,
 		@Inject(AuthService) private authService: AuthService,
-		private cdr: ChangeDetectorRef
-	) { }
+		private cdr: ChangeDetectorRef,
+		private readonly languageService: LanguageService
+	) { 
+
+	}
 	//#endregion Constructor
 
 	//#region Lifecycle Hooks
@@ -61,6 +65,15 @@ export class CalendarComponent implements OnInit {
 		//this.loadDataFromApi(null);
 		this.initForm();
 		this.loadPatientsFromService();
+
+		this.labelPatient =	this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
+		this.labelTitle =	this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
+		this.labelStartTime =	this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
+		this.labelEndTime =	this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
+		this.labelSelectPatient =	this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
+		this.labelCreateEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
+		this.labelEditEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
+		this.labelSave =	this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
 	}
 
 	reloadComponent() {

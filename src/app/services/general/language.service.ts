@@ -97,4 +97,11 @@ export class LanguageService {
 
     return result;
   } 
+
+  getTranslateInformationAsync(key: string): string {
+    let result = this.translateInformationAsync([key])[0];
+    return result;
+  }
+
+
 }
