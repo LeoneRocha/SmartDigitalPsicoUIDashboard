@@ -137,7 +137,9 @@
       "labelSelectPatient": "Seleccionar paciente",
       "labelCreateEvent": "Agregar evento",
       "labelEditEvent": "Editar evento",
-      "labelSave": "Guardar"
+      "labelSave": "Guardar",
+      "labelIsAvailable": "Disponible",
+      "labelIsNotAvailable": "No disponible"
     }
   },
   "appsetting": {

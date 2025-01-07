@@ -102,6 +102,8 @@ export class LanguageService {
     let result = this.translateInformationAsync([key])[0];
     return result;
   }
-
+  getTranslateInformation(key: string): Observable<string> {
+    return this.translate.get(key);
+  }
 
 }
