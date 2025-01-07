@@ -14,6 +14,8 @@ import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 import { ErrorHelper } from 'app/helpers/error-helper';
 import { SuccessHelper } from 'app/helpers/success-helper';
 import { LanguageService } from 'app/services/general/language.service';
+import localesAll from '@fullcalendar/core/locales-all';
+
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
 declare var $: any;
@@ -74,6 +76,7 @@ export class CalendarComponent implements OnInit {
 		this.labelCreateEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
 		this.labelEditEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
 		this.labelSave =	this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
+ 
 	}
 
 	reloadComponent() {
@@ -94,6 +97,8 @@ export class CalendarComponent implements OnInit {
 			},
 			initialView: 'dayGridMonth',
 			initialEvents: this.eventsData,
+			locales: localesAll, // Adicione todos os idiomas
+			locale: this.languageService.getLanguageToLocalStorage().toLowerCase(), // Defina o idioma padrão aqui
 			weekends: true,
 			editable: true,
 			selectable: true,
