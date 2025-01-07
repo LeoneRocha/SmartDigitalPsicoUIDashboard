@@ -264,7 +264,7 @@ export class CalendarComponent implements OnInit {
 			newEvent.id = this.selectedEventId;
 			this.updateCalendarEventFromService(newEvent);
 		} else {
-
+			this.addCalendarEventFromService(newEvent, newEventInput);
 		}
 	}
 	addCalendarEventFromService(newEvent: any, newEventInput: any): void {
