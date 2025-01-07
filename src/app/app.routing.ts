@@ -66,6 +66,7 @@ export const AppRoutes: Routes = [
         , {
             path: 'calendar',//http://localhost:4200/medical/calendar
             canActivate: [AuthGuard, MedicalAuthGuard],
+            //title: 'Calendar',//Alterar titulo da pagina
             loadChildren: () => import('./custompages/calendar/calendar.module').then(x => x.CalendarModule)
         }
         ]
