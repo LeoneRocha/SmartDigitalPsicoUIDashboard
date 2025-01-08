@@ -214,22 +214,13 @@ export class CalendarComponent implements OnInit {
 		const event = arg.event;
 		const eventDateString = moment(event.start).format('YYYY-MM-DD');
 		this.selectedEventId = event.id;
-		// Buscar o evento correspondente em this.eventsData pelo ID
-		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
-		const startDateTime = moment(event.start);
-		const endTimeDateTime = moment(event.end);
 
-		let tiltleEvent = 'Digite aqui';
-		if (selectedEvent && selectedEvent.medicalCalendar) {
-			tiltleEvent = selectedEvent && selectedEvent.medicalCalendar && selectedEvent.medicalCalendar?.patientName ? selectedEvent.medicalCalendar?.title : selectedEvent.medicalCalendar?.patientName;
-		}
-		this.eventForm.patchValue({
-			title: tiltleEvent,
-			dateEvent: eventDateString,
-			startTime: startDateTime.format('HH:mm'),
-			endTime: endTimeDateTime.format('HH:mm'),
-			patientId: event.extendedProps.patientId
-		});
+		// Buscar o evento correspondente em this.eventsData pelo ID
+		const selectedEvent: ICalendarEvent = this.eventsData.find(e => e.id == this.selectedEventId);
+
+		// Atualiza os valores do formulário de forma dinâmica
+		this.updateFormWithEventValues(event, selectedEvent, eventDateString);
+
 		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
 		swal.fire({
 			title: this.selectedEventId > 0 ? this.labelEditEvent : this.labelCreateEvent,
@@ -240,6 +231,34 @@ export class CalendarComponent implements OnInit {
 			preConfirm: () => this.saveEventFromSwal(eventDateString)
 		});
 	}
+
+	private updateFormWithEventValues(event: any, selectedEvent: ICalendarEvent, eventDateString: string): void {
+		const startDateTime = moment(event.start);
+		const endTimeDateTime = moment(event.end)
+
+		let tiltleEvent = 'Digite aqui';
+		if (selectedEvent && selectedEvent.medicalCalendar) {
+			tiltleEvent = selectedEvent.medicalCalendar.title ?? selectedEvent.medicalCalendar.patientName;
+		}
+		console.log('----------------------updateFormWithEventValues - selectedEvent-------------------------');
+		const dataEvent =  selectedEvent.medicalCalendar;
+
+		this.eventForm.patchValue({
+			title: dataEvent.title,
+			dateEvent: eventDateString,
+			startTime: startDateTime.format('HH:mm'),
+			endTime: endTimeDateTime.format('HH:mm'),
+			patientId: dataEvent.patientId,
+			allDay: dataEvent.isAllDay,
+			colorCategoryHexa: dataEvent.colorCategoryHexa,
+			location: dataEvent.location,
+			recurrenceType: dataEvent.recurrenceType,
+			recurrenceDays: dataEvent.recurrenceDays,
+			recurrenceEndDate: dataEvent.recurrenceEndDate ? moment(dataEvent.recurrenceEndDate).format('YYYY-MM-DD') : '',
+			recurrenceCount: dataEvent.recurrenceCount
+		});
+	}
+
 
 	//#endregion FULL CALENDAR - EVENTS
 
