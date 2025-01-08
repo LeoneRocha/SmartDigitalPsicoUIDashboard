@@ -133,6 +133,7 @@ export class CalendarEventService {
   private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     // TODO ABRIR UMA MODAL QUE SEJA POSSIVEL INCLUIR MAIS CAMPOS E FORMULARIOS ESCOLHAR A HORA DENTRO --- POSTERIONENTE BLOQUEAR SO HORARIO DO PROPRIO MEDICO 
 
+    //TODO MAPER DA INTERFACE PARA DTO FALTANTES 
     let newEntity: ActionMedicalCalendarDtoBase = {
       enable: true,
       id: 0,

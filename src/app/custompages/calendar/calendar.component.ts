@@ -163,32 +163,22 @@ export class CalendarComponent implements OnInit {
 	}
 	updateEvent(eventInfo): void {
 		this.selectedEventId = eventInfo.event.id;
-		const title = eventInfo.event.title;
+		const patientId = eventInfo.event.extendedProps.patientId;
+
 		const startTime = eventInfo.event.start;
 		const endTime = eventInfo.event.end;
-		const patientId = eventInfo.event.extendedProps.patientId;
 		const startDateTime = moment(startTime).toDate();
 		const endDateTime = endTime ? moment(endTime).toDate() : null;
-		const formData = {
-			id: eventInfo.event.id,
-			title,
-			start: startDateTime,
-			end: endDateTime,
-			patientId
-		};
-		const updatedEvent: ICalendarEvent = {
-			id: formData.id,
-			title: formData.title,
-			start: formData.start,
-			end: formData.end,
-			className: 'event-default',
-			medicalId: this.getParentId(),
-			patientId: Number(formData.patientId)
-		};
+
 		// Buscar o evento correspondente em this.eventsData pelo ID
-		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
-		if (selectedEvent && selectedEvent.medicalCalendar) {
-			updatedEvent.patientId = selectedEvent.medicalCalendar?.patientId;
+		const updatedEvent: ICalendarEvent = this.eventsData.find(e => e.id == this.selectedEventId);
+		updatedEvent.start = startDateTime;
+		updatedEvent.end = endDateTime;
+		updatedEvent.patientId = Number(patientId);
+		updatedEvent.medicalId = this.getParentId();
+
+		if (updatedEvent && updatedEvent.medicalCalendar) {
+			updatedEvent.patientId = updatedEvent.medicalCalendar?.patientId;
 		}
 		if (this.selectedEventId > 0) {
 			updatedEvent.id = this.selectedEventId;
@@ -275,7 +265,7 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 	saveEventFromSwal(dateStr: string): void {
-		const newEventData = this.getEventData(dateStr);
+		const newEventData = this.getEventDataFromFormModal(dateStr);
 		const newEvent = newEventData.event;
 		const newEventInput = newEventData.eventInput;
 		if (this.isEditMode && this.selectedEventId > 0) {
@@ -324,27 +314,22 @@ export class CalendarComponent implements OnInit {
 	//#endregion ACTIONS E LOAD API DATA 
 
 	//#region AUXILIAR   
-	getEventData(dateStr: string): any {
+	getEventDataFromFormModal(dateStr: string): any {
 		const title = (document.getElementById('swal-title') as HTMLInputElement).value;
 		const startTime = (document.getElementById('swal-startTime') as HTMLInputElement).value;
 		const endTime = (document.getElementById('swal-endTime') as HTMLInputElement).value;
 		const patientId = (document.getElementById('swal-patient') as HTMLSelectElement).value;
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
-		const formData = {
-			title,
+
+		//TODO RECUPERAR OS CAMPOS FALTANTES 
+		const newEvent: ICalendarEvent = {
+			title: title,
 			start: startDateTime,
 			end: endDateTime,
-			patientId
-		};
-
-		const newEvent: ICalendarEvent = {
-			title: formData.title,
-			start: formData.start,
-			end: formData.end,
 			className: 'event-default',
 			medicalId: this.getParentId(),
-			patientId: Number(formData.patientId)
+			patientId: Number(patientId)
 		};
 
 		const newEventInput: any = newEvent;
