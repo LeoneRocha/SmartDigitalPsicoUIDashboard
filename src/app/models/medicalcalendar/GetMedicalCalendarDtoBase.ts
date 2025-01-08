@@ -1,7 +1,7 @@
 import { EntityDtoBase } from './EntityDtoBase';
-import { EStatusCalendar } from './enuns/EStatusCalendar';
-import { DayOfWeek } from '../modelsbyswagger/dayOfWeek';
+import { EStatusCalendar } from './enuns/EStatusCalendar'; 
 import { ERecurrenceCalendarType } from './enuns/ERecurrenceCalendarType';
+import { DayOfWeek } from '../general/day-of-week';
 
 export interface GetMedicalCalendarDtoBase extends EntityDtoBase {
   title: string;

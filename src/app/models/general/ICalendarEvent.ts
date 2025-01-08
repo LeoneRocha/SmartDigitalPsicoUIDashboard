@@ -1,6 +1,7 @@
 import { ERecurrenceCalendarType } from "../medicalcalendar/enuns/ERecurrenceCalendarType";
 import { GetMedicalCalendarTimeSlotDto } from "../medicalcalendar/GetMedicalCalendarTimeSlotDto";
-import { DayOfWeek } from "../modelsbyswagger/models";
+import { DayOfWeek } from "./day-of-week";
+
 
 
 export interface ICalendarEvent {

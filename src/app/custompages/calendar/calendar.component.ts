@@ -15,6 +15,7 @@ import { ErrorHelper } from 'app/helpers/error-helper';
 import { SuccessHelper } from 'app/helpers/success-helper';
 import { LanguageService } from 'app/services/general/language.service';
 import localesAll from '@fullcalendar/core/locales-all';
+import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
@@ -66,7 +67,6 @@ export class CalendarComponent implements OnInit {
 		private cdr: ChangeDetectorRef,
 		private readonly languageService: LanguageService
 	) {
-
 	}
 	//#endregion Constructor
 
@@ -78,7 +78,6 @@ export class CalendarComponent implements OnInit {
 		this.loadPatientsFromService();
 		this.loadLablesModalEveent();
 	}
-
 	reloadComponent() {
 		const currentUrl = this.router.url;
 		this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -319,23 +318,38 @@ export class CalendarComponent implements OnInit {
 		const startTime = (document.getElementById('swal-startTime') as HTMLInputElement).value;
 		const endTime = (document.getElementById('swal-endTime') as HTMLInputElement).value;
 		const patientId = (document.getElementById('swal-patient') as HTMLSelectElement).value;
+		const location = (document.getElementById('swal-location') as HTMLInputElement).value;
+		const colorCategoryHexa = (document.getElementById('swal-color') as HTMLInputElement).value;
+		const allDay = (document.getElementById('swal-allDay') as HTMLInputElement).checked;
+		const recurrenceType = (document.getElementById('swal-recurrence') as HTMLSelectElement).value;
+		const recurrenceDays = Array.from((document.getElementById('swal-recurrenceDays') as HTMLSelectElement).selectedOptions).map(option => Number(option.value));
+		const recurrenceEndDate = (document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value ? new Date((document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value) : null;
+		const recurrenceCount = (document.getElementById('swal-recurrenceCount') as HTMLInputElement).value ? Number((document.getElementById('swal-recurrenceCount') as HTMLInputElement).value) : null;
+
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
 
-		//TODO RECUPERAR OS CAMPOS FALTANTES 
 		const newEvent: ICalendarEvent = {
 			title: title,
 			start: startDateTime,
 			end: endDateTime,
 			className: 'event-default',
 			medicalId: this.getParentId(),
-			patientId: Number(patientId)
+			patientId: Number(patientId),
+			location: location,
+			colorCategoryHexa: colorCategoryHexa,
+			allDay: allDay,
+			recurrenceType: recurrenceType ? ERecurrenceCalendarType[recurrenceType] : ERecurrenceCalendarType.None,
+			recurrenceDays: recurrenceDays.length ? recurrenceDays : null,
+			recurrenceEndDate: recurrenceEndDate,
+			recurrenceCount: recurrenceCount
 		};
 
 		const newEventInput: any = newEvent;
 
 		return { event: newEvent, eventInput: newEventInput };
 	}
+
 
 	initForm(): void {
 		this.eventForm = this.fb.group({
@@ -420,6 +434,5 @@ export class CalendarComponent implements OnInit {
 		}, inputDateIsoString, selectedEvent);
 		return formHtml;
 	}
-
 	//#endregion AUXILIAR 
 }
