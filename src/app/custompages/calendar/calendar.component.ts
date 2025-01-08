@@ -219,7 +219,7 @@ export class CalendarComponent implements OnInit {
 		const selectedEvent: ICalendarEvent = this.eventsData.find(e => e.id == this.selectedEventId);
 
 		// Atualiza os valores do formulário de forma dinâmica
-		this.updateFormWithEventValues(event, selectedEvent, eventDateString);
+		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
 
 		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
 		swal.fire({
@@ -231,34 +231,6 @@ export class CalendarComponent implements OnInit {
 			preConfirm: () => this.saveEventFromSwal(eventDateString)
 		});
 	}
-
-	private updateFormWithEventValues(event: any, selectedEvent: ICalendarEvent, eventDateString: string): void {
-		const startDateTime = moment(event.start);
-		const endTimeDateTime = moment(event.end)
-
-		let tiltleEvent = 'Digite aqui';
-		if (selectedEvent && selectedEvent.medicalCalendar) {
-			tiltleEvent = selectedEvent.medicalCalendar.title ?? selectedEvent.medicalCalendar.patientName;
-		}
-		console.log('----------------------updateFormWithEventValues - selectedEvent-------------------------');
-		const dataEvent =  selectedEvent.medicalCalendar;
-
-		this.eventForm.patchValue({
-			title: dataEvent.title,
-			dateEvent: eventDateString,
-			startTime: startDateTime.format('HH:mm'),
-			endTime: endTimeDateTime.format('HH:mm'),
-			patientId: dataEvent.patientId,
-			allDay: dataEvent.isAllDay,
-			colorCategoryHexa: dataEvent.colorCategoryHexa,
-			location: dataEvent.location,
-			recurrenceType: dataEvent.recurrenceType,
-			recurrenceDays: dataEvent.recurrenceDays,
-			recurrenceEndDate: dataEvent.recurrenceEndDate ? moment(dataEvent.recurrenceEndDate).format('YYYY-MM-DD') : '',
-			recurrenceCount: dataEvent.recurrenceCount
-		});
-	}
-
 
 	//#endregion FULL CALENDAR - EVENTS
 
@@ -281,8 +253,6 @@ export class CalendarComponent implements OnInit {
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEventsComponent();
-			console.log('----------------------loadDataFromApi - eventsData-------------------------');
-			console.log(this.eventsData);
 		});
 	}
 	saveEventFromSwal(dateStr: string): void {
@@ -371,9 +341,8 @@ export class CalendarComponent implements OnInit {
 
 		return { event: newEvent, eventInput: newEventInput };
 	}
-
-
-	initForm(): void {
+ 
+	private initForm(): void {
 		this.eventForm = this.fb.group({
 			title: ['', Validators.required],
 			startTime: ['', Validators.required],
@@ -387,6 +356,31 @@ export class CalendarComponent implements OnInit {
 			recurrenceDays: [[]],
 			recurrenceEndDate: [''],
 			recurrenceCount: ['']
+		});
+	}
+	private updateForm_WithEventValues(event: any, selectedEvent: ICalendarEvent, eventDateString: string): void {
+		const startDateTime = moment(event.start);
+		const endTimeDateTime = moment(event.end)
+
+		let tiltleEvent = 'Digite aqui';
+		if (selectedEvent && selectedEvent.medicalCalendar) {
+			tiltleEvent = selectedEvent.medicalCalendar.title ?? selectedEvent.medicalCalendar.patientName;
+		}
+		const dataEvent = selectedEvent.medicalCalendar;
+
+		this.eventForm.patchValue({
+			title: dataEvent.title,
+			dateEvent: eventDateString,
+			startTime: startDateTime.format('HH:mm'),
+			endTime: endTimeDateTime.format('HH:mm'),
+			patientId: dataEvent.patientId,
+			allDay: dataEvent.isAllDay,
+			colorCategoryHexa: dataEvent.colorCategoryHexa,
+			location: dataEvent.location,
+			recurrenceType: dataEvent.recurrenceType,
+			recurrenceDays: dataEvent.recurrenceDays,
+			recurrenceEndDate: dataEvent.recurrenceEndDate ? moment(dataEvent.recurrenceEndDate).format('YYYY-MM-DD') : '',
+			recurrenceCount: dataEvent.recurrenceCount
 		});
 	}
 
