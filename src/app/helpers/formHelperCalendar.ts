@@ -3,8 +3,6 @@ import { DayOfWeek } from 'app/models/general/day-of-week';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 
-
-
 export class FormHelperCalendar {
   public static getFormHtml(form: FormGroup, patients: any[], labels: any, date: string, selectedEvent: ICalendarEvent): string {
     const patientsOptions = patients.map(p =>
@@ -27,7 +25,10 @@ export class FormHelperCalendar {
     ];
 
     const recurrenceDaysOptions = daysOfWeek.map(day =>
-      `<option value="${day.value}" ${selectedEvent && selectedEvent.recurrenceDays && selectedEvent.recurrenceDays.includes(day.value) ? 'selected' : ''}>${day.label}</option>`
+      `<div class="form-check">
+         <input class="form-check-input" type="checkbox" id="day-${day.value}" value="${day.value}" ${selectedEvent && selectedEvent.recurrenceDays && selectedEvent.recurrenceDays.includes(day.value) ? 'checked' : ''}>
+         <label class="form-check-label" for="day-${day.value}">${day.label}</label>
+       </div>`
     ).join('');
 
     return `
@@ -70,20 +71,18 @@ export class FormHelperCalendar {
             ${recurrenceOptions}
           </select>
         </div>
-        <div class="form-group" id="recurrence-details" style="display: none;">
+        <div class="form-group" id="recurrence-details" >
           <div class="form-group">
             <label for="swal-recurrenceDays" class="text-left">${labels.labelRecurrenceDays}</label>
-            <select multiple class="form-control" id="swal-recurrenceDays">
-              ${recurrenceDaysOptions}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="swal-recurrenceEndDate" class="text-left">${labels.labelRecurrenceEndDate}</label>
-            <input type="date" class="form-control" id="swal-recurrenceEndDate" value="${form.get('recurrenceEndDate').value ?? ''}">
-          </div>
+            ${recurrenceDaysOptions}
+          </div>         
           <div class="form-group">
             <label for="swal-recurrenceCount" class="text-left">${labels.labelRecurrenceCount}</label>
             <input type="number" class="form-control" id="swal-recurrenceCount" value="${form.get('recurrenceCount').value ?? ''}">
+          </div>
+           <div class="form-group">
+            <label for="swal-recurrenceEndDate" class="text-left">${labels.labelRecurrenceEndDate}</label>
+            <input type="date" class="form-control" id="swal-recurrenceEndDate" value="${form.get('recurrenceEndDate').value ?? ''}">
           </div>
         </div>
       </form>
@@ -97,3 +96,4 @@ export class FormHelperCalendar {
     `;
   }
 }
+//style="display: none;"

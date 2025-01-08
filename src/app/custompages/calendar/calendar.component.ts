@@ -72,7 +72,7 @@ export class CalendarComponent implements OnInit {
 
 	//#region Lifecycle Hooks
 	ngOnInit(): void {
-		this.loadDefCalendar();
+		this.loadDefinitionsFullCalendar();
 		//this.loadDataFromApi(null);
 		this.initForm();
 		this.loadPatientsFromService();
@@ -87,7 +87,7 @@ export class CalendarComponent implements OnInit {
 	//#endregion Lifecycle Hooks
 
 	//#region FULL CALENDAR 
-	loadDefCalendar(): void {
+	loadDefinitionsFullCalendar(): void {
 		this.calendarOptions = {
 			headerToolbar: {
 				right: 'prev,next today',
@@ -107,21 +107,30 @@ export class CalendarComponent implements OnInit {
 			displayEventTime: true,
 			events: this.eventsData,
 			views: {
-				month: {
-					titleFormat: { month: 'long', year: 'numeric' }
+				dayGridMonth: {
+					titleFormat: { month: 'long', year: 'numeric' }, 
+					eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false } // Formato de 24 horas
 				},
-				agendaWeek: {
-					titleFormat: { month: 'long', year: 'numeric', day: 'numeric' }
+				timeGridWeek: {
+					titleFormat: { month: 'long', year: 'numeric', day: 'numeric' },
+					slotDuration: '01:00', // Duração do slot de meia em meia hora
+					slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false }, // Formato de 24 horas
+					allDaySlot: false, // Desativar o slot de dia inteiro
+					expandRows: true // Expandir linhas para mostrar todos os horários
 				},
-				agendaDay: {
-					titleFormat: { month: 'short', year: 'numeric', day: 'numeric' }
+				timeGridDay: {
+					titleFormat: { month: 'short', year: 'numeric', day: 'numeric' },
+					slotDuration: '01:00', // Duração do slot de meia em meia hora
+					slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false }, // Formato de 24 horas
+					allDaySlot: false, // Desativar o slot de dia inteiro
+					expandRows: true // Expandir linhas para mostrar todos os horários
 				}
 			},
 			dateClick: this.openAddEventModal.bind(this),
 			eventClick: this.openEditEventModal.bind(this),
 			eventDrop: this.updateEvent.bind(this),
 			eventResize: this.updateEvent.bind(this),
-			//eventContent: this.renderEventContent.bind(this) // Adiciona o método renderEventContent
+			//eventContent: this.renderEventContent.bind(this), // Adiciona o método renderEventContent
 			datesSet: this.handleDatesSet.bind(this) // Adiciona o evento datesSet
 		};
 	}
@@ -314,34 +323,38 @@ export class CalendarComponent implements OnInit {
 		const colorCategoryHexa = (document.getElementById('swal-color') as HTMLInputElement).value;
 		const allDay = (document.getElementById('swal-allDay') as HTMLInputElement).checked;
 		const recurrenceType = (document.getElementById('swal-recurrence') as HTMLSelectElement).value;
-		const recurrenceDays = Array.from((document.getElementById('swal-recurrenceDays') as HTMLSelectElement).selectedOptions).map(option => Number(option.value));
+	  
+		// Recupere os dias da semana selecionados como checkboxes
+		const recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));
+	  
 		const recurrenceEndDate = (document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value ? new Date((document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value) : null;
 		const recurrenceCount = (document.getElementById('swal-recurrenceCount') as HTMLInputElement).value ? Number((document.getElementById('swal-recurrenceCount') as HTMLInputElement).value) : null;
-
+	  
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
-
+	  
 		const newEvent: ICalendarEvent = {
-			title: title,
-			start: startDateTime,
-			end: endDateTime,
-			className: 'event-default',
-			medicalId: this.getParentId(),
-			patientId: Number(patientId),
-			location: location,
-			colorCategoryHexa: colorCategoryHexa,
-			allDay: allDay,
-			recurrenceType: recurrenceType ? ERecurrenceCalendarType[recurrenceType] : ERecurrenceCalendarType.None,
-			recurrenceDays: recurrenceDays.length ? recurrenceDays : null,
-			recurrenceEndDate: recurrenceEndDate,
-			recurrenceCount: recurrenceCount
+		  title: title,
+		  start: startDateTime,
+		  end: endDateTime,
+		  className: 'event-default',
+		  medicalId: this.getParentId(),
+		  patientId: Number(patientId),
+		  location: location,
+		  colorCategoryHexa: colorCategoryHexa,
+		  allDay: allDay,
+		  recurrenceType: recurrenceType ? ERecurrenceCalendarType[recurrenceType] : ERecurrenceCalendarType.None,
+		  recurrenceDays: recurrenceDays.length ? recurrenceDays : null,
+		  recurrenceEndDate: recurrenceEndDate,
+		  recurrenceCount: recurrenceCount
 		};
-
+	  
 		const newEventInput: any = newEvent;
-
+	  
 		return { event: newEvent, eventInput: newEventInput };
-	}
- 
+	  }
+	  
+
 	private initForm(): void {
 		this.eventForm = this.fb.group({
 			title: ['', Validators.required],
@@ -369,18 +382,18 @@ export class CalendarComponent implements OnInit {
 		const dataEvent = selectedEvent.medicalCalendar;
 
 		this.eventForm.patchValue({
-			title: dataEvent.title,
+			title: dataEvent?.title ?? tiltleEvent,
 			dateEvent: eventDateString,
 			startTime: startDateTime.format('HH:mm'),
 			endTime: endTimeDateTime.format('HH:mm'),
-			patientId: dataEvent.patientId,
-			allDay: dataEvent.isAllDay,
-			colorCategoryHexa: dataEvent.colorCategoryHexa,
-			location: dataEvent.location,
-			recurrenceType: dataEvent.recurrenceType,
-			recurrenceDays: dataEvent.recurrenceDays,
-			recurrenceEndDate: dataEvent.recurrenceEndDate ? moment(dataEvent.recurrenceEndDate).format('YYYY-MM-DD') : '',
-			recurrenceCount: dataEvent.recurrenceCount
+			patientId: dataEvent?.patientId,
+			allDay: dataEvent?.isAllDay,
+			colorCategoryHexa: dataEvent?.colorCategoryHexa,
+			location: dataEvent?.location,
+			recurrenceType: dataEvent?.recurrenceType,
+			recurrenceDays: dataEvent?.recurrenceDays,
+			recurrenceEndDate: dataEvent?.recurrenceEndDate ? moment(dataEvent?.recurrenceEndDate).format('YYYY-MM-DD') : '',
+			recurrenceCount: dataEvent?.recurrenceCount
 		});
 	}
 
