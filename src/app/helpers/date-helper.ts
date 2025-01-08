@@ -2,6 +2,10 @@ import { DayCalendarDto } from "app/models/medicalcalendar/DayCalendarDto";
 import * as moment from 'moment';
 
 export class DateHelper {
+    static getDayOfWeek(): string[] {
+        const daysOfWeek = moment.weekdays();
+        return daysOfWeek;
+    }
     static newDateUTC(): Date {
         const today = new Date();
         const y = today.getFullYear();
@@ -9,7 +13,7 @@ export class DateHelper {
         const d = today.getDate();
         const dateActual = new Date(y, m, d, 0, 0, 0, 0);
         return dateActual;
-    }
+    }    
     static convertStringToDate(dateStr: string): Date {
         const parts = dateStr.split(/[-T:]/);
         return new Date(

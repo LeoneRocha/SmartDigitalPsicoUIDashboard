@@ -132,14 +132,22 @@
       "title": "Calendario",
       "labelPatient": "Paciente",
       "labelTitle": "Título",
-      "labelStartTime": "Hora de inicio",
-      "labelEndTime": "Hora de fin",
-      "labelSelectPatient": "Seleccionar paciente",
-      "labelCreateEvent": "Agregar evento",
-      "labelEditEvent": "Editar evento",
+      "labelStartTime": "Hora de Inicio",
+      "labelEndTime": "Hora de Fin",
+      "labelSelectPatient": "Seleccionar Paciente",
+      "labelCreateEvent": "Añadir Evento",
+      "labelEditEvent": "Editar Evento",
       "labelSave": "Guardar",
       "labelIsAvailable": "Disponible",
-      "labelIsNotAvailable": "No disponible"
+      "labelIsNotAvailable": "No Disponible",
+      "labelAllDay": "Todo el Día",
+      "labelColor": "Color",
+      "labelLocation": "Ubicación",
+      "labelRecurrence": "Recurrencia",
+      "labelRecurrenceDays": "Días de Recurrencia",
+      "labelRecurrenceEndDate": "Fecha Final de Recurrencia",
+      "labelRecurrenceCount": "Cuenta de Recurrencia",
+      "labelSelectRecurrence": "Seleccionar Recurrencia"
     }
   },
   "appsetting": {

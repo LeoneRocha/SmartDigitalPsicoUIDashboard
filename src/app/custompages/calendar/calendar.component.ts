@@ -37,14 +37,23 @@ export class CalendarComponent implements OnInit {
 	selectedEventId: number;
 	patients: DropDownEntityModelSelect[] = [];
 	// Variáveis locais para i18n
-	labelPatient = 'Patient';
-	labelTitle = 'Title';
-	labelStartTime = 'Start Time';
-	labelEndTime = 'End Time';
-	labelSelectPatient = 'Select Patient';
-	labelCreateEvent = 'Adicionar horario';
-	labelEditEvent = 'Editar horario';
-	labelSave = 'Save';
+
+	private labelPatient: string;
+	private labelTitle: string;
+	private labelStartTime: string;
+	private labelEndTime: string;
+	private labelSelectPatient: string;
+	private labelCreateEvent: string;
+	private labelEditEvent: string;
+	private labelSave: string;
+	private labelAllDay: string;
+	private labelColor: string;
+	private labelLocation: string;
+	private labelRecurrence: string;
+	private labelRecurrenceDays: string;
+	private labelRecurrenceEndDate: string;
+	private labelRecurrenceCount: string;
+	private labelSelectRecurrence: string;
 	//#endregion Variables
 
 	//#region Constructor
@@ -56,7 +65,7 @@ export class CalendarComponent implements OnInit {
 		@Inject(AuthService) private authService: AuthService,
 		private cdr: ChangeDetectorRef,
 		private readonly languageService: LanguageService
-	) { 
+	) {
 
 	}
 	//#endregion Constructor
@@ -67,16 +76,7 @@ export class CalendarComponent implements OnInit {
 		//this.loadDataFromApi(null);
 		this.initForm();
 		this.loadPatientsFromService();
-
-		this.labelPatient =	this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
-		this.labelTitle =	this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
-		this.labelStartTime =	this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
-		this.labelEndTime =	this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
-		this.labelSelectPatient =	this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
-		this.labelCreateEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
-		this.labelEditEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
-		this.labelSave =	this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
- 
+		this.loadLablesModalEveent();
 	}
 
 	reloadComponent() {
@@ -347,26 +347,28 @@ export class CalendarComponent implements OnInit {
 			patientId: Number(formData.patientId)
 		};
 
-		const newEventInput: any = {
-			title: formData.title,
-			start: formData.start,
-			end: formData.end,
-			className: 'event-default',
-			medicalId: this.getParentId(),
-			patientId: Number(formData.patientId)
-		};
+		const newEventInput: any = newEvent;
 
 		return { event: newEvent, eventInput: newEventInput };
 	}
+
 	initForm(): void {
 		this.eventForm = this.fb.group({
 			title: ['', Validators.required],
 			startTime: ['', Validators.required],
 			endTime: [''],
 			patientId: ['', Validators.required],
-			dateEvent: [new Date(), Validators.required]  // Novo campo para a data do evento
+			dateEvent: [new Date(), Validators.required],
+			allDay: [false],
+			colorCategoryHexa: ['#000000'],
+			location: [''],
+			recurrenceType: [''],
+			recurrenceDays: [[]],
+			recurrenceEndDate: [''],
+			recurrenceCount: ['']
 		});
 	}
+
 	createCriteria(startDateTime?: Date, endDateTime?: Date): CalendarCriteriaDto {
 		this.userLoged = this.authService.getLocalStorageUser();
 		const today = DateHelper.newDateUTC();
@@ -394,15 +396,45 @@ export class CalendarComponent implements OnInit {
 		this.parentId = medicalId;
 		return medicalId;
 	}
-	getFormCalendar(eventForm: any, inputDateIsoString: string, selectedEvent: any): string {
+	loadLablesModalEveent() {
+		this.labelCreateEvent = this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
+		this.labelEditEvent = this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
+		this.labelSave = this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
+
+		this.labelPatient = this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
+		this.labelTitle = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
+		this.labelStartTime = this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
+		this.labelEndTime = this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
+		this.labelSelectPatient = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
+
+		this.labelAllDay = this.languageService.getTranslateInformationAsync('general.calendar.labelAllDay');
+		this.labelColor = this.languageService.getTranslateInformationAsync('general.calendar.labelColor');
+		this.labelLocation = this.languageService.getTranslateInformationAsync('general.calendar.labelLocation');
+		this.labelRecurrence = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrence');
+		this.labelRecurrenceDays = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceDays');
+		this.labelRecurrenceEndDate = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceEndDate');
+		this.labelRecurrenceCount = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceCount');
+		this.labelSelectRecurrence = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectRecurrence');
+	}
+
+	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {
 		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, {
 			labelPatient: this.labelPatient,
 			labelTitle: this.labelTitle,
 			labelStartTime: this.labelStartTime,
 			labelEndTime: this.labelEndTime,
-			labelSelectPatient: this.labelSelectPatient
+			labelSelectPatient: this.labelSelectPatient,
+			labelAllDay: this.labelAllDay,
+			labelColor: this.labelColor,
+			labelLocation: this.labelLocation,
+			labelRecurrence: this.labelRecurrence,
+			labelRecurrenceDays: this.labelRecurrenceDays,
+			labelRecurrenceEndDate: this.labelRecurrenceEndDate,
+			labelRecurrenceCount: this.labelRecurrenceCount,
+			labelSelectRecurrence: this.labelSelectRecurrence
 		}, inputDateIsoString, selectedEvent);
 		return formHtml;
 	}
+
 	//#endregion AUXILIAR 
 }

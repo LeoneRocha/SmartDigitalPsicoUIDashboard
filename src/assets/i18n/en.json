@@ -137,9 +137,17 @@
       "labelSelectPatient": "Select Patient",
       "labelCreateEvent": "Add Event",
       "labelEditEvent": "Edit Event",
-      "labelSave": "Guardar",
+      "labelSave": "Save",
       "labelIsAvailable": "Available",
-      "labelIsNotAvailable": "Not Available"
+      "labelIsNotAvailable": "Not Available",
+      "labelAllDay": "All Day",
+      "labelColor": "Color",
+      "labelLocation": "Location",
+      "labelRecurrence": "Recurrence",
+      "labelRecurrenceDays": "Recurrence Days",
+      "labelRecurrenceEndDate": "Recurrence End Date",
+      "labelRecurrenceCount": "Recurrence Count",
+      "labelSelectRecurrence": "Select Recurrence"
     }
   },
   "appsetting": {
