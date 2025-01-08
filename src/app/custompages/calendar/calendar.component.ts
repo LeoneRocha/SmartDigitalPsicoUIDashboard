@@ -175,6 +175,7 @@ export class CalendarComponent implements OnInit {
 		updatedEvent.end = endDateTime;
 		updatedEvent.patientId = Number(patientId);
 		updatedEvent.medicalId = this.getParentId();
+		updatedEvent.title = updatedEvent.medicalCalendar?.title ?? updatedEvent.title;
 
 		if (updatedEvent && updatedEvent.medicalCalendar) {
 			updatedEvent.patientId = updatedEvent.medicalCalendar?.patientId;
@@ -261,6 +262,8 @@ export class CalendarComponent implements OnInit {
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEventsComponent();
+			console.log('----------------------loadDataFromApi - eventsData-------------------------');
+			console.log(this.eventsData);
 		});
 	}
 	saveEventFromSwal(dateStr: string): void {

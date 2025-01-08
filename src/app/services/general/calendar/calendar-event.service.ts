@@ -102,7 +102,7 @@ export class CalendarEventService {
     const medicalCalendar = slot.medicalCalendar;
     const title = medicalCalendar ? medicalCalendar.patientName : (slot.isAvailable ? isAvailableLabel : isNotAvailableLabel);
     const className = slot.isAvailable ? 'event-green' : 'event-gray';
-  
+
     return {
       id: medicalCalendar ? medicalCalendar.id : 0,
       title: title,
@@ -112,7 +112,7 @@ export class CalendarEventService {
       medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null
     };
   }
-  
+
   private mapMedicalCalendar(medicalCalendar: GetMedicalCalendarTimeSlotDto): GetMedicalCalendarTimeSlotDto {
     return {
       patientId: medicalCalendar.patientId,
@@ -139,14 +139,14 @@ export class CalendarEventService {
       patient: medicalCalendar.patient
     };
   }
-  
+
 
   private mapToBaseAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     let newEntity: ActionMedicalCalendarDtoBase = {
       enable: true,
       id: event.id ?? 0,
       title: event.title,
-       startDateTime: event.start,
+      startDateTime: event.start,
       endDateTime: event.end,
       isAllDay: event.allDay ?? false,
       status: EStatusCalendar.Active,
