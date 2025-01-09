@@ -18,6 +18,7 @@ import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityMode
 import * as moment from 'moment';
 import { TimeSlotDto } from 'app/models/medicalcalendar/TimeSlotDto';
 import { LanguageService } from '../language.service';
+import { GetMedicalCalendarTimeSlotDto } from 'app/models/medicalcalendar/GetMedicalCalendarTimeSlotDto';
 @Injectable({
   providedIn: 'root',
 })
@@ -96,60 +97,68 @@ export class CalendarEventService {
   private isSlotValid(slot: TimeSlotDto): boolean {
     return slot.isAvailable || slot.medicalCalendar !== null;
   }
+
   private mapToCalendarEvent(slot: TimeSlotDto, isAvailableLabel: string, isNotAvailableLabel: string): ICalendarEvent {
+    const medicalCalendar = slot.medicalCalendar;
+    const title = medicalCalendar ? medicalCalendar.patientName : (slot.isAvailable ? isAvailableLabel : isNotAvailableLabel);
+    const className = slot.isAvailable ? 'event-green' : 'event-gray';
+
     return {
-      id: slot.medicalCalendar ? slot.medicalCalendar?.id : 0,
-      title: slot.medicalCalendar ? slot.medicalCalendar.patientName : (slot.isAvailable ? isAvailableLabel : isNotAvailableLabel),
+      id: medicalCalendar ? medicalCalendar.id : 0,
+      title: title,
       start: DateHelper.convertToLocalTime(slot.startTime),
       end: DateHelper.convertToLocalTime(slot.endTime),
-      className: slot.isAvailable ? 'event-green' : 'event-gray',
-      medicalCalendar: slot.medicalCalendar ? {
-        patientId: slot.medicalCalendar.patientId,
-        patientName: slot.medicalCalendar.patientName,
-        title: slot.medicalCalendar.title,
-        startDateTime: slot.medicalCalendar.startDateTime,
-        endDateTime: slot.medicalCalendar.endDateTime,
-        isAllDay: slot.medicalCalendar.isAllDay,
-        status: slot.medicalCalendar.status,
-        colorCategoryHexa: slot.medicalCalendar.colorCategoryHexa,
-        isPushedCalendar: slot.medicalCalendar.isPushedCalendar,
-        timeZone: slot.medicalCalendar.timeZone,
-        location: slot.medicalCalendar.location,
-        description: slot.medicalCalendar.description,
-        recurrenceDays: slot.medicalCalendar.recurrenceDays,
-        recurrenceType: slot.medicalCalendar.recurrenceType,
-        recurrenceEndDate: slot.medicalCalendar.recurrenceEndDate,
-        recurrenceCount: slot.medicalCalendar.recurrenceCount,
-        id: slot.medicalCalendar.id,
-        enable: slot.medicalCalendar.enable,
-        links: [],
-        medical: null,
-        tokenRecurrence: slot.medicalCalendar.tokenRecurrence,
-        patient: null
-      } : null
+      className: className,
+      medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null
     };
   }
 
-  private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
-    // TODO ABRIR UMA MODAL QUE SEJA POSSIVEL INCLUIR MAIS CAMPOS E FORMULARIOS ESCOLHAR A HORA DENTRO --- POSTERIONENTE BLOQUEAR SO HORARIO DO PROPRIO MEDICO 
+  private mapMedicalCalendar(medicalCalendar: GetMedicalCalendarTimeSlotDto): GetMedicalCalendarTimeSlotDto {
+    return {
+      patientId: medicalCalendar.patientId,
+      patientName: medicalCalendar.patientName,
+      title: medicalCalendar.title,
+      startDateTime: medicalCalendar.startDateTime,
+      endDateTime: medicalCalendar.endDateTime,
+      isAllDay: medicalCalendar.isAllDay,
+      status: medicalCalendar.status,
+      colorCategoryHexa: medicalCalendar.colorCategoryHexa,
+      isPushedCalendar: medicalCalendar.isPushedCalendar,
+      timeZone: medicalCalendar.timeZone,
+      location: medicalCalendar.location,
+      description: medicalCalendar.description,
+      recurrenceDays: medicalCalendar.recurrenceDays,
+      recurrenceType: medicalCalendar.recurrenceType,
+      recurrenceEndDate: medicalCalendar.recurrenceEndDate,
+      recurrenceCount: medicalCalendar.recurrenceCount,
+      id: medicalCalendar.id,
+      enable: medicalCalendar.enable,
+      links: medicalCalendar.links,
+      medical: medicalCalendar.medical,
+      tokenRecurrence: medicalCalendar.tokenRecurrence,
+      patient: medicalCalendar.patient
+    };
+  }
 
+
+  private mapToBaseAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     let newEntity: ActionMedicalCalendarDtoBase = {
       enable: true,
-      id: 0,
+      id: event.id ?? 0,
       title: event.title,
       startDateTime: event.start,
       endDateTime: event.end,
-      isAllDay: false,
+      isAllDay: event.allDay ?? false,
       status: EStatusCalendar.Active,
-      colorCategoryHexa: '#000000',
+      colorCategoryHexa: event.colorCategoryHexa ?? '#000000',
       isPushedCalendar: false,
       timeZone: 'America/Sao_Paulo',
-      location: '',
+      location: event.location ?? '',
       description: event.title,
-      recurrenceDays: [],
-      recurrenceType: ERecurrenceCalendarType.None,
-      recurrenceCount: 0,
-      recurrenceEndDate: null,
+      recurrenceDays: event.recurrenceDays ?? [],
+      recurrenceType: event.recurrenceType ?? ERecurrenceCalendarType.None,
+      recurrenceCount: event.recurrenceCount ?? 0,
+      recurrenceEndDate: event.recurrenceEndDate ? moment(event.recurrenceEndDate).utc(true).toDate() : null,
       medicalId: event.medicalId ?? 0,
       patientId: event.patientId ?? 0,
       createdUserId: null,
@@ -158,40 +167,20 @@ export class CalendarEventService {
     // Convert dates to UTC format
     newEntity.startDateTime = moment(newEntity.startDateTime).utc(true).toDate();
     newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate();
-
     return newEntity;
+
+  }
+
+  private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
+    return this.mapToBaseAppointmentDto(event);
   }
 
   private mapToUpdateAppointmentDto(event: ICalendarEvent): UpdateMedicalCalendarDto {
-
-    let newEntity: UpdateMedicalCalendarDto = {
-      enable: true,
-      id: event.id,
-      title: event.title,
-      startDateTime: event.start,
-      endDateTime: event.end,
-      isAllDay: false,
-      status: EStatusCalendar.Active,
-      colorCategoryHexa: '#000000',
-      isPushedCalendar: false,
-      timeZone: 'America/Sao_Paulo',
-      location: '',
-      description: event.title,
-      recurrenceDays: [],
-      recurrenceType: ERecurrenceCalendarType.None,
-      recurrenceCount: 0,
-      recurrenceEndDate: null,
-      medicalId: event.medicalId ?? 0,
-      patientId: event.patientId ?? 0,
-      createdUserId: null,
-      modifyUserId: null,
+    const baseDto = this.mapToBaseAppointmentDto(event) as UpdateMedicalCalendarDto;
+    return {
+      ...baseDto,
       updateSeries: false,
       tokenRecurrence: ''
     };
-    // Convert dates to UTC format
-    newEntity.startDateTime = moment(newEntity.startDateTime).utc(true).toDate();
-    newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate();
-
-    return newEntity;
   }
 }

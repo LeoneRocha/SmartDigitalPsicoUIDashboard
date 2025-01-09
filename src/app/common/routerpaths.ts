@@ -39,12 +39,12 @@ export const ROUTES: RouteInfo[] = [{
     ]
 },
 {
+    path: '/medical/calendar',
     id: "medical-calendar",
     title: 'general.calendar.title',
-    path: '/medical/calendar',
     type: 'link',
     icontype: 'pe-7s-date',
-    roleaccess: 'Medical' 
+    roleaccess: 'Medical' ,
 }, 
 {
     path: '/medical',

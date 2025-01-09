@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef, Directive, Inject } from '@angular/core'; 
+import { Component, OnInit, Renderer2, ViewChild, ElementRef, Directive, Inject } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthService } from 'app/services/auth/auth.service';
 import { ROUTES } from 'app/common/routerpaths';
@@ -69,8 +69,8 @@ export class NavbarComponent implements OnInit {
             }, 1000);
         });
     }
-    ChangeLanguage(idLanguage: string) { 
-        this.appComponent.ChangeLanguage(idLanguage); 
+    ChangeLanguage(idLanguage: string) {
+        this.appComponent.ChangeLanguage(idLanguage);
     }
 
     isMobileMenu() {
@@ -105,11 +105,11 @@ export class NavbarComponent implements OnInit {
 
     getTitle() {
         let titleNavigated: string = 'Default';
-        var titlee = this.location.prepareExternalUrl(this.location.path()); 
+        var titlee = this.location.prepareExternalUrl(this.location.path());
         if (titlee.charAt(0) === '#') {
             titlee = titlee.slice(1);
             titleNavigated = titlee;
-        }
+        } 
         for (let i = 0; i < this.listTitles.length; i++) {
             if (this.listTitles[i].type === "link" && this.listTitles[i].path === titlee) {
                 titleNavigated = this.listTitles[i].title;
@@ -121,16 +121,17 @@ export class NavbarComponent implements OnInit {
                     }
                 }
             }
-        }
-        let firstRootPath = titlee.split('/')[1];
-        for (let i = 0; i < this.listTitles.length; i++) {
-            let routerItem: string = this.listTitles[i];
-            if (routerItem['path'].indexOf(firstRootPath) >= 0) {                
-                titleNavigated = routerItem['title'];
+        } 
+        if (titleNavigated === 'Default') {
+            let firstRootPath = titlee.split('/')[1];
+            for (let i = 0; i < this.listTitles.length; i++) {
+                let routerItem: string = this.listTitles[i];
+                if (routerItem['path'].indexOf(firstRootPath) >= 0) {
+                    titleNavigated = routerItem['title'];
+                }
             }
-        }
-        //todo:Criar um translate
-        titleNavigated = titleNavigated === 'RoleGroup' ? 'Role Group' : titleNavigated;        
+            titleNavigated = titleNavigated === 'RoleGroup' ? 'Role Group' : titleNavigated;
+        } 
         return titleNavigated;
     }
 

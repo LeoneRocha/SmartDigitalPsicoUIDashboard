@@ -1,4 +1,8 @@
+import { ERecurrenceCalendarType } from "../medicalcalendar/enuns/ERecurrenceCalendarType";
 import { GetMedicalCalendarTimeSlotDto } from "../medicalcalendar/GetMedicalCalendarTimeSlotDto";
+import { DayOfWeek } from "./day-of-week";
+
+
 
 export interface ICalendarEvent {
     title: string;
@@ -10,5 +14,12 @@ export interface ICalendarEvent {
     url?: string;
     medicalId?:number;
     patientId?:number;
-    medicalCalendar?: GetMedicalCalendarTimeSlotDto;
+    medicalCalendar?: GetMedicalCalendarTimeSlotDto; 
+    colorCategoryHexa?: string; 
+    location?: string; 
+    recurrenceDays?: DayOfWeek[];
+    recurrenceType?: ERecurrenceCalendarType;
+    recurrenceEndDate?: Date;
+    recurrenceCount?: number;
   }
+  

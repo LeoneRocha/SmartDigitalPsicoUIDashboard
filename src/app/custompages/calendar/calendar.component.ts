@@ -15,6 +15,7 @@ import { ErrorHelper } from 'app/helpers/error-helper';
 import { SuccessHelper } from 'app/helpers/success-helper';
 import { LanguageService } from 'app/services/general/language.service';
 import localesAll from '@fullcalendar/core/locales-all';
+import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
@@ -37,14 +38,23 @@ export class CalendarComponent implements OnInit {
 	selectedEventId: number;
 	patients: DropDownEntityModelSelect[] = [];
 	// Variáveis locais para i18n
-	labelPatient = 'Patient';
-	labelTitle = 'Title';
-	labelStartTime = 'Start Time';
-	labelEndTime = 'End Time';
-	labelSelectPatient = 'Select Patient';
-	labelCreateEvent = 'Adicionar horario';
-	labelEditEvent = 'Editar horario';
-	labelSave = 'Save';
+
+	private labelPatient: string;
+	private labelTitle: string;
+	private labelStartTime: string;
+	private labelEndTime: string;
+	private labelSelectPatient: string;
+	private labelCreateEvent: string;
+	private labelEditEvent: string;
+	private labelSave: string;
+	private labelAllDay: string;
+	private labelColor: string;
+	private labelLocation: string;
+	private labelRecurrence: string;
+	private labelRecurrenceDays: string;
+	private labelRecurrenceEndDate: string;
+	private labelRecurrenceCount: string;
+	private labelSelectRecurrence: string;
 	//#endregion Variables
 
 	//#region Constructor
@@ -56,29 +66,18 @@ export class CalendarComponent implements OnInit {
 		@Inject(AuthService) private authService: AuthService,
 		private cdr: ChangeDetectorRef,
 		private readonly languageService: LanguageService
-	) { 
-
+	) {
 	}
 	//#endregion Constructor
 
 	//#region Lifecycle Hooks
 	ngOnInit(): void {
-		this.loadDefCalendar();
+		this.loadDefinitionsFullCalendar();
 		//this.loadDataFromApi(null);
 		this.initForm();
 		this.loadPatientsFromService();
-
-		this.labelPatient =	this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
-		this.labelTitle =	this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
-		this.labelStartTime =	this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
-		this.labelEndTime =	this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
-		this.labelSelectPatient =	this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
-		this.labelCreateEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
-		this.labelEditEvent =	this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
-		this.labelSave =	this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
- 
+		this.loadLablesModalEveent();
 	}
-
 	reloadComponent() {
 		const currentUrl = this.router.url;
 		this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -88,7 +87,7 @@ export class CalendarComponent implements OnInit {
 	//#endregion Lifecycle Hooks
 
 	//#region FULL CALENDAR 
-	loadDefCalendar(): void {
+	loadDefinitionsFullCalendar(): void {
 		this.calendarOptions = {
 			headerToolbar: {
 				right: 'prev,next today',
@@ -108,21 +107,30 @@ export class CalendarComponent implements OnInit {
 			displayEventTime: true,
 			events: this.eventsData,
 			views: {
-				month: {
-					titleFormat: { month: 'long', year: 'numeric' }
+				dayGridMonth: {
+					titleFormat: { month: 'long', year: 'numeric' }, 
+					eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false } // Formato de 24 horas
 				},
-				agendaWeek: {
-					titleFormat: { month: 'long', year: 'numeric', day: 'numeric' }
+				timeGridWeek: {
+					titleFormat: { month: 'long', year: 'numeric', day: 'numeric' },
+					slotDuration: '01:00', // Duração do slot de meia em meia hora
+					slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false }, // Formato de 24 horas
+					allDaySlot: false, // Desativar o slot de dia inteiro
+					expandRows: true // Expandir linhas para mostrar todos os horários
 				},
-				agendaDay: {
-					titleFormat: { month: 'short', year: 'numeric', day: 'numeric' }
+				timeGridDay: {
+					titleFormat: { month: 'short', year: 'numeric', day: 'numeric' },
+					slotDuration: '01:00', // Duração do slot de meia em meia hora
+					slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false }, // Formato de 24 horas
+					allDaySlot: false, // Desativar o slot de dia inteiro
+					expandRows: true // Expandir linhas para mostrar todos os horários
 				}
 			},
 			dateClick: this.openAddEventModal.bind(this),
 			eventClick: this.openEditEventModal.bind(this),
 			eventDrop: this.updateEvent.bind(this),
 			eventResize: this.updateEvent.bind(this),
-			//eventContent: this.renderEventContent.bind(this) // Adiciona o método renderEventContent
+			//eventContent: this.renderEventContent.bind(this), // Adiciona o método renderEventContent
 			datesSet: this.handleDatesSet.bind(this) // Adiciona o evento datesSet
 		};
 	}
@@ -163,32 +171,23 @@ export class CalendarComponent implements OnInit {
 	}
 	updateEvent(eventInfo): void {
 		this.selectedEventId = eventInfo.event.id;
-		const title = eventInfo.event.title;
+		const patientId = eventInfo.event.extendedProps.patientId;
+
 		const startTime = eventInfo.event.start;
 		const endTime = eventInfo.event.end;
-		const patientId = eventInfo.event.extendedProps.patientId;
 		const startDateTime = moment(startTime).toDate();
 		const endDateTime = endTime ? moment(endTime).toDate() : null;
-		const formData = {
-			id: eventInfo.event.id,
-			title,
-			start: startDateTime,
-			end: endDateTime,
-			patientId
-		};
-		const updatedEvent: ICalendarEvent = {
-			id: formData.id,
-			title: formData.title,
-			start: formData.start,
-			end: formData.end,
-			className: 'event-default',
-			medicalId: this.getParentId(),
-			patientId: Number(formData.patientId)
-		};
+
 		// Buscar o evento correspondente em this.eventsData pelo ID
-		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
-		if (selectedEvent && selectedEvent.medicalCalendar) {
-			updatedEvent.patientId = selectedEvent.medicalCalendar?.patientId;
+		const updatedEvent: ICalendarEvent = this.eventsData.find(e => e.id == this.selectedEventId);
+		updatedEvent.start = startDateTime;
+		updatedEvent.end = endDateTime;
+		updatedEvent.patientId = Number(patientId);
+		updatedEvent.medicalId = this.getParentId();
+		updatedEvent.title = updatedEvent.medicalCalendar?.title ?? updatedEvent.title;
+
+		if (updatedEvent && updatedEvent.medicalCalendar) {
+			updatedEvent.patientId = updatedEvent.medicalCalendar?.patientId;
 		}
 		if (this.selectedEventId > 0) {
 			updatedEvent.id = this.selectedEventId;
@@ -224,22 +223,13 @@ export class CalendarComponent implements OnInit {
 		const event = arg.event;
 		const eventDateString = moment(event.start).format('YYYY-MM-DD');
 		this.selectedEventId = event.id;
-		// Buscar o evento correspondente em this.eventsData pelo ID
-		const selectedEvent = this.eventsData.find(e => e.id == this.selectedEventId);
-		const startDateTime = moment(event.start);
-		const endTimeDateTime = moment(event.end);
 
-		let tiltleEvent = 'Digite aqui';
-		if (selectedEvent && selectedEvent.medicalCalendar) {
-			tiltleEvent = selectedEvent && selectedEvent.medicalCalendar && selectedEvent.medicalCalendar?.patientName ? selectedEvent.medicalCalendar?.title : selectedEvent.medicalCalendar?.patientName;
-		}
-		this.eventForm.patchValue({
-			title: tiltleEvent,
-			dateEvent: eventDateString,
-			startTime: startDateTime.format('HH:mm'),
-			endTime: endTimeDateTime.format('HH:mm'),
-			patientId: event.extendedProps.patientId
-		});
+		// Buscar o evento correspondente em this.eventsData pelo ID
+		const selectedEvent: ICalendarEvent = this.eventsData.find(e => e.id == this.selectedEventId);
+
+		// Atualiza os valores do formulário de forma dinâmica
+		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
+
 		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
 		swal.fire({
 			title: this.selectedEventId > 0 ? this.labelEditEvent : this.labelCreateEvent,
@@ -275,7 +265,7 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 	saveEventFromSwal(dateStr: string): void {
-		const newEventData = this.getEventData(dateStr);
+		const newEventData = this.getEventDataFromFormModal(dateStr);
 		const newEvent = newEventData.event;
 		const newEventInput = newEventData.eventInput;
 		if (this.isEditMode && this.selectedEventId > 0) {
@@ -324,49 +314,89 @@ export class CalendarComponent implements OnInit {
 	//#endregion ACTIONS E LOAD API DATA 
 
 	//#region AUXILIAR   
-	getEventData(dateStr: string): any {
+	getEventDataFromFormModal(dateStr: string): any {
 		const title = (document.getElementById('swal-title') as HTMLInputElement).value;
 		const startTime = (document.getElementById('swal-startTime') as HTMLInputElement).value;
 		const endTime = (document.getElementById('swal-endTime') as HTMLInputElement).value;
 		const patientId = (document.getElementById('swal-patient') as HTMLSelectElement).value;
+		const location = (document.getElementById('swal-location') as HTMLInputElement).value;
+		const colorCategoryHexa = (document.getElementById('swal-color') as HTMLInputElement).value;
+		const allDay = (document.getElementById('swal-allDay') as HTMLInputElement).checked;
+		const recurrenceType = (document.getElementById('swal-recurrence') as HTMLSelectElement).value;
+	  
+		// Recupere os dias da semana selecionados como checkboxes
+		const recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));
+	  
+		const recurrenceEndDate = (document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value ? new Date((document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value) : null;
+		const recurrenceCount = (document.getElementById('swal-recurrenceCount') as HTMLInputElement).value ? Number((document.getElementById('swal-recurrenceCount') as HTMLInputElement).value) : null;
+	  
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
-		const formData = {
-			title,
-			start: startDateTime,
-			end: endDateTime,
-			patientId
-		};
-
+	  
 		const newEvent: ICalendarEvent = {
-			title: formData.title,
-			start: formData.start,
-			end: formData.end,
-			className: 'event-default',
-			medicalId: this.getParentId(),
-			patientId: Number(formData.patientId)
+		  title: title,
+		  start: startDateTime,
+		  end: endDateTime,
+		  className: 'event-default',
+		  medicalId: this.getParentId(),
+		  patientId: Number(patientId),
+		  location: location,
+		  colorCategoryHexa: colorCategoryHexa,
+		  allDay: allDay,
+		  recurrenceType: recurrenceType ? ERecurrenceCalendarType[recurrenceType] : ERecurrenceCalendarType.None,
+		  recurrenceDays: recurrenceDays.length ? recurrenceDays : null,
+		  recurrenceEndDate: recurrenceEndDate,
+		  recurrenceCount: recurrenceCount
 		};
-
-		const newEventInput: any = {
-			title: formData.title,
-			start: formData.start,
-			end: formData.end,
-			className: 'event-default',
-			medicalId: this.getParentId(),
-			patientId: Number(formData.patientId)
-		};
-
+	  
+		const newEventInput: any = newEvent;
+	  
 		return { event: newEvent, eventInput: newEventInput };
-	}
-	initForm(): void {
+	  }
+	  
+
+	private initForm(): void {
 		this.eventForm = this.fb.group({
 			title: ['', Validators.required],
 			startTime: ['', Validators.required],
 			endTime: [''],
 			patientId: ['', Validators.required],
-			dateEvent: [new Date(), Validators.required]  // Novo campo para a data do evento
+			dateEvent: [new Date(), Validators.required],
+			allDay: [false],
+			colorCategoryHexa: ['#000000'],
+			location: [''],
+			recurrenceType: [''],
+			recurrenceDays: [[]],
+			recurrenceEndDate: [''],
+			recurrenceCount: ['']
 		});
 	}
+	private updateForm_WithEventValues(event: any, selectedEvent: ICalendarEvent, eventDateString: string): void {
+		const startDateTime = moment(event.start);
+		const endTimeDateTime = moment(event.end)
+
+		let tiltleEvent = 'Digite aqui';
+		if (selectedEvent && selectedEvent.medicalCalendar) {
+			tiltleEvent = selectedEvent.medicalCalendar.title ?? selectedEvent.medicalCalendar.patientName;
+		}
+		const dataEvent = selectedEvent.medicalCalendar;
+
+		this.eventForm.patchValue({
+			title: dataEvent?.title ?? tiltleEvent,
+			dateEvent: eventDateString,
+			startTime: startDateTime.format('HH:mm'),
+			endTime: endTimeDateTime.format('HH:mm'),
+			patientId: dataEvent?.patientId,
+			allDay: dataEvent?.isAllDay,
+			colorCategoryHexa: dataEvent?.colorCategoryHexa,
+			location: dataEvent?.location,
+			recurrenceType: dataEvent?.recurrenceType,
+			recurrenceDays: dataEvent?.recurrenceDays,
+			recurrenceEndDate: dataEvent?.recurrenceEndDate ? moment(dataEvent?.recurrenceEndDate).format('YYYY-MM-DD') : '',
+			recurrenceCount: dataEvent?.recurrenceCount
+		});
+	}
+
 	createCriteria(startDateTime?: Date, endDateTime?: Date): CalendarCriteriaDto {
 		this.userLoged = this.authService.getLocalStorageUser();
 		const today = DateHelper.newDateUTC();
@@ -394,13 +424,42 @@ export class CalendarComponent implements OnInit {
 		this.parentId = medicalId;
 		return medicalId;
 	}
-	getFormCalendar(eventForm: any, inputDateIsoString: string, selectedEvent: any): string {
+	loadLablesModalEveent() {
+		this.labelCreateEvent = this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
+		this.labelEditEvent = this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
+		this.labelSave = this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
+
+		this.labelPatient = this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
+		this.labelTitle = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
+		this.labelStartTime = this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
+		this.labelEndTime = this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
+		this.labelSelectPatient = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
+
+		this.labelAllDay = this.languageService.getTranslateInformationAsync('general.calendar.labelAllDay');
+		this.labelColor = this.languageService.getTranslateInformationAsync('general.calendar.labelColor');
+		this.labelLocation = this.languageService.getTranslateInformationAsync('general.calendar.labelLocation');
+		this.labelRecurrence = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrence');
+		this.labelRecurrenceDays = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceDays');
+		this.labelRecurrenceEndDate = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceEndDate');
+		this.labelRecurrenceCount = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceCount');
+		this.labelSelectRecurrence = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectRecurrence');
+	}
+
+	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {
 		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, {
 			labelPatient: this.labelPatient,
 			labelTitle: this.labelTitle,
 			labelStartTime: this.labelStartTime,
 			labelEndTime: this.labelEndTime,
-			labelSelectPatient: this.labelSelectPatient
+			labelSelectPatient: this.labelSelectPatient,
+			labelAllDay: this.labelAllDay,
+			labelColor: this.labelColor,
+			labelLocation: this.labelLocation,
+			labelRecurrence: this.labelRecurrence,
+			labelRecurrenceDays: this.labelRecurrenceDays,
+			labelRecurrenceEndDate: this.labelRecurrenceEndDate,
+			labelRecurrenceCount: this.labelRecurrenceCount,
+			labelSelectRecurrence: this.labelSelectRecurrence
 		}, inputDateIsoString, selectedEvent);
 		return formHtml;
 	}
