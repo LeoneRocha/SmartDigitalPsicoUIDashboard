@@ -1,14 +1,17 @@
 <div class="main-content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-          <div class="card card-calendar">
-            <div class="content">
-              <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <div class="card card-calendar">
+          <div class="content">
+            <!-- Container para o modal -->
+            <div id="calendar-modal-container" style="display: none;">
+              <ng-template #modalContainer></ng-template>
             </div>
+            <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

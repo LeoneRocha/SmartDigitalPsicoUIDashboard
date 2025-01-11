@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef, ViewContainerRef, ComponentFactoryResolver, TemplateRef } from '@angular/core';
+
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CalendarOptions, DatesSetArg, FullCalendarComponent } from '@fullcalendar/angular';
 import swal from 'sweetalert2';
+//import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2'; // Certifique-se de importar aqui
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { AuthService } from 'app/services/auth/auth.service';
@@ -16,7 +19,8 @@ import { SuccessHelper } from 'app/helpers/success-helper';
 import { LanguageService } from 'app/services/general/language.service';
 import localesAll from '@fullcalendar/core/locales-all';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
-
+import { CalendarEventModalComponent } from 'app/components/calendar-event-modal/calendar-event-modal.component';
+import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
 declare var $: any;
@@ -29,6 +33,9 @@ declare var $: any;
 export class CalendarComponent implements OnInit {
 	//#region Variables	   
 	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
+	@ViewChild('modalContainer', { read: ViewContainerRef, static: true }) modalContainer: ViewContainerRef; // Adicione isso
+	//@ViewChild('modalTemplate', { read: TemplateRef, static: true }) modalTemplate: TemplateRef<any>;
+
 	eventsData;
 	calendarOptions: CalendarOptions;
 	parentId: number;
@@ -39,22 +46,8 @@ export class CalendarComponent implements OnInit {
 	patients: DropDownEntityModelSelect[] = [];
 	// Variáveis locais para i18n
 
-	private labelPatient: string;
-	private labelTitle: string;
-	private labelStartTime: string;
-	private labelEndTime: string;
-	private labelSelectPatient: string;
-	private labelCreateEvent: string;
-	private labelEditEvent: string;
-	private labelSave: string;
-	private labelAllDay: string;
-	private labelColor: string;
-	private labelLocation: string;
-	private labelRecurrence: string;
-	private labelRecurrenceDays: string;
-	private labelRecurrenceEndDate: string;
-	private labelRecurrenceCount: string;
-	private labelSelectRecurrence: string;
+	private labelsForm: ILabelsEventModalForm;
+
 	//#endregion Variables
 
 	//#region Constructor
@@ -65,7 +58,8 @@ export class CalendarComponent implements OnInit {
 		@Inject(ActivatedRoute) private route: ActivatedRoute,
 		@Inject(AuthService) private authService: AuthService,
 		private cdr: ChangeDetectorRef,
-		private readonly languageService: LanguageService
+		private readonly languageService: LanguageService,
+		//public readonly swalTargets: SwalPortalTargets // Adicione isto
 	) {
 	}
 	//#endregion Constructor
@@ -209,18 +203,32 @@ export class CalendarComponent implements OnInit {
 			endTime: endTimeDateTime.format('HH:mm'),
 		});
 		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
+		// Renderização do componente dinamicamente
+		const componentRef = this.modalContainer.createComponent(CalendarEventModalComponent);
+		componentRef.instance.form = this.eventForm;
+		componentRef.instance.patients = this.patients;
+		componentRef.instance.labels = this.labelsForm;
+		componentRef.instance.inputDateIsoString = arg.dateStr;
 
-		const patients = this.patients;
-		const eventDateString: string = arg.dateStr;
+		// Espera o próximo ciclo de detecção de mudanças para garantir que o componente seja renderizado
+		this.cdr.detectChanges();
+
+		// Obtém o HTML interno do componente
+		const modalContent = this.modalContainer.element.nativeElement.innerHTML;
+
 
 		swal.fire({
-			title: this.labelCreateEvent,
-			html: formHtml,
-			//html: `<app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labels"  [inputDateIsoString]="eventDateString"></app-calendar-event-modal>`,
+			title: this.labelsForm.labelCreateEvent,
+			//html: formHtml,
+			//html: this.modalContainer.element.nativeElement,
+			html: modalContent,
 			focusConfirm: false,
 			showCancelButton: true,
-			confirmButtonText: this.labelSave,
+			confirmButtonText: this.labelsForm.labelSave,
 			preConfirm: () => this.saveEventFromSwal(arg.dateStr)
+		}).then(() => {
+			this.modalContainer.clear(); // Limpa o container após fechar o modal
+			componentRef.destroy(); // Destroi o componente após fechar o modal
 		});
 	}
 	openEditEventModal(arg): void {
@@ -236,14 +244,34 @@ export class CalendarComponent implements OnInit {
 		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
 
 		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
+
+		// Renderização do componente dinamicamente
+		const componentRef = this.modalContainer.createComponent(CalendarEventModalComponent);
+		componentRef.instance.form = this.eventForm;
+		componentRef.instance.patients = this.patients;
+		componentRef.instance.labels = this.labelsForm;
+		componentRef.instance.selectedEvent = selectedEvent;
+		componentRef.instance.inputDateIsoString = eventDateString;
+
+		// Espera o próximo ciclo de detecção de mudanças para garantir que o componente seja renderizado
+		this.cdr.detectChanges();
+
+		// Obtém o HTML interno do componente
+		const modalContent = this.modalContainer.element.nativeElement.innerHTML;
+
+
 		swal.fire({
-			title: this.selectedEventId > 0 ? this.labelEditEvent : this.labelCreateEvent,
-			html: formHtml,
-			//html: `<app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labels" [selectedEvent]="selectedEvent" [inputDateIsoString]="eventDateString"></app-calendar-event-modal>`,
+			title: this.selectedEventId > 0 ? this.labelsForm.labelEditEvent : this.labelsForm.labelCreateEvent,
+			//html: formHtml,
+			//html: this.modalContainer.element.nativeElement,
+			html: modalContent,
 			focusConfirm: false,
 			showCancelButton: true,
-			confirmButtonText: this.labelSave,
+			confirmButtonText: this.labelsForm.labelSave,
 			preConfirm: () => this.saveEventFromSwal(eventDateString)
+		}).then(() => {
+			this.modalContainer.clear(); // Limpa o container após fechar o modal
+			componentRef.destroy(); // Destroi o componente após fechar o modal
 		});
 	}
 
@@ -431,42 +459,47 @@ export class CalendarComponent implements OnInit {
 		return medicalId;
 	}
 	loadLablesModalEveent() {
-		this.labelCreateEvent = this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
-		this.labelEditEvent = this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
-		this.labelSave = this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
+		const labelCreateEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
+		const labelEditEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
+		const labelSave: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
 
-		this.labelPatient = this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
-		this.labelTitle = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
-		this.labelStartTime = this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
-		this.labelEndTime = this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
-		this.labelSelectPatient = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
+		const labelPatient: string = this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
+		const labelTitle: string = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
+		const labelStartTime: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
+		const labelEndTime: string = this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
+		const labelSelectPatient = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
 
-		this.labelAllDay = this.languageService.getTranslateInformationAsync('general.calendar.labelAllDay');
-		this.labelColor = this.languageService.getTranslateInformationAsync('general.calendar.labelColor');
-		this.labelLocation = this.languageService.getTranslateInformationAsync('general.calendar.labelLocation');
-		this.labelRecurrence = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrence');
-		this.labelRecurrenceDays = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceDays');
-		this.labelRecurrenceEndDate = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceEndDate');
-		this.labelRecurrenceCount = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceCount');
-		this.labelSelectRecurrence = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectRecurrence');
+		const labelAllDay: string = this.languageService.getTranslateInformationAsync('general.calendar.labelAllDay');
+		const labelColor: string = this.languageService.getTranslateInformationAsync('general.calendar.labelColor');
+		const labelLocation: string = this.languageService.getTranslateInformationAsync('general.calendar.labelLocation');
+		const labelRecurrence: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrence');
+		const labelRecurrenceDays: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceDays');
+		const labelRecurrenceCount: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceCount');
+		const labelRecurrenceEndDate: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceEndDate');
+		const labelSelectRecurrence: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectRecurrence');
+
+		this.labelsForm = {
+			labelCreateEvent: labelCreateEvent,
+			labelEditEvent: labelEditEvent,
+			labelSave: labelSave,
+			labelPatient: labelPatient,
+			labelTitle: labelTitle,
+			labelStartTime: labelStartTime,
+			labelEndTime: labelEndTime,
+			labelSelectPatient: labelSelectPatient,
+			labelAllDay: labelAllDay,
+			labelColor: labelColor,
+			labelLocation: labelLocation,
+			labelRecurrence: labelRecurrence,
+			labelRecurrenceDays: labelRecurrenceDays,
+			labelRecurrenceEndDate: labelRecurrenceEndDate,
+			labelRecurrenceCount: labelRecurrenceCount,
+			labelSelectRecurrence: labelSelectRecurrence
+		};
 	}
 
 	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {
-		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, {
-			labelPatient: this.labelPatient,
-			labelTitle: this.labelTitle,
-			labelStartTime: this.labelStartTime,
-			labelEndTime: this.labelEndTime,
-			labelSelectPatient: this.labelSelectPatient,
-			labelAllDay: this.labelAllDay,
-			labelColor: this.labelColor,
-			labelLocation: this.labelLocation,
-			labelRecurrence: this.labelRecurrence,
-			labelRecurrenceDays: this.labelRecurrenceDays,
-			labelRecurrenceEndDate: this.labelRecurrenceEndDate,
-			labelRecurrenceCount: this.labelRecurrenceCount,
-			labelSelectRecurrence: this.labelSelectRecurrence
-		}, inputDateIsoString, selectedEvent);
+		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, this.labelsForm, inputDateIsoString, selectedEvent);
 		return formHtml;
 	}
 	//#endregion AUXILIAR 
