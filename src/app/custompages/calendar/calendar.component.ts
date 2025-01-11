@@ -108,7 +108,7 @@ export class CalendarComponent implements OnInit {
 			events: this.eventsData,
 			views: {
 				dayGridMonth: {
-					titleFormat: { month: 'long', year: 'numeric' }, 
+					titleFormat: { month: 'long', year: 'numeric' },
 					eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false } // Formato de 24 horas
 				},
 				timeGridWeek: {
@@ -209,9 +209,14 @@ export class CalendarComponent implements OnInit {
 			endTime: endTimeDateTime.format('HH:mm'),
 		});
 		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
+
+		const patients = this.patients;
+		const eventDateString: string = arg.dateStr;
+
 		swal.fire({
 			title: this.labelCreateEvent,
 			html: formHtml,
+			//html: `<app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labels"  [inputDateIsoString]="eventDateString"></app-calendar-event-modal>`,
 			focusConfirm: false,
 			showCancelButton: true,
 			confirmButtonText: this.labelSave,
@@ -234,6 +239,7 @@ export class CalendarComponent implements OnInit {
 		swal.fire({
 			title: this.selectedEventId > 0 ? this.labelEditEvent : this.labelCreateEvent,
 			html: formHtml,
+			//html: `<app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labels" [selectedEvent]="selectedEvent" [inputDateIsoString]="eventDateString"></app-calendar-event-modal>`,
 			focusConfirm: false,
 			showCancelButton: true,
 			confirmButtonText: this.labelSave,
@@ -323,37 +329,37 @@ export class CalendarComponent implements OnInit {
 		const colorCategoryHexa = (document.getElementById('swal-color') as HTMLInputElement).value;
 		const allDay = (document.getElementById('swal-allDay') as HTMLInputElement).checked;
 		const recurrenceType = (document.getElementById('swal-recurrence') as HTMLSelectElement).value;
-	  
+
 		// Recupere os dias da semana selecionados como checkboxes
 		const recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));
-	  
+
 		const recurrenceEndDate = (document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value ? new Date((document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value) : null;
 		const recurrenceCount = (document.getElementById('swal-recurrenceCount') as HTMLInputElement).value ? Number((document.getElementById('swal-recurrenceCount') as HTMLInputElement).value) : null;
-	  
+
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
-	  
+
 		const newEvent: ICalendarEvent = {
-		  title: title,
-		  start: startDateTime,
-		  end: endDateTime,
-		  className: 'event-default',
-		  medicalId: this.getParentId(),
-		  patientId: Number(patientId),
-		  location: location,
-		  colorCategoryHexa: colorCategoryHexa,
-		  allDay: allDay,
-		  recurrenceType: recurrenceType ? ERecurrenceCalendarType[recurrenceType] : ERecurrenceCalendarType.None,
-		  recurrenceDays: recurrenceDays.length ? recurrenceDays : null,
-		  recurrenceEndDate: recurrenceEndDate,
-		  recurrenceCount: recurrenceCount
+			title: title,
+			start: startDateTime,
+			end: endDateTime,
+			className: 'event-default',
+			medicalId: this.getParentId(),
+			patientId: Number(patientId),
+			location: location,
+			colorCategoryHexa: colorCategoryHexa,
+			allDay: allDay,
+			recurrenceType: recurrenceType ? ERecurrenceCalendarType[recurrenceType] : ERecurrenceCalendarType.None,
+			recurrenceDays: recurrenceDays.length ? recurrenceDays : null,
+			recurrenceEndDate: recurrenceEndDate,
+			recurrenceCount: recurrenceCount
 		};
-	  
+
 		const newEventInput: any = newEvent;
-	  
+
 		return { event: newEvent, eventInput: newEventInput };
-	  }
-	  
+	}
+
 
 	private initForm(): void {
 		this.eventForm = this.fb.group({
