@@ -2,8 +2,7 @@ import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef, ViewContainerR
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CalendarOptions, DatesSetArg, FullCalendarComponent } from '@fullcalendar/angular';
-import swal from 'sweetalert2';
-//import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2'; // Certifique-se de importar aqui
+import swal from 'sweetalert2'; 
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { AuthService } from 'app/services/auth/auth.service';
@@ -30,9 +29,7 @@ declare var $: any;
 })
 export class CalendarComponent implements OnInit {
 	//#region Variables	   
-	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
-	//@ViewChild('modalContainer', { read: ViewContainerRef, static: true }) modalContainer: ViewContainerRef; // Adicione isso
-	//@ViewChild('modalTemplate', { read: TemplateRef, static: true }) modalTemplate: TemplateRef<any>;
+	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent; 
 	@ViewChild('calendarModalTemplate', { static: true }) calendarModalTemplate: ElementRef;
 
 	eventsData;
@@ -62,8 +59,7 @@ export class CalendarComponent implements OnInit {
 		@Inject(ActivatedRoute) private route: ActivatedRoute,
 		@Inject(AuthService) private authService: AuthService,
 		private cdr: ChangeDetectorRef,
-		private readonly languageService: LanguageService,
-		//public readonly swalTargets: SwalPortalTargets // Adicione isto
+		private readonly languageService: LanguageService, 
 	) {
 	}
 	//#endregion Constructor
@@ -206,19 +202,7 @@ export class CalendarComponent implements OnInit {
 			startTime: startDateTime.format('HH:mm'),
 			endTime: endTimeDateTime.format('HH:mm'),
 		});
-		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
-		// // Renderização do componente dinamicamente
-		// const componentRef = this.modalContainer.createComponent(CalendarEventModalComponent);
-		// componentRef.instance.form = this.eventForm;
-		// componentRef.instance.patients = this.patients;
-		// componentRef.instance.labels = this.labelsForm;
-		// componentRef.instance.inputDateIsoString = arg.dateStr;
-		// Espera o próximo ciclo de detecção de mudanças para garantir que o componente seja renderizado
-		//this.cdr.detectChanges();
-
-		// Obtém o HTML interno do componente
-		//const modalContent = this.modalContainer.element.nativeElement;
-
+		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);  
 		// Atualiza o título do modal
 		const modalTitle = this.labelsForm.labelCreateEvent;
 		this.inputDateIsoString = arg.dateStr;
@@ -226,8 +210,7 @@ export class CalendarComponent implements OnInit {
 		// Mostra o modal usando SweetAlert2
 		this.showModal = true;
 		// Mostra o formulário de evento
-		this.showEventForm = true;
-		console.log('---------------------- openAddEventModal -------------------------');
+		this.showEventForm = true; 
 		// swal.fire({
 		// 	title: this.labelsForm.labelCreateEvent,
 		// 	//html: formHtml,
@@ -257,33 +240,18 @@ export class CalendarComponent implements OnInit {
 
 		// Atualiza os valores do formulário de forma dinâmica
 		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
-
-		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
-		console.log('---------------------- openEditEventModal -------------------------');
-		/* 		// Renderização do componente dinamicamente
-				const componentRef = this.modalContainer.createComponent(CalendarEventModalComponent);
-				componentRef.instance.form = this.eventForm;
-				componentRef.instance.patients = this.patients;
-				componentRef.instance.labels = this.labelsForm;
-				componentRef.instance.selectedEvent = selectedEvent;
-				componentRef.instance.inputDateIsoString = eventDateString; */
-		// Espera o próximo ciclo de detecção de mudanças para garantir que o componente seja renderizado
-		//this.cdr.detectChanges();
-		// Obtém o HTML interno do componente
-		//const modalContent = this.modalContainer.element.nativeElement.innerHTML;
-		// Atualiza o título do modal
+	
 		const modalTitle = this.labelsForm.labelEditEvent;
 		this.inputDateIsoString = eventDateString;
 		this.selectedEvent = selectedEvent;
-
+		
 		// Mostra o modal
-		//this.showModal = true;
+		this.showModal = true;
 		// Mostra o formulário de evento
-		//this.showEventForm = true;
-		//console.log('----------------------swal.fire - modalContent -------------------------');
-		//console.log(modalContent);
-
-		swal.fire({
+		this.showEventForm = true; 
+		
+		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent); 
+		/*swal.fire({
 			title: this.selectedEventId > 0 ? this.labelsForm.labelEditEvent : this.labelsForm.labelCreateEvent,
 			html: formHtml,
 			//html: this.modalContainer.element.nativeElement,
@@ -294,8 +262,7 @@ export class CalendarComponent implements OnInit {
 			confirmButtonText: this.labelsForm.labelSave,
 			preConfirm: () => this.saveEventFromSwal(eventDateString)
 		}).then(() => {
-		 
-		});
+		});*/
 	}
 	closeEventForm(): void {
 		this.showModal = false;
@@ -308,8 +275,8 @@ export class CalendarComponent implements OnInit {
 		} else {
 			this.saveEventFromSwal(this.inputDateIsoString);
 		}
-		//this.showModal = false;
-		//this.showEventForm = false;
+		this.showModal = false;
+			this.showEventForm = false;
 	}
 
 	//#endregion FULL CALENDAR - EVENTS
@@ -337,13 +304,10 @@ export class CalendarComponent implements OnInit {
 	}
 	saveEventFromSwal(dateStr: string): void {
 		const newEventData = this.getEventDataFromFormModal(dateStr);
-		const newEvent = newEventData.event;
+		const newEvent: ICalendarEvent = newEventData.event;
 		const newEventInput = newEventData.eventInput;
-
 		console.log('----------------------saveEventFromSwal - newEvent-------------------------');
 		console.log(newEvent);
-
-
 		if (this.isEditMode && this.selectedEventId > 0) {
 			newEvent.id = this.selectedEventId;
 			this.updateCalendarEventFromService(newEvent);
@@ -364,19 +328,10 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 
-	updateCalendarEventFromService(updatedEvent: any): void {
-
-		console.log('----------------------updateCalendarEventFromService - updatedEvent-------------------------');
-		console.log(updatedEvent);
-
-
+	updateCalendarEventFromService(updatedEvent: ICalendarEvent): void { 
 		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
 			next: (response) => {
-
-				console.log('----------------------updateCalendarEventFromService - response-------------------------');
-				console.log(response);
-
-
+				 
 				const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
 				event.setProp('title', updatedEvent.title);
 				event.setStart(new Date(updatedEvent.start));
@@ -385,7 +340,10 @@ export class CalendarComponent implements OnInit {
 				this.reloadComponent();
 			},
 			error: (err) => {
-				ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while updating the event.' }]);
+				console.log('----------------------updateCalendarEventFromService - err-------------------------');
+				console.log(err);
+				const errors = Array.isArray(err?.originalError?.error) ? err?.originalError?.error : [{ message: 'An error occurred while updating the event.' }];
+				ErrorHelper.displayErrors(errors);
 			}
 		});
 	}
@@ -434,16 +392,10 @@ export class CalendarComponent implements OnInit {
 			recurrenceEndDate: recurrenceEndDate,
 			recurrenceCount: recurrenceCount
 		};
-
 		const newEventInput: any = newEvent;
 		const resultForm = { event: newEvent, eventInput: newEventInput };
-
-		console.log('----------------------getEventDataFromFormModal - resultForm -------------------------');
-		console.log(resultForm);
-
 		return resultForm;
 	}
-
 
 	private initForm(): void {
 		this.eventForm = this.fb.group({

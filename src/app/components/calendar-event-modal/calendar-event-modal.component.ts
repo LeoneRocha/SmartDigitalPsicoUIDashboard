@@ -30,7 +30,7 @@ export class CalendarEventModalComponent implements OnInit {
   recurrenceOptions = Object.keys(ERecurrenceCalendarType)
     .filter(key => isNaN(Number(key))) // Filtra apenas as chaves que não são números
     .map(key => ({
-      value: ERecurrenceCalendarType[key],
+      value: Number(key),
       label: key
     }));
 
