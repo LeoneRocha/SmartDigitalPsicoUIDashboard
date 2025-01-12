@@ -10,8 +10,12 @@
                 [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString">
               </app-calendar-event-modal>
               <div class="form-actions">
-                <button type="button" class="btn btn-secondary" (click)="closeEventForm()">Cancel</button>
-                <button type="button" class="btn btn-primary" (click)="confirmEventForm()">Save</button>
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="button" class="btn btn-secondary" (click)="closeEventForm()">Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)="confirmEventForm()">Save</button>
+                  </div>
+                </div>
               </div>
             </div>
 
