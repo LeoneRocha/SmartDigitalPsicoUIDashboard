@@ -4,11 +4,22 @@
       <div class="col-md-10 col-md-offset-1">
         <div class="card card-calendar">
           <div class="content">
-            <!-- Container para o modal -->
-            <div id="calendar-modal-container" style="display: none;">
-              <ng-template #modalContainer></ng-template>
+            <!-- Formulário de Evento -->
+            <div *ngIf="showEventForm">
+              <app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labelsForm"
+                [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString">
+              </app-calendar-event-modal>
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" (click)="closeEventForm()">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="confirmEventForm()">Save</button>
+              </div>
             </div>
-            <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
+
+            <!-- Calendário -->
+            <div *ngIf="!showEventForm">
+              <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
+            </div>
+
           </div>
         </div>
       </div>
