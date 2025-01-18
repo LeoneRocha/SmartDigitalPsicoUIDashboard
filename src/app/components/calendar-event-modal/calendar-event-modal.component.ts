@@ -9,8 +9,10 @@ import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecur
   templateUrl: './calendar-event-modal.component.html',
   styleUrls: ['./calendar-event-modal.component.css']
 })
-  
+
 export class CalendarEventModalComponent implements OnInit {
+  labelFormTitle: string = '';
+
   @Input() form: FormGroup;
   @Input() patients: any[];
   @Input() labels: any;
@@ -38,5 +40,11 @@ export class CalendarEventModalComponent implements OnInit {
     // Initialize if necessary
     console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
     console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString })
+
+    this.labelFormTitle = this.labels.labelCreateEvent;
+    
+    if (this.selectedEvent) {
+      this.labelFormTitle = this.labels.labelEditEvent;
+    }
   }
 }
