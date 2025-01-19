@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef, ViewContainerRef, ComponentFactoryResolver, TemplateRef, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CalendarOptions, DatesSetArg, FullCalendarComponent } from '@fullcalendar/angular';
-import swal from 'sweetalert2'; 
+import { CalendarOptions, DatesSetArg, FullCalendarComponent } from '@fullcalendar/angular'; 
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { AuthService } from 'app/services/auth/auth.service';
@@ -16,7 +15,6 @@ import { SuccessHelper } from 'app/helpers/success-helper';
 import { LanguageService } from 'app/services/general/language.service';
 import localesAll from '@fullcalendar/core/locales-all';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
-import { CalendarEventModalComponent } from 'app/components/calendar-event-modal/calendar-event-modal.component';
 import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
@@ -42,6 +40,7 @@ export class CalendarComponent implements OnInit {
 	patients: DropDownEntityModelSelect[] = [];
 	// Variáveis locais para i18n
 	labelsForm: ILabelsEventModalForm;
+	languageUI: string;
 	//#endregion Variables
 	// Adicione selectedEvent e inputDateIsoString
 	selectedEvent: ICalendarEvent;
@@ -485,6 +484,8 @@ export class CalendarComponent implements OnInit {
 		const labelRecurrenceCount: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceCount');
 		const labelRecurrenceEndDate: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceEndDate');
 		const labelSelectRecurrence: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectRecurrence');
+
+		this.languageUI = this.languageService.getLanguageToLocalStorage();
 
 		this.labelsForm = {
 			labelCreateEvent: labelCreateEvent,

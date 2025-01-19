@@ -3,11 +3,13 @@ import { FormGroup } from '@angular/forms';
 import { DayOfWeek } from 'app/models/general/day-of-week';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
-
+import { DatePipe } from '@angular/common'
+import * as moment from 'moment';
 @Component({
   selector: 'app-calendar-event-modal',
   templateUrl: './calendar-event-modal.component.html',
-  styleUrls: ['./calendar-event-modal.component.css']
+  styleUrls: ['./calendar-event-modal.component.css'],
+  providers: [DatePipe] // Adicione isso para usar o DatePipe
 })
 
 export class CalendarEventModalComponent implements OnInit {
@@ -18,6 +20,7 @@ export class CalendarEventModalComponent implements OnInit {
   @Input() labels: any;
   @Input() selectedEvent?: ICalendarEvent;
   @Input() inputDateIsoString: string;
+  @Input() languageUI: string;
 
   daysOfWeek = [
     { value: DayOfWeek.Sunday, label: 'Sunday' },
@@ -36,15 +39,19 @@ export class CalendarEventModalComponent implements OnInit {
       label: key
     }));
 
+  constructor(private datePipe: DatePipe) {
+  }
+
   ngOnInit(): void {
     // Initialize if necessary
     console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
-    console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString })
-
-    this.labelFormTitle = this.labels.labelCreateEvent;
-    
-    if (this.selectedEvent) {
-      this.labelFormTitle = this.labels.labelEditEvent;
-    }
+    console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
+    this.labelFormTitle = this.selectedEvent ? this.labels.labelEditEvent : this.labels.labelCreateEvent;
+  }
+  getFormattedDate(dateStr: string): string {
+    const date = new Date(dateStr); // Converte a string ISO para um objeto Date
+    console.log('----------------------getFormattedDate -  -------------------------');
+    console.log(date);
+    return moment(dateStr).locale(this.languageUI).format('LL'); // Formata a data de acordo com o idioma
   }
 }

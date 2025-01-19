@@ -7,7 +7,7 @@
             <!-- Formulário de Evento -->
             <div *ngIf="showEventForm">
               <app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labelsForm"
-                [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString">
+                [languageUI]="languageUI" [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString">
               </app-calendar-event-modal>
               <div class="form-actions">
                 <div class="row">
