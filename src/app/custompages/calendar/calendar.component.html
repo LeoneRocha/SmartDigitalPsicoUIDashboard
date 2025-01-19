@@ -7,23 +7,15 @@
             <!-- Formulário de Evento -->
             <div *ngIf="showEventForm">
               <app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labelsForm"
-                [languageUI]="languageUI" [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString">
-              </app-calendar-event-modal>
-              <div class="form-actions">
-                <div class="row">
-                  <div class="col-md-12">
-                    <button type="button" class="btn btn-secondary" (click)="closeEventForm()">Cancel</button>
-                    <button type="button" class="btn btn-primary" (click)="confirmEventForm()">Save</button>
-                  </div>
-                </div>
-              </div>
+                [languageUI]="languageUI" [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString"
+                (onClose)="closeEventForm()" 
+                (onConfirm)="confirmEventForm()">
+              </app-calendar-event-modal> 
             </div>
-
             <!-- Calendário -->
             <div *ngIf="!showEventForm">
               <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
             </div>
-
           </div>
         </div>
       </div>

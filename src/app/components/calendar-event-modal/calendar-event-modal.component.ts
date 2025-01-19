@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DayOfWeek } from 'app/models/general/day-of-week';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
@@ -21,6 +21,10 @@ export class CalendarEventModalComponent implements OnInit {
   @Input() selectedEvent?: ICalendarEvent;
   @Input() inputDateIsoString: string;
   @Input() languageUI: string;
+
+
+  @Output() onClose = new EventEmitter<void>(); // Adicione isso para o evento de fechar
+  @Output() onConfirm = new EventEmitter<void>(); // Adicione isso para o evento de confirmar
 
   daysOfWeek = [
     { value: DayOfWeek.Sunday, label: 'Sunday' },
@@ -48,7 +52,7 @@ export class CalendarEventModalComponent implements OnInit {
     console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
     this.labelFormTitle = this.selectedEvent ? this.labels.labelEditEvent : this.labels.labelCreateEvent;
   }
-  getFormattedDate(dateStr: string): string { 
+  getFormattedDate(dateStr: string): string {
     return moment(dateStr).locale(this.languageUI).format('LL'); // Formata a data de acordo com o idioma
   }
 }

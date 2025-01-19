@@ -263,12 +263,12 @@ export class CalendarComponent implements OnInit {
 		}).then(() => {
 		});*/
 	}
-	closeEventForm(): void {
+	closeEventForm(): void {		
 		this.showModal = false;
 		this.showEventForm = false;
 	}
 
-	confirmEventForm(): void {
+	confirmEventForm(): void {  
 		if (this.isEditMode) {
 			this.saveEventFromSwal(this.inputDateIsoString);
 		} else {

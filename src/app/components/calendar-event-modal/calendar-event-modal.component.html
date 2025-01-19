@@ -99,6 +99,14 @@
                                 formControlName="recurrenceCount">
                         </div>
                     </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-secondary" (click)="onClose.emit()">Cancel</button>
+                                <button type="button" class="btn btn-primary" (click)="onConfirm.emit()">Save</button>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
