@@ -48,10 +48,7 @@ export class CalendarEventModalComponent implements OnInit {
     console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
     this.labelFormTitle = this.selectedEvent ? this.labels.labelEditEvent : this.labels.labelCreateEvent;
   }
-  getFormattedDate(dateStr: string): string {
-    const date = new Date(dateStr); // Converte a string ISO para um objeto Date
-    console.log('----------------------getFormattedDate -  -------------------------');
-    console.log(date);
+  getFormattedDate(dateStr: string): string { 
     return moment(dateStr).locale(this.languageUI).format('LL'); // Formata a data de acordo com o idioma
   }
 }
