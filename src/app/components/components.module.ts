@@ -11,12 +11,14 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { PanelsComponent } from './panels/panels.component';
 import { SweetAlertComponent } from './sweetalert/sweetalert.component';
 import { TypographyComponent } from './typography/typography.component';
+import { CalendarEventModalComponent } from './calendar-event-modal/calendar-event-modal.component';
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule.forChild(ComponentsRoutes),
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule // Adicione isto
     ],
     declarations: [
         ButtonsComponent,
@@ -25,8 +27,10 @@ import { TypographyComponent } from './typography/typography.component';
         NotificationsComponent,
         PanelsComponent,
         SweetAlertComponent,
-        TypographyComponent
-    ]
+        TypographyComponent,  
+    ], 
+    exports: [ 
+      ]
 })
 
 export class ComponentsModule {}

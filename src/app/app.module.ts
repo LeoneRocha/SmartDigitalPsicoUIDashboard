@@ -22,10 +22,8 @@ import { appReducer } from './storereduxngrx/shared/app.reducer';
 import { GlobalizationCultureService } from './services/general/simple/globalizationculture.service';
 import { GlobalizationTimeZonesService } from './services/general/simple/globalizationtimezone.service';
 import { NgxTranslateModule } from './translate/translate.module';
-import { LanguageService } from './services/general/language.service';
-import { CustomTextActivePipe } from './common/custompipe/customtextactive.pipe';
-import { CustomPipesModule } from './common/custompipe/custompipe.module';
-
+import { LanguageService } from './services/general/language.service'; 
+//import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
     imports: [
@@ -40,6 +38,7 @@ import { CustomPipesModule } from './common/custompipe/custompipe.module';
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         NgxTranslateModule,
+        //SweetAlert2Module.forRoot(), // Adicione isto        
     ],
     declarations: [  
         AppComponent,

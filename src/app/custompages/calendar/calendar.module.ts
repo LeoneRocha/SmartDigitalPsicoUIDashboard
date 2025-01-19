@@ -12,7 +12,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { MedicalCalendarService } from 'app/services/general/principals/medicalCalendar.service';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { PatientService } from 'app/services/general/principals/patient.service';
-import { LanguageService } from 'app/services/general/language.service';
+import { LanguageService } from 'app/services/general/language.service';  
+import { CalendarEventModalComponent } from 'app/components/calendar-event-modal/calendar-event-modal.component';
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
@@ -24,15 +25,15 @@ FullCalendarModule.registerPlugins([
     RouterModule.forChild(CalendarRoutes),
     FormsModule,
     FullCalendarModule,
-    ReactiveFormsModule // Adicione isto
+    ReactiveFormsModule, // Adicione isto,  
   ],
-  declarations: [CalendarComponent],
+  declarations: [CalendarComponent, CalendarEventModalComponent],
   providers: [
     , LanguageService
     , MedicalCalendarService
     , CalendarEventService
     , PatientService
-  ]
+  ] 
 })
 
 export class CalendarModule { }
