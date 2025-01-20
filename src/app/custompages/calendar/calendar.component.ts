@@ -469,13 +469,13 @@ export class CalendarComponent implements OnInit {
 		const labelCreateEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
 		const labelEditEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
 		const labelSave: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
-
+	
 		const labelPatient: string = this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
 		const labelTitle: string = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
 		const labelStartTime: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
 		const labelEndTime: string = this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
-		const labelSelectPatient = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
-
+		const labelSelectPatient: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
+	
 		const labelAllDay: string = this.languageService.getTranslateInformationAsync('general.calendar.labelAllDay');
 		const labelColor: string = this.languageService.getTranslateInformationAsync('general.calendar.labelColor');
 		const labelLocation: string = this.languageService.getTranslateInformationAsync('general.calendar.labelLocation');
@@ -484,29 +484,39 @@ export class CalendarComponent implements OnInit {
 		const labelRecurrenceCount: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceCount');
 		const labelRecurrenceEndDate: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceEndDate');
 		const labelSelectRecurrence: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectRecurrence');
-
+	
+		const labelRecurrenceNone: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceNone');
+		const labelRecurrenceDaily: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceDaily');
+		const labelRecurrenceWeekly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceWeekly');
+		const labelRecurrenceMonthly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceMonthly');
+		const labelRecurrenceYearly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceYearly');
+	
 		this.languageUI = this.languageService.getLanguageToLocalStorage();
-
+	
 		this.labelsForm = {
-			labelCreateEvent: labelCreateEvent,
-			labelEditEvent: labelEditEvent,
-			labelSave: labelSave,
-			labelPatient: labelPatient,
-			labelTitle: labelTitle,
-			labelStartTime: labelStartTime,
-			labelEndTime: labelEndTime,
-			labelSelectPatient: labelSelectPatient,
-			labelAllDay: labelAllDay,
-			labelColor: labelColor,
-			labelLocation: labelLocation,
-			labelRecurrence: labelRecurrence,
-			labelRecurrenceDays: labelRecurrenceDays,
-			labelRecurrenceEndDate: labelRecurrenceEndDate,
-			labelRecurrenceCount: labelRecurrenceCount,
-			labelSelectRecurrence: labelSelectRecurrence
+		  labelCreateEvent: labelCreateEvent,
+		  labelEditEvent: labelEditEvent,
+		  labelSave: labelSave,
+		  labelPatient: labelPatient,
+		  labelTitle: labelTitle,
+		  labelStartTime: labelStartTime,
+		  labelEndTime: labelEndTime,
+		  labelSelectPatient: labelSelectPatient,
+		  labelAllDay: labelAllDay,
+		  labelColor: labelColor,
+		  labelLocation: labelLocation,
+		  labelRecurrence: labelRecurrence,
+		  labelRecurrenceDays: labelRecurrenceDays,
+		  labelRecurrenceEndDate: labelRecurrenceEndDate,
+		  labelRecurrenceCount: labelRecurrenceCount,
+		  labelSelectRecurrence: labelSelectRecurrence,
+		  labelRecurrenceNone: labelRecurrenceNone,
+		  labelRecurrenceDaily: labelRecurrenceDaily,
+		  labelRecurrenceWeekly: labelRecurrenceWeekly,
+		  labelRecurrenceMonthly: labelRecurrenceMonthly,
+		  labelRecurrenceYearly: labelRecurrenceYearly
 		};
-	}
-
+	  }
 	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {
 		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, this.labelsForm, inputDateIsoString, selectedEvent);
 		return formHtml;
