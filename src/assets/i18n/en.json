@@ -144,10 +144,16 @@
       "labelColor": "Color",
       "labelLocation": "Location",
       "labelRecurrence": "Recurrence",
+      "labelRecurrenceType": "Recurrence",
       "labelRecurrenceDays": "Recurrence Days",
       "labelRecurrenceEndDate": "Recurrence End Date",
       "labelRecurrenceCount": "Recurrence Count",
-      "labelSelectRecurrence": "Select Recurrence"
+      "labelSelectRecurrence": "Select Recurrence",
+      "labelRecurrenceNone": "None",
+      "labelRecurrenceDaily": "Daily",
+      "labelRecurrenceWeekly": "Weekly",
+      "labelRecurrenceMonthly": "Monthly",
+      "labelRecurrenceYearly": "Yearly"
     }
   },
   "appsetting": {

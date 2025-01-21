@@ -133,9 +133,9 @@
       "labelPatient": "Paciente",
       "labelTitle": "Título",
       "labelStartTime": "Hora de Inicio",
-      "labelEndTime": "Hora de Fin",
+      "labelEndTime": "Hora de Finalización",
       "labelSelectPatient": "Seleccionar Paciente",
-      "labelCreateEvent": "Añadir Evento",
+      "labelCreateEvent": "Agregar Evento",
       "labelEditEvent": "Editar Evento",
       "labelSave": "Guardar",
       "labelIsAvailable": "Disponible",
@@ -144,10 +144,16 @@
       "labelColor": "Color",
       "labelLocation": "Ubicación",
       "labelRecurrence": "Recurrencia",
+      "labelRecurrenceType": "Recurrencia",
       "labelRecurrenceDays": "Días de Recurrencia",
-      "labelRecurrenceEndDate": "Fecha Final de Recurrencia",
-      "labelRecurrenceCount": "Cuenta de Recurrencia",
-      "labelSelectRecurrence": "Seleccionar Recurrencia"
+      "labelRecurrenceEndDate": "Fecha de Fin de Recurrencia",
+      "labelRecurrenceCount": "Cantidad de Recurrencia",
+      "labelSelectRecurrence": "Seleccionar Recurrencia",
+      "labelRecurrenceNone": "Ninguna",
+      "labelRecurrenceDaily": "Diaria",
+      "labelRecurrenceWeekly": "Semanal",
+      "labelRecurrenceMonthly": "Mensual",
+      "labelRecurrenceYearly": "Anual"
     }
   },
   "appsetting": {

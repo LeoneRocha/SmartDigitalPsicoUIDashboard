@@ -4,6 +4,28 @@ import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 
 export class FormHelperCalendar {
+
+  public static getValue(id: string, defaultValue: any): any {
+    const element = document.getElementById(id) as HTMLInputElement | HTMLSelectElement | null;
+    if (!element) {
+      return defaultValue;
+    }
+
+    if (element instanceof HTMLInputElement) {
+      if (element.type === 'checkbox') {
+        return element.checked;
+      }
+      return element.value;
+    }
+
+    if (element instanceof HTMLSelectElement) {
+      return element.value;
+    }
+
+    return defaultValue;
+  }
+
+
   public static getFormHtml(form: FormGroup, patients: any[], labels: any, date: string, selectedEvent: ICalendarEvent): string {
     const patientsOptions = patients.map(p =>
       `<option value="${p.id}" ${selectedEvent && selectedEvent.medicalCalendar && p.id === selectedEvent.medicalCalendar.patientId ? 'selected' : ''}>${p.text}</option>`

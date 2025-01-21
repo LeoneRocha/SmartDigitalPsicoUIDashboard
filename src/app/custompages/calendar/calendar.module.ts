@@ -14,6 +14,7 @@ import { CalendarEventService } from 'app/services/general/calendar/calendar-eve
 import { PatientService } from 'app/services/general/principals/patient.service';
 import { LanguageService } from 'app/services/general/language.service';  
 import { CalendarEventModalComponent } from 'app/components/calendar-event-modal/calendar-event-modal.component';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
@@ -26,6 +27,7 @@ FullCalendarModule.registerPlugins([
     FormsModule,
     FullCalendarModule,
     ReactiveFormsModule, // Adicione isto,  
+    JwBootstrapSwitchNg2Module,
   ],
   declarations: [CalendarComponent, CalendarEventModalComponent],
   providers: [

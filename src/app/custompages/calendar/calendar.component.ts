@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef, ViewContainerRef, ComponentFactoryResolver, TemplateRef, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CalendarOptions, DatesSetArg, FullCalendarComponent } from '@fullcalendar/angular'; 
+import { CalendarOptions, DatesSetArg, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { AuthService } from 'app/services/auth/auth.service';
@@ -27,7 +27,7 @@ declare var $: any;
 })
 export class CalendarComponent implements OnInit {
 	//#region Variables	   
-	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent; 
+	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
 	@ViewChild('calendarModalTemplate', { static: true }) calendarModalTemplate: ElementRef;
 
 	eventsData;
@@ -58,7 +58,7 @@ export class CalendarComponent implements OnInit {
 		@Inject(ActivatedRoute) private route: ActivatedRoute,
 		@Inject(AuthService) private authService: AuthService,
 		private cdr: ChangeDetectorRef,
-		private readonly languageService: LanguageService, 
+		private readonly languageService: LanguageService,
 	) {
 	}
 	//#endregion Constructor
@@ -201,7 +201,7 @@ export class CalendarComponent implements OnInit {
 			startTime: startDateTime.format('HH:mm'),
 			endTime: endTimeDateTime.format('HH:mm'),
 		});
-		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);  
+		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
 		// Atualiza o título do modal
 		const modalTitle = this.labelsForm.labelCreateEvent;
 		this.inputDateIsoString = arg.dateStr;
@@ -209,7 +209,7 @@ export class CalendarComponent implements OnInit {
 		// Mostra o modal usando SweetAlert2
 		this.showModal = true;
 		// Mostra o formulário de evento
-		this.showEventForm = true; 
+		this.showEventForm = true;
 		// swal.fire({
 		// 	title: this.labelsForm.labelCreateEvent,
 		// 	//html: formHtml,
@@ -239,17 +239,17 @@ export class CalendarComponent implements OnInit {
 
 		// Atualiza os valores do formulário de forma dinâmica
 		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
-	
+
 		const modalTitle = this.labelsForm.labelEditEvent;
 		this.inputDateIsoString = eventDateString;
 		this.selectedEvent = selectedEvent;
-		
+
 		// Mostra o modal
 		this.showModal = true;
 		// Mostra o formulário de evento
-		this.showEventForm = true; 
-		
-		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent); 
+		this.showEventForm = true;
+
+		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
 		/*swal.fire({
 			title: this.selectedEventId > 0 ? this.labelsForm.labelEditEvent : this.labelsForm.labelCreateEvent,
 			html: formHtml,
@@ -263,19 +263,19 @@ export class CalendarComponent implements OnInit {
 		}).then(() => {
 		});*/
 	}
-	closeEventForm(): void {		
+	closeEventForm(): void {
 		this.showModal = false;
 		this.showEventForm = false;
 	}
 
-	confirmEventForm(): void {  
+	confirmEventForm(): void {
 		if (this.isEditMode) {
 			this.saveEventFromSwal(this.inputDateIsoString);
 		} else {
 			this.saveEventFromSwal(this.inputDateIsoString);
 		}
 		this.showModal = false;
-			this.showEventForm = false;
+		this.showEventForm = false;
 	}
 
 	//#endregion FULL CALENDAR - EVENTS
@@ -293,9 +293,7 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
-		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
-		console.log('----------------------loadDataFromApi - criteria-------------------------');
-		console.log(criteria);
+		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime); 	 
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEventsComponent();
@@ -327,10 +325,10 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 
-	updateCalendarEventFromService(updatedEvent: ICalendarEvent): void { 
+	updateCalendarEventFromService(updatedEvent: ICalendarEvent): void {
 		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
 			next: (response) => {
-				 
+
 				const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
 				event.setProp('title', updatedEvent.title);
 				event.setStart(new Date(updatedEvent.start));
@@ -357,24 +355,29 @@ export class CalendarComponent implements OnInit {
 	//#endregion ACTIONS E LOAD API DATA 
 
 	//#region AUXILIAR   
+
 	getEventDataFromFormModal(dateStr: string): any {
-		const title = (document.getElementById('swal-title') as HTMLInputElement).value;
-		const startTime = (document.getElementById('swal-startTime') as HTMLInputElement).value;
-		const endTime = (document.getElementById('swal-endTime') as HTMLInputElement).value;
-		const patientId = (document.getElementById('swal-patient') as HTMLSelectElement).value;
-		const location = (document.getElementById('swal-location') as HTMLInputElement).value;
-		const colorCategoryHexa = (document.getElementById('swal-color') as HTMLInputElement).value;
-		const allDay = (document.getElementById('swal-allDay') as HTMLInputElement).checked;
-		const recurrenceType = (document.getElementById('swal-recurrence') as HTMLSelectElement).value;
+
+		const title = FormHelperCalendar.getValue('swal-title', 'Untitled');
+		const startTime = FormHelperCalendar.getValue('swal-startTime', '00:00');
+		const endTime = FormHelperCalendar.getValue('swal-endTime', '');
+		const patientId = FormHelperCalendar.getValue('swal-patient', '0');
+		const location = FormHelperCalendar.getValue('swal-location', '');
+		const colorCategoryHexa = FormHelperCalendar.getValue('swal-color', '#000000');
+		const allDay = FormHelperCalendar.getValue('swal-allDay', false);
 
 		// Recupere os dias da semana selecionados como checkboxes
-		const recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));
-
-		const recurrenceEndDate = (document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value ? new Date((document.getElementById('swal-recurrenceEndDate') as HTMLInputElement).value) : null;
-		const recurrenceCount = (document.getElementById('swal-recurrenceCount') as HTMLInputElement).value ? Number((document.getElementById('swal-recurrenceCount') as HTMLInputElement).value) : null;
 
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
+
+		//recurrence
+		const isRecurring = FormHelperCalendar.getValue('swal-isRecurring', false);
+
+		const recurrenceType = FormHelperCalendar.getValue('swal-recurrence', 'None');
+		const recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));
+		const recurrenceEndDate = FormHelperCalendar.getValue('swal-recurrenceEndDate', null) ? new Date(FormHelperCalendar.getValue('swal-recurrenceEndDate', null)) : null;
+		const recurrenceCount = FormHelperCalendar.getValue('swal-recurrenceCount', null) ? Number(FormHelperCalendar.getValue('swal-recurrenceCount', '0')) : null;
 
 		const newEvent: ICalendarEvent = {
 			title: title,
@@ -386,16 +389,17 @@ export class CalendarComponent implements OnInit {
 			location: location,
 			colorCategoryHexa: colorCategoryHexa,
 			allDay: allDay,
-			recurrenceType: recurrenceType ? ERecurrenceCalendarType[recurrenceType] : ERecurrenceCalendarType.None,
+			recurrenceType: recurrenceType as ERecurrenceCalendarType,
 			recurrenceDays: recurrenceDays.length ? recurrenceDays : [],
 			recurrenceEndDate: recurrenceEndDate,
 			recurrenceCount: recurrenceCount
 		};
+
 		const newEventInput: any = newEvent;
-		const resultForm = { event: newEvent, eventInput: newEventInput };
+		const resultForm = { event: newEvent, eventInput: newEventInput }; 
 		return resultForm;
 	}
-
+ 
 	private initForm(): void {
 		this.eventForm = this.fb.group({
 			title: ['', Validators.required],
@@ -474,7 +478,7 @@ export class CalendarComponent implements OnInit {
 		const labelTitle: string = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
 		const labelStartTime: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
 		const labelEndTime: string = this.languageService.getTranslateInformationAsync('general.calendar.labelEndTime');
-		const labelSelectPatient = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
+		const labelSelectPatient: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectPatient');
 
 		const labelAllDay: string = this.languageService.getTranslateInformationAsync('general.calendar.labelAllDay');
 		const labelColor: string = this.languageService.getTranslateInformationAsync('general.calendar.labelColor');
@@ -484,6 +488,12 @@ export class CalendarComponent implements OnInit {
 		const labelRecurrenceCount: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceCount');
 		const labelRecurrenceEndDate: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceEndDate');
 		const labelSelectRecurrence: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectRecurrence');
+		const labelRecurrenceNone: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceNone');
+		const labelRecurrenceType: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceType');
+		const labelRecurrenceDaily: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceDaily');
+		const labelRecurrenceWeekly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceWeekly');
+		const labelRecurrenceMonthly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceMonthly');
+		const labelRecurrenceYearly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceYearly');
 
 		this.languageUI = this.languageService.getLanguageToLocalStorage();
 
@@ -503,10 +513,15 @@ export class CalendarComponent implements OnInit {
 			labelRecurrenceDays: labelRecurrenceDays,
 			labelRecurrenceEndDate: labelRecurrenceEndDate,
 			labelRecurrenceCount: labelRecurrenceCount,
-			labelSelectRecurrence: labelSelectRecurrence
+			labelSelectRecurrence: labelSelectRecurrence,
+			labelRecurrenceNone: labelRecurrenceNone,
+			labelRecurrenceDaily: labelRecurrenceDaily,
+			labelRecurrenceWeekly: labelRecurrenceWeekly,
+			labelRecurrenceMonthly: labelRecurrenceMonthly,
+			labelRecurrenceYearly: labelRecurrenceYearly,
+			labelRecurrenceType: labelRecurrenceType
 		};
 	}
-
 	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {
 		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, this.labelsForm, inputDateIsoString, selectedEvent);
 		return formHtml;

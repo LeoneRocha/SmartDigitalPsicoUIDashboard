@@ -19,6 +19,7 @@ import * as moment from 'moment';
 import { TimeSlotDto } from 'app/models/medicalcalendar/TimeSlotDto';
 import { LanguageService } from '../language.service';
 import { GetMedicalCalendarTimeSlotDto } from 'app/models/medicalcalendar/GetMedicalCalendarTimeSlotDto';
+import { DayOfWeek } from 'app/models/general/day-of-week';
 @Injectable({
   providedIn: 'root',
 })
@@ -142,6 +143,18 @@ export class CalendarEventService {
 
 
   private mapToBaseAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
+    let recurrenceTypeValue = 0;
+    
+    if (event.recurrenceType !== null && !isNaN(Number(event.recurrenceType))) {
+      recurrenceTypeValue = typeof event.recurrenceType === 'string' ? Number(event.recurrenceType) : event.recurrenceType;
+    }
+  
+    let recurrenceDaysValue: DayOfWeek[] = [];
+    
+    if (event.recurrenceDays && event.recurrenceDays.length > 0) {
+      recurrenceDaysValue = event.recurrenceDays.filter(day => !isNaN(Number(day)));
+    }
+  
     let newEntity: ActionMedicalCalendarDtoBase = {
       enable: true,
       id: event.id ?? 0,
@@ -155,8 +168,8 @@ export class CalendarEventService {
       timeZone: 'America/Sao_Paulo',
       location: event.location ?? '',
       description: event.title,
-      recurrenceDays: event.recurrenceDays ?? [],
-      recurrenceType: event.recurrenceType ?? ERecurrenceCalendarType.None,
+      recurrenceDays: recurrenceDaysValue,
+      recurrenceType: recurrenceTypeValue,
       recurrenceCount: event.recurrenceCount ?? 0,
       recurrenceEndDate: event.recurrenceEndDate ? moment(event.recurrenceEndDate).utc(true).toDate() : null,
       medicalId: event.medicalId ?? 0,
@@ -164,12 +177,18 @@ export class CalendarEventService {
       createdUserId: null,
       modifyUserId: null
     };
+    
     // Convert dates to UTC format
     newEntity.startDateTime = moment(newEntity.startDateTime).utc(true).toDate();
     newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate();
+  
+    console.log('----------------------mapToBaseAppointmentDto - newEntity-------------------------');
+    console.log(newEntity);
+  
     return newEntity;
-
   }
+  
+  
 
   private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     return this.mapToBaseAppointmentDto(event);

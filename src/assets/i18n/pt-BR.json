@@ -137,17 +137,23 @@
       "labelSelectPatient": "Selecionar Paciente",
       "labelCreateEvent": "Adicionar Evento",
       "labelEditEvent": "Editar Evento",
-      "labelSave": "Guardar",
+      "labelSave": "Salvar",
       "labelIsAvailable": "Disponível",
-      "labelIsNotAvailable": "Não Disponível",
+      "labelIsNotAvailable": "Indisponível",
       "labelAllDay": "Todo o Dia",
       "labelColor": "Cor",
       "labelLocation": "Localização",
       "labelRecurrence": "Recorrência",
+      "labelRecurrenceType": "Recorrência",
       "labelRecurrenceDays": "Dias de Recorrência",
-      "labelRecurrenceEndDate": "Data Final da Recorrência",
-      "labelRecurrenceCount": "Contagem de Recorrência",
-      "labelSelectRecurrence": "Selecionar Recorrência"
+      "labelRecurrenceEndDate": "Data de Término da Recorrência",
+      "labelRecurrenceCount": "Quantidade de Recorrência",
+      "labelSelectRecurrence": "Selecionar Recorrência",
+      "labelRecurrenceNone": "Nenhuma",
+      "labelRecurrenceDaily": "Diária",
+      "labelRecurrenceWeekly": "Semanal",
+      "labelRecurrenceMonthly": "Mensal",
+      "labelRecurrenceYearly": "Anual"
     }
   },
   "appsetting": {
