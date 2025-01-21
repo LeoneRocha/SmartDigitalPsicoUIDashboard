@@ -21,9 +21,11 @@ export class GenericService<T, E, ID> implements GenericServiceModel<T, E, ID> {
   }
 
   update(t: E): Observable<T> {
-    let headers = this.getHeaders(); 
+    let headers = this.getHeaders();
     return this.http.put<T>(`${this.baseUrl}/`, t, { headers: headers }).pipe(map(response => { return response; }), catchError(this.customHandleError));
   }
+
+  updateAny(t: any): Observable<T> { let headers = this.getHeaders(); return this.http.put<T>(`${this.baseUrl}/`, t, { headers: headers }).pipe(map(response => { return response; }), catchError(this.customHandleError)); }
 
   getById(id: ID): Observable<T> {
     let headers = this.getHeaders();
@@ -31,7 +33,7 @@ export class GenericService<T, E, ID> implements GenericServiceModel<T, E, ID> {
   }
 
   getAll(): Observable<T[]> {
-    let headers = this.getHeaders(); 
+    let headers = this.getHeaders();
     return this.http.get<T[]>(this.baseUrl + this.urlgetAll, { headers: headers }).pipe(map(response => { return response; }), catchError(this.customHandleError));
   }
 
@@ -43,22 +45,23 @@ export class GenericService<T, E, ID> implements GenericServiceModel<T, E, ID> {
   delete(id: ID): Observable<any> {
     let headers = this.getHeaders();
     return this.http.delete<T>(`${this.baseUrl}/${id}`, { headers: headers }).pipe(map(response => { return response; }), catchError(this.customHandleError));
-  }
+  } 
+ 
   getHeaders(): HttpHeaders {
 
     let token: string = localStorage.getItem('tokenjwt');
-    let cultureUI: string = localStorage.getItem("AppLanguageId"); 
+    let cultureUI: string = localStorage.getItem("AppLanguageId");
     if (cultureUI !== 'pt-BR') {
       cultureUI = "en-US";
-    }     
+    }
     const headers = new HttpHeaders()
-    .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${token}`)
       .set('X-Culture', cultureUI);
     return headers
-  }  
-  protected customHandleError(error: Response) { 
-    const erroFluentValidationResponse: FluentValidationResponse = { ...error?.['error'] }; 
+  }
+  protected customHandleError(error: Response) {
+    const erroFluentValidationResponse: FluentValidationResponse = { ...error?.['error'] };
 
     if (error.status === 400)
       return throwError(() => new BadInput(error));
@@ -70,6 +73,4 @@ export class GenericService<T, E, ID> implements GenericServiceModel<T, E, ID> {
     // Return an observable with a user-facing error message.
     return throwError(() => new AppError(error));
   }
-
-
 }

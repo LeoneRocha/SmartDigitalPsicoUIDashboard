@@ -74,7 +74,7 @@
     "newregisterbtn": "New",
     "updateregisterbtn": "Update",
     "saveregisterbtn": "Save",
-    "description1": "Description", 
+    "description1": "Description",
     "altAdd": "Add",
     "altEdit": "Edit",
     "altView": "View",
@@ -120,13 +120,40 @@
     "mainrole": {
       "title": "Main Role",
       "required": "Main Role"
-    }, 
-     "file": {
+    },
+    "file": {
       "TitleAdd": "Add File",
       "TitleEdit": "Edit File",
       "TitleView": "View File",
       "title": "File",
-      "required":  "File is required"
+      "required": "File is required"
+    },
+    "calendar": {
+      "title": "Calendar",
+      "labelPatient": "Patient",
+      "labelTitle": "Title",
+      "labelStartTime": "Start Time",
+      "labelEndTime": "End Time",
+      "labelSelectPatient": "Select Patient",
+      "labelCreateEvent": "Add Event",
+      "labelEditEvent": "Edit Event",
+      "labelSave": "Save",
+      "labelIsAvailable": "Available",
+      "labelIsNotAvailable": "Not Available",
+      "labelAllDay": "All Day",
+      "labelColor": "Color",
+      "labelLocation": "Location",
+      "labelRecurrence": "Recurrence",
+      "labelRecurrenceType": "Recurrence",
+      "labelRecurrenceDays": "Recurrence Days",
+      "labelRecurrenceEndDate": "Recurrence End Date",
+      "labelRecurrenceCount": "Recurrence Count",
+      "labelSelectRecurrence": "Select Recurrence",
+      "labelRecurrenceNone": "None",
+      "labelRecurrenceDaily": "Daily",
+      "labelRecurrenceWeekly": "Weekly",
+      "labelRecurrenceMonthly": "Monthly",
+      "labelRecurrenceYearly": "Yearly"
     }
   },
   "appsetting": {
@@ -218,6 +245,22 @@
       "TitleAdd": "Add Medical",
       "TitleEdit": "Edit Medical",
       "TitleView": "View Medical"
+    },
+    "startWorkingTime": {
+      "title": "Start Working Time",
+      "required": "Start Working Time is required"
+    },
+    "endWorkingTime": {
+      "title": "End Working Time",
+      "required": "End Working Time is required"
+    },
+    "patientIntervalTimeMinutes": {
+      "title": "Patient Interval Time Minutes",
+      "required": "Patient Interval Time Minutes is required"
+    },
+    "workingDays": {
+      "title": "Working Days",
+      "required": "Working Days is required"
     }
   },
   "patient": {
@@ -412,20 +455,20 @@
     "title": "Access Denied!",
     "category": "403 - Forbidden",
     "description": "You don't have permission!",
-    "backnav": "Back" 
-  }, 
-  "maritalstatusoptions" : {
-    "single": { 
-      "title" : "Single"
-    }, 
-    "married": { 
-      "title" : "Married"
-    }, 
-    "divorced": { 
-      "title" : "Divorced"
-    }, 
-    "other": { 
-      "title" : "other"
-    } 
+    "backnav": "Back"
+  },
+  "maritalstatusoptions": {
+    "single": {
+      "title": "Single"
+    },
+    "married": {
+      "title": "Married"
+    },
+    "divorced": {
+      "title": "Divorced"
+    },
+    "other": {
+      "title": "other"
+    }
   }
-} 
+}

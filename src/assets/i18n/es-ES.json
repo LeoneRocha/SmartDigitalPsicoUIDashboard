@@ -127,6 +127,33 @@
       "TitleView": "Ver archivo",
       "title": "Archivo",
       "required": "Se requiere archivo"
+    },
+    "calendar": {
+      "title": "Calendario",
+      "labelPatient": "Paciente",
+      "labelTitle": "Título",
+      "labelStartTime": "Hora de Inicio",
+      "labelEndTime": "Hora de Finalización",
+      "labelSelectPatient": "Seleccionar Paciente",
+      "labelCreateEvent": "Agregar Evento",
+      "labelEditEvent": "Editar Evento",
+      "labelSave": "Guardar",
+      "labelIsAvailable": "Disponible",
+      "labelIsNotAvailable": "No Disponible",
+      "labelAllDay": "Todo el Día",
+      "labelColor": "Color",
+      "labelLocation": "Ubicación",
+      "labelRecurrence": "Recurrencia",
+      "labelRecurrenceType": "Recurrencia",
+      "labelRecurrenceDays": "Días de Recurrencia",
+      "labelRecurrenceEndDate": "Fecha de Fin de Recurrencia",
+      "labelRecurrenceCount": "Cantidad de Recurrencia",
+      "labelSelectRecurrence": "Seleccionar Recurrencia",
+      "labelRecurrenceNone": "Ninguna",
+      "labelRecurrenceDaily": "Diaria",
+      "labelRecurrenceWeekly": "Semanal",
+      "labelRecurrenceMonthly": "Mensual",
+      "labelRecurrenceYearly": "Anual"
     }
   },
   "appsetting": {
@@ -218,6 +245,22 @@
       "TitleAdd": "Agregar Médico",
       "TitleEdit": "Editar Médico",
       "TitleView": "Ver Médico"
+    },
+    "startWorkingTime": {
+      "title": "Hora de Inicio de Trabajo",
+      "required": "La Hora de Inicio de Trabajo es obligatoria"
+    },
+    "endWorkingTime": {
+      "title": "Hora de Fin de Trabajo",
+      "required": "La Hora de Fin de Trabajo es obligatoria"
+    },
+    "patientIntervalTimeMinutes": {
+      "title": "Minutos de Intervalo entre Pacientes",
+      "required": "Los Minutos de Intervalo entre Pacientes son obligatorios"
+    },
+    "workingDays": {
+      "title": "Días Laborales",
+      "required": "Los Días Laborales son obligatorios"
     }
   },
   "patient": {

@@ -17,6 +17,21 @@ $ npm install @ngrx/store --force
 $ npm install @ngrx/effects --force
 
 ng add @ngrx/store-devtools@latest
+ng generate component MedicalCalendarTest
+
+------------------- GERAR COMPONENTE 
+
+
+ng generate component src/app/testpages/MedicalCalendarTest --project pd-pro-angularcli
+
+ou na pasta app 
+
+ng generate component testpages/MedicalCalendarTest --project pd-pro-angularcli
+
+
+ng generate component components\CalendarEventModal --project pd-pro-angularcli
+
+ 
 
 
 docker build . -t leonecr/smartdigitalpsico_ui_local:latest --force-rm --no-cache

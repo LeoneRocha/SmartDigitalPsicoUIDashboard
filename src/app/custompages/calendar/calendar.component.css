@@ -1,0 +1,49 @@
+.fc-event-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fc-event .delete-event {
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+#calendar-modal-template {
+  display: none;
+}
+
+.swal2-popup {
+  width: 60%; /* Ajuste o tamanho conforme necessário */
+  padding: 0;
+}
+
+.swal2-title {
+  margin-top: 10px;
+  font-size: 24px;
+}
+
+.swal2-content {
+  padding: 0;
+}
+
+.swal2-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+.modal {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo com opacidade */
+  z-index: 1050; /* Valor alto para garantir que aparece no topo */
+}
+
+.modal-dialog {
+  margin-top: 10%;
+  z-index: 1060; /* Valor alto para garantir que aparece no topo */
+}
+
+.modal-content {
+  padding: 0;
+  z-index: 1070; /* Valor alto para garantir que aparece no topo */
+}
