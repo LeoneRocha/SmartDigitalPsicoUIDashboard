@@ -6,9 +6,7 @@
 <h3 align="center">
     💚 Atendimento Inteligente Digital De Pacientes de Psicologia. 🩺
 </h3>
- <h1 align="center">
-    <img alt="SmartDigitalPsico" title="#SmartDigitalPsico" src="./assets/banner.jpg" />
-</h1>
+ 
 <p align="center"> 
  <img src="https://sonarcloud.io/api/project_badges/measure?project=lionscorp_smartdigitalpsico&metric=coverage"/>
  <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=RED&style=for-the-badge"/> 
