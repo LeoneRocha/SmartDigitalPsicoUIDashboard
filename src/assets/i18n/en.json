@@ -144,6 +144,7 @@
       "labelColor": "Color",
       "labelLocation": "Location",
       "labelRecurrence": "Recurrence",
+      "labelRecurrenceType": "Recurrence",
       "labelRecurrenceDays": "Recurrence Days",
       "labelRecurrenceEndDate": "Recurrence End Date",
       "labelRecurrenceCount": "Recurrence Count",

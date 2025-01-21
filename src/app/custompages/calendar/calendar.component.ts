@@ -293,9 +293,7 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
-		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
-		console.log('----------------------loadDataFromApi - criteria-------------------------');
-		console.log(criteria);
+		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime); 	 
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEventsComponent();
@@ -398,14 +396,10 @@ export class CalendarComponent implements OnInit {
 		};
 
 		const newEventInput: any = newEvent;
-		const resultForm = { event: newEvent, eventInput: newEventInput };
-		console.log('----------------------getEventDataFromFormModal - resultForm-------------------------');
-		console.log(resultForm);
+		const resultForm = { event: newEvent, eventInput: newEventInput }; 
 		return resultForm;
 	}
-
-
-
+ 
 	private initForm(): void {
 		this.eventForm = this.fb.group({
 			title: ['', Validators.required],
@@ -494,8 +488,8 @@ export class CalendarComponent implements OnInit {
 		const labelRecurrenceCount: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceCount');
 		const labelRecurrenceEndDate: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceEndDate');
 		const labelSelectRecurrence: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectRecurrence');
-
 		const labelRecurrenceNone: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceNone');
+		const labelRecurrenceType: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceType');
 		const labelRecurrenceDaily: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceDaily');
 		const labelRecurrenceWeekly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceWeekly');
 		const labelRecurrenceMonthly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceMonthly');
@@ -524,7 +518,8 @@ export class CalendarComponent implements OnInit {
 			labelRecurrenceDaily: labelRecurrenceDaily,
 			labelRecurrenceWeekly: labelRecurrenceWeekly,
 			labelRecurrenceMonthly: labelRecurrenceMonthly,
-			labelRecurrenceYearly: labelRecurrenceYearly
+			labelRecurrenceYearly: labelRecurrenceYearly,
+			labelRecurrenceType: labelRecurrenceType
 		};
 	}
 	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {

@@ -37,8 +37,8 @@ export class CalendarEventModalComponent implements OnInit {
 
   ngOnInit(): void {
     // Initialize if necessary
-    console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
-    console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
+    //console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
+    //console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
     this.labelFormTitle = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelEditEvent : this.labels.labelCreateEvent;
     this.initializeRecurrenceOptions();
     this.initializeDaysOfWeek();

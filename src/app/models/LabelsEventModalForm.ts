@@ -20,6 +20,6 @@ export interface ILabelsEventModalForm {
   labelRecurrenceWeekly: string;
   labelRecurrenceMonthly: string;
   labelRecurrenceYearly: string;
+  labelRecurrenceType: string;
 }
 
-  
