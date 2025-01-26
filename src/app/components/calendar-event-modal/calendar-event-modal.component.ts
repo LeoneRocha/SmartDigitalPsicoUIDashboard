@@ -1,19 +1,19 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { DayOfWeek } from 'app/models/general/day-of-week';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
+
 @Component({
   selector: 'app-calendar-event-modal',
   templateUrl: './calendar-event-modal.component.html',
   styleUrls: ['./calendar-event-modal.component.css'],
   providers: [DatePipe] // Adicione isso para usar o DatePipe
 })
-
-export class CalendarEventModalComponent implements OnInit {
+export class CalendarEventModalComponent implements OnInit, AfterViewInit {
   labelFormTitle: string = '';
   labelFormSave: string = '';
 
@@ -37,13 +37,26 @@ export class CalendarEventModalComponent implements OnInit {
 
   public isAllDay: boolean = false;
 
-  constructor(private datePipe: DatePipe) {
-  }
+  constructor(private datePipe: DatePipe, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    // Initialize if necessary
-    //console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
-    //console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
+    // Inicialize o FormGroup com os controles de formulário necessários
+    this.form = this.fb.group({
+      title: ['', Validators.required],
+      patientId: [''],
+      startTime: ['', Validators.required],
+      endTime: [''],
+      location: [''],
+      colorCategoryHexa: [''],
+      allDay: [false],
+      recurrenceType: [''],
+      recurrenceDays: this.fb.array([]),
+      recurrenceEndDate: [''],
+      recurrenceCount: [0],
+      updateSeries: [false]
+    });
+
+    // Configure se necessário
     this.labelFormTitle = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelEditEvent : this.labels.labelCreateEvent;
     this.labelFormSave = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelBtnUpdate : this.labels.labelBtnSave;
 
@@ -51,31 +64,20 @@ export class CalendarEventModalComponent implements OnInit {
     this.tokenRecurrence = this.selectedEvent?.medicalCalendar?.tokenRecurrence || null;
 
     this.initializeRecurrenceOptions();
-    this.initializeDaysOfWeek(); 
+    this.initializeDaysOfWeek();
+    this.populateForm();
   }
 
   ngAfterViewInit(): void {
     // Coloca o foco no campo título quando o componente for renderizado
     setTimeout(() => {
       this.titleInput.nativeElement.focus();
-
       // Marca o campo isRecurring se tokenRecurrence estiver presente
       if (this.tokenRecurrence) {
         this.isRecurring = true;
       }
-
-      // Marca os dias de recorrência
-      if (this.selectedEvent && this.selectedEvent.medicalCalendar && this.selectedEvent.medicalCalendar.recurrenceDays) {
-        this.selectedEvent.medicalCalendar.recurrenceDays.forEach(day => {
-          const checkbox = document.getElementById(`day-${day}`) as HTMLInputElement;
-          if (checkbox) {
-            checkbox.checked = true;
-          }
-        });
-      }
     }, 0);
   }
-
 
   getFormattedDate(dateStr: string): string {
     return moment(dateStr).locale(this.languageUI).format('LL'); // Formata a data de acordo com o idioma
@@ -95,6 +97,7 @@ export class CalendarEventModalComponent implements OnInit {
       { value: DayOfWeek.Saturday, label: days[6] }
     ];
   }
+
   initializeRecurrenceOptions(): void {
     this.recurrenceOptions = Object.keys(ERecurrenceCalendarType)
       .filter(key => isNaN(Number(key))) // Filtra apenas as chaves que não são números
@@ -103,9 +106,52 @@ export class CalendarEventModalComponent implements OnInit {
         label: this.labels[`labelRecurrence${key}`] // Usa a chave do i18n para buscar o rótulo
       }));
   }
+
+  populateForm(): void {
+
+    const startDateTime = moment(this.selectedEvent?.start);
+    const endTimeDateTime = moment(this.selectedEvent?.end);
+    let tiltleEvent = this.labels.labelTitle;
+
+    if (this.selectedEvent && this.selectedEvent.medicalCalendar) {
+      tiltleEvent = this.selectedEvent.medicalCalendar.title ?? this.selectedEvent.medicalCalendar.patientName;
+    }
+    tiltleEvent
+    if (this.selectedEvent && this.selectedEvent?.id > 0) {
+      const dataRegister = this.selectedEvent.medicalCalendar;
+
+      this.form.patchValue({
+        title: tiltleEvent,
+        patientId: dataRegister.patientId,
+        startTime: startDateTime.format('HH:mm'),
+        endTime: endTimeDateTime.format('HH:mm'),
+        location: dataRegister.location,
+        colorCategoryHexa: dataRegister.colorCategoryHexa,
+        allDay: dataRegister.isAllDay,
+        recurrenceType: dataRegister.recurrenceType,
+        recurrenceEndDate: dataRegister.recurrenceEndDate ? moment(dataRegister.recurrenceEndDate).format('YYYY-MM-DD') : '',
+        recurrenceCount: dataRegister.recurrenceCount,
+        updateSeries: false
+      });
+
+      if (dataRegister?.recurrenceDays) {
+        const recurrenceDaysArray = dataRegister.recurrenceDays.map(day => this.fb.control(day));
+        this.form.setControl('recurrenceDays', this.fb.array(recurrenceDaysArray));
+      }
+    } else {
+      this.form.patchValue({
+        title: tiltleEvent,
+        startTime: startDateTime.format('HH:mm'),
+        endTime: endTimeDateTime.format('HH:mm'),
+        updateSeries: false
+      });
+    }
+  }
+
   toggleIsAllDay(): void {
     this.isAllDay = !this.isAllDay;
   }
+
   toggleRecurrence(): void {
     this.isRecurring = !this.isRecurring;
   }

@@ -418,7 +418,7 @@ export class CalendarComponent implements OnInit {
 	}
 	private updateForm_WithEventValues(event: any, selectedEvent: ICalendarEvent, eventDateString: string): void {
 		const startDateTime = moment(event.start);
-		const endTimeDateTime = moment(event.end)
+		const endTimeDateTime = moment(event.end);
 
 		let tiltleEvent = 'Digite aqui';
 		if (selectedEvent && selectedEvent.medicalCalendar) {
