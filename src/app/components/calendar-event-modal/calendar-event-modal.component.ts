@@ -6,6 +6,7 @@ import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecur
 import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
+import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 
 @Component({
   selector: 'app-calendar-event-modal',
@@ -43,13 +44,13 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     // Initialize if necessary
     //console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
     //console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
-       
+
     // Inicialize o FormGroup com os controles de formulário necessários
     this.form = this.fb.group({
       title: ['', Validators.required],
-      patientId: ['',  Validators.required],
-      startTime: [this.form.value.startTime,  Validators.required],
-      endTime: [this.form.value.endTime,  Validators.required],
+      patientId: ['', Validators.required],
+      startTime: [this.form.value.startTime, Validators.required],
+      endTime: [this.form.value.endTime, Validators.required],
       location: [''],
       colorCategoryHexa: [''],
       allDay: [false],
@@ -70,6 +71,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     this.initializeRecurrenceOptions();
     this.initializeDaysOfWeek();
     this.populateForm();
+    this.setRecurrenceValidators();
   }
 
   ngAfterViewInit(): void {
@@ -79,6 +81,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       // Marca o campo isRecurring se tokenRecurrence estiver presente
       if (this.tokenRecurrence) {
         this.isRecurring = true;
+        this.setRecurrenceValidators();
       }
     }, 0);
   }
@@ -111,7 +114,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       }));
   }
 
-  populateForm(): void { 
+  populateForm(): void {
     const startDateTime = moment(this.selectedEvent?.start);
     const endTimeDateTime = moment(this.selectedEvent?.end);
     let tiltleEvent = this.labels.labelTitle;
@@ -138,22 +141,51 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       });
 
       if (dataRegister?.recurrenceDays) {
-        const recurrenceDaysArray = dataRegister.recurrenceDays.map(day => this.fb.control(day));
-        this.form.setControl('recurrenceDays', this.fb.array(recurrenceDaysArray));
+        const recurrenceDaysArray = dataRegister.recurrenceDays.map(day => this.fb.control(day));        
+        this.form.setControl('recurrenceDays', this.fb.array(recurrenceDaysArray, Validators.required));
       }
     } else {
       this.form.patchValue({
-        title: tiltleEvent, 
+        title: tiltleEvent,
         updateSeries: false
       });
     }
   }
 
+  checkRecurrenceDaysFormIsValid(){
+    const recurrenceDaysArray = this.form.get('recurrenceDays') as FormArray;
+    if (recurrenceDaysArray.length === 0) {
+      this.form.get('recurrenceDays').setErrors({ required: true });
+    } else {
+      this.form.get('recurrenceDays').setErrors(null);
+    } 
+  }
+  setRecurrenceValidators(): void {
+    if (this.isRecurring) {
+      this.form.get('recurrenceType').setValidators(Validators.required);
+      this.form.get('recurrenceDays').setValidators(Validators.required);
+      this.form.get('recurrenceEndDate').setValidators(Validators.required);
+      this.form.get('recurrenceCount').setValidators(Validators.required);
+      this.checkRecurrenceDaysFormIsValid(); 
+    } else {
+      this.form.get('recurrenceType').clearValidators();
+      this.form.get('recurrenceDays').clearValidators();
+      this.form.get('recurrenceEndDate').clearValidators();
+      this.form.get('recurrenceCount').clearValidators();
+    }
+    this.form.get('recurrenceType').updateValueAndValidity();
+    this.form.get('recurrenceDays').updateValueAndValidity();
+    this.form.get('recurrenceEndDate').updateValueAndValidity();
+    this.form.get('recurrenceCount').updateValueAndValidity();
+  }
+
   toggleIsAllDay(): void {
     this.isAllDay = !this.isAllDay;
+    FormHelperCalendar.checkFormValidity(this.form)
   }
 
   toggleRecurrence(): void {
     this.isRecurring = !this.isRecurring;
+    this.setRecurrenceValidators();
   }
 }

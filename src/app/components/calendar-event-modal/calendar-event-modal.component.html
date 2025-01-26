@@ -95,31 +95,52 @@
           <div class="form-row" *ngIf="isRecurring" id="recurrence-details">
             <div class="form-group col-md-6">
               <label for="swal-recurrence" class="text-left">{{ labels.labelRecurrenceType }}</label>
-              <select class="form-control" id="swal-recurrence" formControlName="recurrenceType">
+              <select class="form-control" id="swal-recurrence" formControlName="recurrenceType" required>
                 <option value="">{{ labels.labelSelectRecurrence }}</option>
                 <ng-container *ngFor="let option of recurrenceOptions">
                   <option [value]="option.value">{{ option.label }}</option>
                 </ng-container>
               </select>
+              <div
+                *ngIf="form.get('recurrenceType').invalid && (form.get('recurrenceType').dirty || form.get('recurrenceType').touched)"
+                class="text-danger">
+                {{ labels.labelRecurrenceType }} {{ labels.labelFieldIsRequired }}.
+              </div>
             </div>
 
             <div class="form-group col-md-6">
               <label for="swal-recurrenceDays" class="text-left">{{ labels.labelRecurrenceDays }}</label>
               <div *ngFor="let day of daysOfWeek" class="checkbox">
                 <input class="form-check-input" type="checkbox" [value]="day.value"
-                  [checked]="selectedEvent?.medicalCalendar?.recurrenceDays?.includes(day.value)"
-                  id="day-{{day.value}}">
+                  [checked]="selectedEvent?.medicalCalendar?.recurrenceDays?.includes(day.value)" id="day-{{day.value}}"
+                  required (change)="checkRecurrenceDaysFormIsValid()">
                 <label class="form-check-label" for="day-{{day.value}}">{{ day.label }}</label>
+              </div>
+              <div
+                *ngIf="form.get('recurrenceDays').invalid && (form.get('recurrenceDays').dirty || form.get('recurrenceDays').touched)"
+                class="text-danger">
+                {{ labels.labelRecurrenceDays }} {{ labels.labelFieldIsRequired }}.
               </div>
             </div>
             <div class="form-group col-md-6">
               <label for="swal-recurrenceEndDate" class="text-left">{{ labels.labelRecurrenceEndDate }}</label>
-              <input type="date" class="form-control" id="swal-recurrenceEndDate" formControlName="recurrenceEndDate">
+              <input type="date" class="form-control" id="swal-recurrenceEndDate" formControlName="recurrenceEndDate"
+                required>
+              <div
+                *ngIf="form.get('recurrenceEndDate').invalid && (form.get('recurrenceEndDate').dirty || form.get('recurrenceEndDate').touched)"
+                class="text-danger">
+                {{ labels.labelRecurrenceEndDate }} {{ labels.labelFieldIsRequired }}.
+              </div>
             </div>
             <div class="form-group col-md-6">
               <label for="swal-recurrenceCount" class="text-left">{{ labels.labelRecurrenceCount }}</label>
               <input type="number" class="form-control" id="swal-recurrenceCount" [min]="0" [maxlength]="3" [max]="999"
-                formControlName="recurrenceCount">
+                formControlName="recurrenceCount" required>
+              <div
+                *ngIf="form.get('recurrenceCount').invalid && (form.get('recurrenceCount').dirty || form.get('recurrenceCount').touched)"
+                class="text-danger">
+                {{ labels.labelRecurrenceCount }} {{ labels.labelFieldIsRequired }}.
+              </div>
             </div>
           </div>
 
