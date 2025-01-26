@@ -73,6 +73,7 @@
     "backnav": "Back",
     "newregisterbtn": "New",
     "updateregisterbtn": "Update",
+    "cancelbtn": "Cancel",
     "saveregisterbtn": "Save",
     "description1": "Description",
     "altAdd": "Add",
@@ -153,7 +154,8 @@
       "labelRecurrenceDaily": "Daily",
       "labelRecurrenceWeekly": "Weekly",
       "labelRecurrenceMonthly": "Monthly",
-      "labelRecurrenceYearly": "Yearly"
+      "labelRecurrenceYearly": "Yearly",
+      "labelUpdateSeries": "Update in series"
     }
   },
   "appsetting": {

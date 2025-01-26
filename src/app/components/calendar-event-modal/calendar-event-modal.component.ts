@@ -15,13 +15,14 @@ import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
 
 export class CalendarEventModalComponent implements OnInit {
   labelFormTitle: string = '';
+  labelFormSave: string = '';
 
   @Input() form: FormGroup;
   @Input() patients: any[];
   @Input() labels: ILabelsEventModalForm;
   @Input() selectedEvent?: ICalendarEvent;
   @Input() inputDateIsoString: string;
-  @Input() languageUI: string;
+  @Input() languageUI: string;  
 
 
   @Output() onClose = new EventEmitter<void>(); // Adicione isso para o evento de fechar
@@ -30,6 +31,8 @@ export class CalendarEventModalComponent implements OnInit {
   daysOfWeek = [];
   recurrenceOptions = [];
   public isRecurring: boolean = false; // Adicione isso para controlar o estado do switch
+  isEditMode: boolean = false; // Controle do modo de edição
+  tokenRecurrence: string | null = null; // Token de recorrência
 
   public isAllDay: boolean = false;
   constructor(private datePipe: DatePipe) {
@@ -40,12 +43,18 @@ export class CalendarEventModalComponent implements OnInit {
     //console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
     //console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
     this.labelFormTitle = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelEditEvent : this.labels.labelCreateEvent;
+    this.labelFormSave = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelBtnUpdate : this.labels.labelBtnSave;
+    
+    this.isEditMode = !!this.selectedEvent && !!this.selectedEvent.id;
+    this.tokenRecurrence = this.selectedEvent?.medicalCalendar?.tokenRecurrence || null;
+ 
     this.initializeRecurrenceOptions();
     this.initializeDaysOfWeek();
   }
   getFormattedDate(dateStr: string): string {
     return moment(dateStr).locale(this.languageUI).format('LL'); // Formata a data de acordo com o idioma
   }
+
   initializeDaysOfWeek(): void {
     moment.locale(this.languageUI); // Define o idioma no moment
     const days = moment.weekdays(true); // Obtém os dias da semana no idioma definido

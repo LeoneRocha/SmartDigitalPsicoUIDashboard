@@ -203,7 +203,7 @@ export class CalendarComponent implements OnInit {
 		});
 		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
 		// Atualiza o título do modal
-		const modalTitle = this.labelsForm.labelCreateEvent;
+		//const modalTitle = this.labelsForm.labelCreateEvent;
 		this.inputDateIsoString = arg.dateStr;
 		this.selectedEvent = null;
 		// Mostra o modal usando SweetAlert2
@@ -240,7 +240,7 @@ export class CalendarComponent implements OnInit {
 		// Atualiza os valores do formulário de forma dinâmica
 		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
 
-		const modalTitle = this.labelsForm.labelEditEvent;
+		//const modalTitle = this.labelsForm.labelEditEvent;
 		this.inputDateIsoString = eventDateString;
 		this.selectedEvent = selectedEvent;
 
@@ -293,7 +293,7 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
-		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime); 	 
+		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEventsComponent();
@@ -396,10 +396,10 @@ export class CalendarComponent implements OnInit {
 		};
 
 		const newEventInput: any = newEvent;
-		const resultForm = { event: newEvent, eventInput: newEventInput }; 
+		const resultForm = { event: newEvent, eventInput: newEventInput };
 		return resultForm;
 	}
- 
+
 	private initForm(): void {
 		this.eventForm = this.fb.group({
 			title: ['', Validators.required],
@@ -472,7 +472,10 @@ export class CalendarComponent implements OnInit {
 	loadLablesModalEveent() {
 		const labelCreateEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
 		const labelEditEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
-		const labelSave: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
+
+		const labelBtnSave: string = this.languageService.getTranslateInformationAsync('general.saveregisterbtn');
+		const labelBtnUpdate: string = this.languageService.getTranslateInformationAsync('general.updateregisterbtn');
+		const labelBtnCancel: string = this.languageService.getTranslateInformationAsync('general.cancelbtn');
 
 		const labelPatient: string = this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
 		const labelTitle: string = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
@@ -494,13 +497,17 @@ export class CalendarComponent implements OnInit {
 		const labelRecurrenceWeekly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceWeekly');
 		const labelRecurrenceMonthly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceMonthly');
 		const labelRecurrenceYearly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceYearly');
+		const labelUpdateSeries: string = this.languageService.getTranslateInformationAsync('general.calendar.labelUpdateSeries');
+
 
 		this.languageUI = this.languageService.getLanguageToLocalStorage();
 
 		this.labelsForm = {
 			labelCreateEvent: labelCreateEvent,
 			labelEditEvent: labelEditEvent,
-			labelSave: labelSave,
+			labelBtnSave: labelBtnSave,
+			labelBtnUpdate: labelBtnUpdate,
+			labelBtnCancel: labelBtnCancel,
 			labelPatient: labelPatient,
 			labelTitle: labelTitle,
 			labelStartTime: labelStartTime,
@@ -519,7 +526,8 @@ export class CalendarComponent implements OnInit {
 			labelRecurrenceWeekly: labelRecurrenceWeekly,
 			labelRecurrenceMonthly: labelRecurrenceMonthly,
 			labelRecurrenceYearly: labelRecurrenceYearly,
-			labelRecurrenceType: labelRecurrenceType
+			labelRecurrenceType: labelRecurrenceType,
+			labelUpdateSeries: labelUpdateSeries
 		};
 	}
 	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {

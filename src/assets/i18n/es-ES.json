@@ -73,6 +73,7 @@
     "backnav": "Volver",
     "newregisterbtn": "Nuevo",
     "updateregisterbtn": "Actualizar",
+    "cancelbtn": "Anular",
     "saveregisterbtn": "Guardar",
     "description1": "Descripción",
     "altAdd": "Agregar",
@@ -153,7 +154,8 @@
       "labelRecurrenceDaily": "Diaria",
       "labelRecurrenceWeekly": "Semanal",
       "labelRecurrenceMonthly": "Mensual",
-      "labelRecurrenceYearly": "Anual"
+      "labelRecurrenceYearly": "Anual",
+      "labelUpdateSeries": "Actualización en serie"
     }
   },
   "appsetting": {
