@@ -40,12 +40,16 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
   constructor(private datePipe: DatePipe, private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    // Initialize if necessary
+    console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
+    console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
+       
     // Inicialize o FormGroup com os controles de formulário necessários
     this.form = this.fb.group({
       title: ['', Validators.required],
-      patientId: [''],
-      startTime: ['', Validators.required],
-      endTime: [''],
+      patientId: ['',  Validators.required],
+      startTime: [this.form.value.startTime,  Validators.required],
+      endTime: [this.form.value.endTime,  Validators.required],
       location: [''],
       colorCategoryHexa: [''],
       allDay: [false],
@@ -109,6 +113,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
 
   populateForm(): void {
 
+    
     const startDateTime = moment(this.selectedEvent?.start);
     const endTimeDateTime = moment(this.selectedEvent?.end);
     let tiltleEvent = this.labels.labelTitle;
@@ -140,9 +145,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       }
     } else {
       this.form.patchValue({
-        title: tiltleEvent,
-        startTime: startDateTime.format('HH:mm'),
-        endTime: endTimeDateTime.format('HH:mm'),
+        title: tiltleEvent, 
         updateSeries: false
       });
     }
