@@ -80,6 +80,7 @@
     "altEdit": "Editar",
     "altView": "Visualizar",
     "altDelete": "Excluir",
+    "isRequired": "é obrigatório",
     "datetime": {
       "title": "Data",
       "required": "Data é obrigatório"

@@ -478,7 +478,8 @@ export class CalendarComponent implements OnInit {
 		const labelBtnSave: string = this.languageService.getTranslateInformationAsync('general.saveregisterbtn');
 		const labelBtnUpdate: string = this.languageService.getTranslateInformationAsync('general.updateregisterbtn');
 		const labelBtnCancel: string = this.languageService.getTranslateInformationAsync('general.cancelbtn');
-
+		const labelFieldIsRequired: string = this.languageService.getTranslateInformationAsync('general.isRequired');
+ 
 		const labelPatient: string = this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
 		const labelTitle: string = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
 		const labelStartTime: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
@@ -529,7 +530,8 @@ export class CalendarComponent implements OnInit {
 			labelRecurrenceMonthly: labelRecurrenceMonthly,
 			labelRecurrenceYearly: labelRecurrenceYearly,
 			labelRecurrenceType: labelRecurrenceType,
-			labelUpdateSeries: labelUpdateSeries
+			labelUpdateSeries: labelUpdateSeries,
+			labelFieldIsRequired: labelFieldIsRequired
 		};
 	}
 	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {
