@@ -5,4 +5,6 @@ export interface ActionMedicalCalendarDtoBase extends GetMedicalCalendarDtoBase 
   patientId?: number;
   createdUserId?: number;
   modifyUserId?: number;
+  updateSeries?: boolean;
+  tokenRecurrence?: string;
 }

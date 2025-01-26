@@ -41,8 +41,8 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // Initialize if necessary
-    console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
-    console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
+    //console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
+    //console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
        
     // Inicialize o FormGroup com os controles de formulário necessários
     this.form = this.fb.group({
@@ -111,9 +111,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       }));
   }
 
-  populateForm(): void {
-
-    
+  populateForm(): void { 
     const startDateTime = moment(this.selectedEvent?.start);
     const endTimeDateTime = moment(this.selectedEvent?.end);
     let tiltleEvent = this.labels.labelTitle;

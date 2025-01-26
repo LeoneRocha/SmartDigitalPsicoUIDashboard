@@ -67,12 +67,12 @@ export class CalendarEventService {
   }
 
   addCalendarEvent(event: ICalendarEvent): Observable<ServiceResponse<GetMedicalCalendarDto>> {
-    const newAppointment = this.mapToAddAppointmentDto(event);
+    const newAppointment = this.mapToAddCalendarEvent(event);
     return this.medicalCalendarService.create(newAppointment);
   }
 
   updateCalendarEvent(event: ICalendarEvent): Observable<ServiceResponse<GetMedicalCalendarDto>> {
-    const updateAppointment = this.mapToUpdateAppointmentDto(event);
+    const updateAppointment = this.mapToUpdateCalendarEvent(event);
     return this.medicalCalendarService.updateAny(updateAppointment);
   }
 
@@ -142,7 +142,7 @@ export class CalendarEventService {
   }
 
 
-  private mapToBaseAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
+  private mapToActionCalendarEventBase(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     let recurrenceTypeValue = 0;
 
     if (event.recurrenceType !== null && !isNaN(Number(event.recurrenceType))) {
@@ -177,31 +177,27 @@ export class CalendarEventService {
       medicalId: event.medicalId ?? 0,
       patientId: event.patientId ?? 0,
       createdUserId: null,
-      modifyUserId: null
+      modifyUserId: null, 
+      updateSeries: event.updateSeries ?? false,
+      tokenRecurrence: event.tokenRecurrence 
     };
 
     // Convert dates to UTC format
     newEntity.startDateTime = moment(newEntity.startDateTime).utc(true).toDate();
-    newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate();
-
-    console.log('----------------------mapToBaseAppointmentDto - newEntity-------------------------');
-    console.log(newEntity);
-
+    newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate(); 
     return newEntity;
   }
 
 
 
-  private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
-    return this.mapToBaseAppointmentDto(event);
+  private mapToAddCalendarEvent(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
+    return this.mapToActionCalendarEventBase(event);
   }
 
-  private mapToUpdateAppointmentDto(event: ICalendarEvent): UpdateMedicalCalendarDto {
-    const baseDto = this.mapToBaseAppointmentDto(event) as UpdateMedicalCalendarDto;
+  private mapToUpdateCalendarEvent(event: ICalendarEvent): UpdateMedicalCalendarDto {
+    const baseDto = this.mapToActionCalendarEventBase(event) as UpdateMedicalCalendarDto;
     return {
-      ...baseDto,
-      updateSeries: false,
-      tokenRecurrence: ''
+      ...baseDto
     };
   }
 }
