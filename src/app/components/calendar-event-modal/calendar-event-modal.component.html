@@ -113,14 +113,12 @@
               <div formArrayName="recurrenceDays">
                 <div *ngFor="let day of daysOfWeek" class="checkbox">
                   <input class="form-check-input" type="checkbox" [value]="day.value"
-                    [checked]="selectedEvent?.medicalCalendar?.recurrenceDays?.includes(day.value)" id="day-{{day.value}}"
-                    required (change)="onRecurrenceDayChange(day.value)">
+                    [checked]="selectedEvent?.medicalCalendar?.recurrenceDays?.includes(day.value)"
+                    id="day-{{day.value}}" required (change)="onRecurrenceDayChange(day.value)">
                   <label class="form-check-label" for="day-{{day.value}}">{{ day.label }}</label>
                 </div>
               </div>
-              <div
-                *ngIf="form.get('recurrenceDays').invalid"
-                class="text-danger">
+              <div *ngIf="form.get('recurrenceDays').invalid" class="text-danger">
                 {{ labels.labelRecurrenceDays }} {{ labels.labelFieldIsRequired }}.
               </div>
             </div>
@@ -145,10 +143,6 @@
               </div>
             </div>
           </div>
-
-    
-          
-
           <div *ngIf="isEditMode && tokenRecurrence">
             <div class="row">
               <div class="form-group col-md-12">
