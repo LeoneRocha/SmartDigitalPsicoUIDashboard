@@ -144,17 +144,19 @@ export class CalendarEventService {
 
   private mapToBaseAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     let recurrenceTypeValue = 0;
-    
+
     if (event.recurrenceType !== null && !isNaN(Number(event.recurrenceType))) {
       recurrenceTypeValue = typeof event.recurrenceType === 'string' ? Number(event.recurrenceType) : event.recurrenceType;
     }
-  
+
     let recurrenceDaysValue: DayOfWeek[] = [];
-    
+
     if (event.recurrenceDays && event.recurrenceDays.length > 0) {
       recurrenceDaysValue = event.recurrenceDays.filter(day => !isNaN(Number(day)));
     }
-  
+
+    let statusEvent = EStatusCalendar.Scheduled;//TODO: PEGAR NA TELA QUANDO FOR ATUALIZAR
+
     let newEntity: ActionMedicalCalendarDtoBase = {
       enable: true,
       id: event.id ?? 0,
@@ -162,7 +164,7 @@ export class CalendarEventService {
       startDateTime: event.start,
       endDateTime: event.end,
       isAllDay: event.allDay ?? false,
-      status: EStatusCalendar.Active,
+      status: statusEvent,
       colorCategoryHexa: event.colorCategoryHexa ?? '#000000',
       isPushedCalendar: false,
       timeZone: 'America/Sao_Paulo',
@@ -177,18 +179,18 @@ export class CalendarEventService {
       createdUserId: null,
       modifyUserId: null
     };
-    
+
     // Convert dates to UTC format
     newEntity.startDateTime = moment(newEntity.startDateTime).utc(true).toDate();
     newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate();
-  
+
     console.log('----------------------mapToBaseAppointmentDto - newEntity-------------------------');
     console.log(newEntity);
-  
+
     return newEntity;
   }
-  
-  
+
+
 
   private mapToAddAppointmentDto(event: ICalendarEvent): ActionMedicalCalendarDtoBase {
     return this.mapToBaseAppointmentDto(event);

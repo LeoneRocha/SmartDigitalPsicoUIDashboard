@@ -1,141 +1,127 @@
 <div class="main-content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="header row">
-                    <div class="col">
-                        <h4 class="title lead pb-3">{{ labelFormTitle }}</h4>
-                    </div>
-                    <div class="col">
-                        <br />
-                        <h6 class="subtitle text-muted pb-3">{{ getFormattedDate(inputDateIsoString) }}</h6>
-                    </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="header row">
+            <div class="col">
+              <h4 class="title lead pb-3">{{ labelFormTitle }}</h4>
+            </div>
+            <div class="col">
+              <br />
+              <h6 class="subtitle text-muted pb-3">{{ getFormattedDate(inputDateIsoString) }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <br />
+        <div class="content">
+          <form [formGroup]="form">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="swal-patient" class="text-left">{{ labels.labelPatient }}</label>
+                <select class="form-control" formControlName="patientId" id="swal-patient">
+                  <option value="">{{ labels.labelSelectPatient }}</option>
+                  <ng-container *ngFor="let p of patients">
+                    <option [value]="p.id" [selected]="selectedEvent?.medicalCalendar?.patientId === p.id">
+                      {{ p.text }}
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="swal-title" class="text-left">{{ labels.labelTitle }}</label>
+                <input type="text" class="form-control" id="swal-title" formControlName="title" #titleInput>
+              </div>
+            </div>
+  
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="swal-startTime" class="text-left">{{ labels.labelStartTime }}</label>
+                <input type="time" class="form-control" id="swal-startTime" formControlName="startTime">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="swal-endTime" class="text-left">{{ labels.labelEndTime }}</label>
+                <input type="time" class="form-control" id="swal-endTime" formControlName="endTime">
+              </div>
+            </div>
+  
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="swal-location" class="text-left">{{ labels.labelLocation }}</label>
+                <input type="text" class="form-control" id="swal-location" formControlName="location">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="swal-color" class="text-left">{{ labels.labelColor }}</label>
+                <input type="color" class="form-control" id="swal-color" formControlName="colorCategoryHexa">
+              </div>
+            </div>
+  
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <div class="checkbox">
+                  <input id="swal-allDay" type="checkbox" (change)="toggleIsAllDay()" [checked]="isAllDay" [value]="isAllDay" class="form-check-input">
+                  <label class="form-check-label" for="swal-allDay">{{ labels.labelAllDay }}</label>
                 </div>
+              </div>
+              <div class="form-group col-md-6">
+                <div class="checkbox">
+                  <input id="swal-isRecurring" type="checkbox" (change)="toggleRecurrence()" [checked]="isRecurring" [value]="isRecurring" class="form-check-input">
+                  <label class="form-check-label" for="swal-isRecurring">{{ labels.labelRecurrence }}</label>
+                </div>
+              </div>
             </div>
-        </div>
-        <div class="row">
-            <br />
-            <div class="content">
-                <form [formGroup]="form">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="swal-patient" class="text-left">{{ labels.labelPatient }}</label>
-                            <select class="form-control" formControlName="patientId" id="swal-patient">
-                                <option value="">{{ labels.labelSelectPatient }}</option>
-                                <ng-container *ngFor="let p of patients">
-                                    <option [value]="p.id"
-                                        [selected]="selectedEvent?.medicalCalendar?.patientId === p.id">
-                                        {{ p.text }}
-                                    </option>
-                                </ng-container>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="swal-title" class="text-left">{{ labels.labelTitle }}</label>
-                            <input type="text" class="form-control" id="swal-title" formControlName="title">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="swal-startTime" class="text-left">{{ labels.labelStartTime }}</label>
-                            <input type="time" class="form-control" id="swal-startTime" formControlName="startTime">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="swal-endTime" class="text-left">{{ labels.labelEndTime }}</label>
-                            <input type="time" class="form-control" id="swal-endTime" formControlName="endTime">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="swal-location" class="text-left">{{ labels.labelLocation }}</label>
-                            <input type="text" class="form-control" id="swal-location" formControlName="location">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="swal-color" class="text-left">{{ labels.labelColor }}</label>
-                            <input type="color" class="form-control" id="swal-color"
-                                formControlName="colorCategoryHexa">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <div class="checkbox">
-                                <input id="swal-allDay" type="checkbox" (change)="toggleIsAllDay()" [checked]="isAllDay"
-                                    [value]="isAllDay" class="form-check-input">
-                                <label class="form-check-label" for="swal-allDay">{{ labels.labelAllDay }}</label>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <div class="checkbox">
-                                <input id="swal-isRecurring" type="checkbox" (change)="toggleRecurrence()"
-                                    [checked]="isRecurring" [value]="isRecurring" class="form-check-input">
-                                <label class="form-check-label" for="swal-isRecurring">{{ labels.labelRecurrence
-                                    }}</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row" *ngIf="isRecurring" id="recurrence-details">
-                        <div class="form-group col-md-6">
-                            <label for="swal-recurrence" class="text-left">{{ labels.labelRecurrenceType }}</label>
-                            <select class="form-control" id="swal-recurrence" formControlName="recurrenceType">
-                                <option value="">{{ labels.labelSelectRecurrence }}</option>
-                                <ng-container *ngFor="let option of recurrenceOptions">
-                                    <option [value]="option.value">{{ option.label }}</option>
-                                </ng-container>
-                            </select>
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            <label for="swal-recurrenceDays" class="text-left">{{ labels.labelRecurrenceDays }}</label>
-                            <div *ngFor="let day of daysOfWeek" class="checkbox">
-                                <input class="form-check-input" type="checkbox" [value]="day.value"
-                                    [checked]="selectedEvent?.recurrenceDays?.includes(day.value)"
-                                    id="day-{{day.value}}">
-                                <label class="form-check-label" for="day-{{day.value}}">{{ day.label }}</label>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="swal-recurrenceEndDate" class="text-left">{{ labels.labelRecurrenceEndDate
-                                }}</label>
-                            <input type="date" class="form-control" id="swal-recurrenceEndDate"
-                                formControlName="recurrenceEndDate">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="swal-recurrenceCount" class="text-left">{{ labels.labelRecurrenceCount
-                                }}</label>
-                            <input type="number" class="form-control" id="swal-recurrenceCount" [min]="0"
-                                [maxlength]="3" [max]="999" formControlName="recurrenceCount">
-                        </div>
-                    </div>
-
-                    <div *ngIf="isEditMode && tokenRecurrence">
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <div class="checkbox">
-                                    <input id="swal-updateSeries" type="checkbox" formControlName="updateSeries"
-                                        class="form-check-input">
-                                    <label class="form-check-label" for="swal-updateSeries">{{ labels.labelUpdateSeries
-                                        }}</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-info btn-fill pull-left"
-                                    (click)="onClose.emit()">{{this.labels.labelBtnCancel}}</button>
-                                <button type="button" class="btn btn-info btn-fill pull-right"
-                                    (click)="onConfirm.emit()">{{this.labelFormSave}}</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+  
+            <div class="form-row" *ngIf="isRecurring" id="recurrence-details">
+              <div class="form-group col-md-6">
+                <label for="swal-recurrence" class="text-left">{{ labels.labelRecurrenceType }}</label>
+                <select class="form-control" id="swal-recurrence" formControlName="recurrenceType">
+                  <option value="">{{ labels.labelSelectRecurrence }}</option>
+                  <ng-container *ngFor="let option of recurrenceOptions">
+                    <option [value]="option.value">{{ option.label }}</option>
+                  </ng-container>
+                </select>
+              </div>
+  
+              <div class="form-group col-md-6">
+                <label for="swal-recurrenceDays" class="text-left">{{ labels.labelRecurrenceDays }}</label>
+                <div *ngFor="let day of daysOfWeek" class="checkbox">
+                  <input class="form-check-input" type="checkbox" [value]="day.value" [checked]="selectedEvent?.medicalCalendar?.recurrenceDays?.includes(day.value)" id="day-{{day.value}}">
+                  <label class="form-check-label" for="day-{{day.value}}">{{ day.label }}</label>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="swal-recurrenceEndDate" class="text-left">{{ labels.labelRecurrenceEndDate }}</label>
+                <input type="date" class="form-control" id="swal-recurrenceEndDate" formControlName="recurrenceEndDate">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="swal-recurrenceCount" class="text-left">{{ labels.labelRecurrenceCount }}</label>
+                <input type="number" class="form-control" id="swal-recurrenceCount" [min]="0" [maxlength]="3" [max]="999" formControlName="recurrenceCount">
+              </div>
             </div>
+  
+            <div *ngIf="isEditMode && tokenRecurrence">
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <div class="checkbox">
+                    <input id="swal-updateSeries" type="checkbox" formControlName="updateSeries" class="form-check-input">
+                    <label class="form-check-label" for="swal-updateSeries">{{ labels.labelUpdateSeries }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-actions">
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-info btn-fill pull-left" (click)="onClose.emit()">{{this.labels.labelBtnCancel}}</button>
+                  <button type="button" class="btn btn-info btn-fill pull-right" (click)="onConfirm.emit()">{{this.labelFormSave}}</button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+  

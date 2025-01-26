@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DayOfWeek } from 'app/models/general/day-of-week';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
@@ -22,11 +22,12 @@ export class CalendarEventModalComponent implements OnInit {
   @Input() labels: ILabelsEventModalForm;
   @Input() selectedEvent?: ICalendarEvent;
   @Input() inputDateIsoString: string;
-  @Input() languageUI: string;  
-
+  @Input() languageUI: string;
 
   @Output() onClose = new EventEmitter<void>(); // Adicione isso para o evento de fechar
   @Output() onConfirm = new EventEmitter<void>(); // Adicione isso para o evento de confirmar
+
+  @ViewChild('titleInput') titleInput: ElementRef; // ViewChild para acessar o input do título
 
   daysOfWeek = [];
   recurrenceOptions = [];
@@ -35,6 +36,7 @@ export class CalendarEventModalComponent implements OnInit {
   tokenRecurrence: string | null = null; // Token de recorrência
 
   public isAllDay: boolean = false;
+
   constructor(private datePipe: DatePipe) {
   }
 
@@ -44,13 +46,37 @@ export class CalendarEventModalComponent implements OnInit {
     //console.log({ form: this.form, patients: this.patients, labels: this.labels, selectedEvent: this.selectedEvent, inputDateIsoString: this.inputDateIsoString, languageUI: this.languageUI });
     this.labelFormTitle = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelEditEvent : this.labels.labelCreateEvent;
     this.labelFormSave = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelBtnUpdate : this.labels.labelBtnSave;
-    
+
     this.isEditMode = !!this.selectedEvent && !!this.selectedEvent.id;
     this.tokenRecurrence = this.selectedEvent?.medicalCalendar?.tokenRecurrence || null;
- 
+
     this.initializeRecurrenceOptions();
-    this.initializeDaysOfWeek();
+    this.initializeDaysOfWeek(); 
   }
+
+  ngAfterViewInit(): void {
+    // Coloca o foco no campo título quando o componente for renderizado
+    setTimeout(() => {
+      this.titleInput.nativeElement.focus();
+
+      // Marca o campo isRecurring se tokenRecurrence estiver presente
+      if (this.tokenRecurrence) {
+        this.isRecurring = true;
+      }
+
+      // Marca os dias de recorrência
+      if (this.selectedEvent && this.selectedEvent.medicalCalendar && this.selectedEvent.medicalCalendar.recurrenceDays) {
+        this.selectedEvent.medicalCalendar.recurrenceDays.forEach(day => {
+          const checkbox = document.getElementById(`day-${day}`) as HTMLInputElement;
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        });
+      }
+    }, 0);
+  }
+
+
   getFormattedDate(dateStr: string): string {
     return moment(dateStr).locale(this.languageUI).format('LL'); // Formata a data de acordo com o idioma
   }
