@@ -141,7 +141,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       });
 
       if (dataRegister?.recurrenceDays) {
-        const recurrenceDaysArray = dataRegister.recurrenceDays.map(day => this.fb.control(day));        
+        const recurrenceDaysArray = dataRegister.recurrenceDays.map(day => this.fb.control(day));
         this.form.setControl('recurrenceDays', this.fb.array(recurrenceDaysArray, Validators.required));
       }
     } else {
@@ -152,14 +152,30 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     }
   }
 
-  checkRecurrenceDaysFormIsValid(){
+  checkRecurrenceDaysFormIsValid(): void {
     const recurrenceDaysArray = this.form.get('recurrenceDays') as FormArray;
     if (recurrenceDaysArray.length === 0) {
       this.form.get('recurrenceDays').setErrors({ required: true });
     } else {
       this.form.get('recurrenceDays').setErrors(null);
-    } 
+    }    
+    this.form.get('recurrenceDays').updateValueAndValidity();
   }
+
+  onRecurrenceDayChange(day: number): void {
+    const recurrenceDaysArray = this.form.get('recurrenceDays') as FormArray;
+    if (recurrenceDaysArray.value.includes(day)) {
+      const index = recurrenceDaysArray.value.indexOf(day);
+      recurrenceDaysArray.removeAt(index);
+    } else {
+      recurrenceDaysArray.push(this.fb.control(day));
+    }
+  
+    this.form.setControl('recurrenceDays', recurrenceDaysArray); // Adiciona o array ao campo recurrenceDays
+    this.checkRecurrenceDaysFormIsValid();
+  }
+  
+ 
   setRecurrenceValidators(): void {
     if (this.isRecurring) {
       this.form.get('recurrenceType').setValidators(Validators.required);
