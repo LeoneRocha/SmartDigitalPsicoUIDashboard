@@ -24,8 +24,6 @@ export class FormHelperCalendar {
 
     return defaultValue;
   }
-
-
   public static getFormHtml(form: FormGroup, patients: any[], labels: any, date: string, selectedEvent: ICalendarEvent): string {
     const patientsOptions = patients.map(p =>
       `<option value="${p.id}" ${selectedEvent && selectedEvent.medicalCalendar && p.id === selectedEvent.medicalCalendar.patientId ? 'selected' : ''}>${p.text}</option>`
@@ -117,5 +115,18 @@ export class FormHelperCalendar {
       </script>
     `;
   }
+
+  public static checkFormValidity(form: FormGroup): void {
+    const invalidFields = [];
+    const controls = form.controls;
+  
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalidFields.push(name);
+      }
+    } 
+    console.log('Invalid fields:', invalidFields);
+  }
+  
 }
 //style="display: none;"

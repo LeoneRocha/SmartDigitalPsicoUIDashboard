@@ -1,7 +1,9 @@
 export interface ILabelsEventModalForm {
   labelCreateEvent: string;
   labelEditEvent: string;
-  labelSave: string;
+  labelBtnSave: string,
+  labelBtnUpdate: string,
+  labelBtnCancel: string,
   labelPatient: string;
   labelTitle: string;
   labelStartTime: string;
@@ -21,5 +23,7 @@ export interface ILabelsEventModalForm {
   labelRecurrenceMonthly: string;
   labelRecurrenceYearly: string;
   labelRecurrenceType: string;
+  labelUpdateSeries: string;
+  labelFieldIsRequired: string;
 }
 

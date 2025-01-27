@@ -73,12 +73,14 @@
     "backnav": "Voltar",
     "newregisterbtn": "Novo",
     "updateregisterbtn": "Atualizar",
+    "cancelbtn": "Cancelar",
     "saveregisterbtn": "Salvar",
     "description1": "Descrição",
     "altAdd": "Adicionar",
     "altEdit": "Editar",
     "altView": "Visualizar",
     "altDelete": "Excluir",
+    "isRequired": "é obrigatório",
     "datetime": {
       "title": "Data",
       "required": "Data é obrigatório"
@@ -153,7 +155,8 @@
       "labelRecurrenceDaily": "Diária",
       "labelRecurrenceWeekly": "Semanal",
       "labelRecurrenceMonthly": "Mensal",
-      "labelRecurrenceYearly": "Anual"
+      "labelRecurrenceYearly": "Anual",
+      "labelUpdateSeries": "Atualizar em serie"
     }
   },
   "appsetting": {

@@ -203,7 +203,7 @@ export class CalendarComponent implements OnInit {
 		});
 		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
 		// Atualiza o título do modal
-		const modalTitle = this.labelsForm.labelCreateEvent;
+		//const modalTitle = this.labelsForm.labelCreateEvent;
 		this.inputDateIsoString = arg.dateStr;
 		this.selectedEvent = null;
 		// Mostra o modal usando SweetAlert2
@@ -228,6 +228,11 @@ export class CalendarComponent implements OnInit {
 		// 	};
 		// });
 	}
+
+	getEventSelected(): ICalendarEvent {
+		return this.eventsData.find(e => e.id == this.selectedEventId);
+	}
+
 	openEditEventModal(arg): void {
 		this.isEditMode = true;
 		const event = arg.event;
@@ -235,12 +240,12 @@ export class CalendarComponent implements OnInit {
 		this.selectedEventId = event.id;
 
 		// Buscar o evento correspondente em this.eventsData pelo ID
-		const selectedEvent: ICalendarEvent = this.eventsData.find(e => e.id == this.selectedEventId);
+		const selectedEvent: ICalendarEvent = this.getEventSelected();
 
 		// Atualiza os valores do formulário de forma dinâmica
 		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
 
-		const modalTitle = this.labelsForm.labelEditEvent;
+		//const modalTitle = this.labelsForm.labelEditEvent;
 		this.inputDateIsoString = eventDateString;
 		this.selectedEvent = selectedEvent;
 
@@ -269,13 +274,7 @@ export class CalendarComponent implements OnInit {
 	}
 
 	confirmEventForm(): void {
-		if (this.isEditMode) {
-			this.saveEventFromSwal(this.inputDateIsoString);
-		} else {
-			this.saveEventFromSwal(this.inputDateIsoString);
-		}
-		this.showModal = false;
-		this.showEventForm = false;
+		this.saveEventFromSwal(this.inputDateIsoString);
 	}
 
 	//#endregion FULL CALENDAR - EVENTS
@@ -293,7 +292,7 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
-		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime); 	 
+		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
 			this.updateCalendarEventsComponent();
@@ -303,10 +302,11 @@ export class CalendarComponent implements OnInit {
 		const newEventData = this.getEventDataFromFormModal(dateStr);
 		const newEvent: ICalendarEvent = newEventData.event;
 		const newEventInput = newEventData.eventInput;
-		console.log('----------------------saveEventFromSwal - newEvent-------------------------');
-		console.log(newEvent);
+		 
 		if (this.isEditMode && this.selectedEventId > 0) {
 			newEvent.id = this.selectedEventId;
+			const selectedEvent: ICalendarEvent = this.getEventSelected();
+			newEvent.tokenRecurrence = selectedEvent?.medicalCalendar?.tokenRecurrence;
 			this.updateCalendarEventFromService(newEvent);
 		} else {
 			this.addCalendarEventFromService(newEvent, newEventInput);
@@ -316,8 +316,9 @@ export class CalendarComponent implements OnInit {
 		this.calendarEventService.addCalendarEvent(newEvent).subscribe({
 			next: (response) => {
 				newEvent.id = response.data.id;
-				this.fullcalendar.getApi().addEvent(newEventInput);
 				SuccessHelper.displaySuccess(response);
+				this.setToCloseModal(); 
+				this.updateFullCalendarComponent();
 			},
 			error: (err) => {
 				ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
@@ -328,17 +329,11 @@ export class CalendarComponent implements OnInit {
 	updateCalendarEventFromService(updatedEvent: ICalendarEvent): void {
 		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
 			next: (response) => {
-
-				const event = this.fullcalendar.getApi().getEventById(this.selectedEventId.toString());
-				event.setProp('title', updatedEvent.title);
-				event.setStart(new Date(updatedEvent.start));
-				event.setEnd(updatedEvent.end ? new Date(updatedEvent.end) : null);
-				SuccessHelper.displaySuccess(response);
-				this.reloadComponent();
+				SuccessHelper.displaySuccess(response); 
+				this.setToCloseModal();
+				this.updateFullCalendarComponent();
 			},
-			error: (err) => {
-				console.log('----------------------updateCalendarEventFromService - err-------------------------');
-				console.log(err);
+			error: (err) => { 
 				const errors = Array.isArray(err?.originalError?.error) ? err?.originalError?.error : [{ message: 'An error occurred while updating the event.' }];
 				ErrorHelper.displayErrors(errors);
 			}
@@ -351,6 +346,15 @@ export class CalendarComponent implements OnInit {
 				event.remove();
 			}
 		});
+	}
+	updateFullCalendarComponent() {
+		setTimeout(() => {
+			this.reloadComponent(); 
+		  }, 100); 
+	}
+	setToCloseModal() {
+		this.showModal = false;
+		this.showEventForm = false;
 	}
 	//#endregion ACTIONS E LOAD API DATA 
 
@@ -366,18 +370,15 @@ export class CalendarComponent implements OnInit {
 		const colorCategoryHexa = FormHelperCalendar.getValue('swal-color', '#000000');
 		const allDay = FormHelperCalendar.getValue('swal-allDay', false);
 
-		// Recupere os dias da semana selecionados como checkboxes
-
 		const startDateTime = moment(`${dateStr}T${startTime}`).toDate();
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
-
-		//recurrence
-		const isRecurring = FormHelperCalendar.getValue('swal-isRecurring', false);
 
 		const recurrenceType = FormHelperCalendar.getValue('swal-recurrence', 'None');
 		const recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));
 		const recurrenceEndDate = FormHelperCalendar.getValue('swal-recurrenceEndDate', null) ? new Date(FormHelperCalendar.getValue('swal-recurrenceEndDate', null)) : null;
 		const recurrenceCount = FormHelperCalendar.getValue('swal-recurrenceCount', null) ? Number(FormHelperCalendar.getValue('swal-recurrenceCount', '0')) : null;
+
+		const updateSeries = FormHelperCalendar.getValue('swal-updateSeries', false);
 
 		const newEvent: ICalendarEvent = {
 			title: title,
@@ -392,14 +393,15 @@ export class CalendarComponent implements OnInit {
 			recurrenceType: recurrenceType as ERecurrenceCalendarType,
 			recurrenceDays: recurrenceDays.length ? recurrenceDays : [],
 			recurrenceEndDate: recurrenceEndDate,
-			recurrenceCount: recurrenceCount
+			recurrenceCount: recurrenceCount,
+			updateSeries: updateSeries
 		};
 
 		const newEventInput: any = newEvent;
-		const resultForm = { event: newEvent, eventInput: newEventInput }; 
+		const resultForm = { event: newEvent, eventInput: newEventInput };
 		return resultForm;
 	}
- 
+
 	private initForm(): void {
 		this.eventForm = this.fb.group({
 			title: ['', Validators.required],
@@ -418,7 +420,7 @@ export class CalendarComponent implements OnInit {
 	}
 	private updateForm_WithEventValues(event: any, selectedEvent: ICalendarEvent, eventDateString: string): void {
 		const startDateTime = moment(event.start);
-		const endTimeDateTime = moment(event.end)
+		const endTimeDateTime = moment(event.end);
 
 		let tiltleEvent = 'Digite aqui';
 		if (selectedEvent && selectedEvent.medicalCalendar) {
@@ -472,8 +474,12 @@ export class CalendarComponent implements OnInit {
 	loadLablesModalEveent() {
 		const labelCreateEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
 		const labelEditEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
-		const labelSave: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSave');
 
+		const labelBtnSave: string = this.languageService.getTranslateInformationAsync('general.saveregisterbtn');
+		const labelBtnUpdate: string = this.languageService.getTranslateInformationAsync('general.updateregisterbtn');
+		const labelBtnCancel: string = this.languageService.getTranslateInformationAsync('general.cancelbtn');
+		const labelFieldIsRequired: string = this.languageService.getTranslateInformationAsync('general.isRequired');
+ 
 		const labelPatient: string = this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
 		const labelTitle: string = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
 		const labelStartTime: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
@@ -494,13 +500,17 @@ export class CalendarComponent implements OnInit {
 		const labelRecurrenceWeekly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceWeekly');
 		const labelRecurrenceMonthly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceMonthly');
 		const labelRecurrenceYearly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceYearly');
+		const labelUpdateSeries: string = this.languageService.getTranslateInformationAsync('general.calendar.labelUpdateSeries');
+
 
 		this.languageUI = this.languageService.getLanguageToLocalStorage();
 
 		this.labelsForm = {
 			labelCreateEvent: labelCreateEvent,
 			labelEditEvent: labelEditEvent,
-			labelSave: labelSave,
+			labelBtnSave: labelBtnSave,
+			labelBtnUpdate: labelBtnUpdate,
+			labelBtnCancel: labelBtnCancel,
 			labelPatient: labelPatient,
 			labelTitle: labelTitle,
 			labelStartTime: labelStartTime,
@@ -519,7 +529,9 @@ export class CalendarComponent implements OnInit {
 			labelRecurrenceWeekly: labelRecurrenceWeekly,
 			labelRecurrenceMonthly: labelRecurrenceMonthly,
 			labelRecurrenceYearly: labelRecurrenceYearly,
-			labelRecurrenceType: labelRecurrenceType
+			labelRecurrenceType: labelRecurrenceType,
+			labelUpdateSeries: labelUpdateSeries,
+			labelFieldIsRequired: labelFieldIsRequired
 		};
 	}
 	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {
