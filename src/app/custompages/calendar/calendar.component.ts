@@ -317,8 +317,8 @@ export class CalendarComponent implements OnInit {
 			next: (response) => {
 				newEvent.id = response.data.id;
 				SuccessHelper.displaySuccess(response);
-				this.setToCloseModal();
-				this.fullcalendar.getApi().addEvent(newEventInput);
+				this.setToCloseModal(); 
+				this.updateFullCalendarComponent();
 			},
 			error: (err) => {
 				ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
@@ -331,7 +331,7 @@ export class CalendarComponent implements OnInit {
 			next: (response) => {
 				SuccessHelper.displaySuccess(response); 
 				this.setToCloseModal();
-				this.updateFullCalendarComponent(updatedEvent);
+				this.updateFullCalendarComponent();
 			},
 			error: (err) => { 
 				const errors = Array.isArray(err?.originalError?.error) ? err?.originalError?.error : [{ message: 'An error occurred while updating the event.' }];
@@ -347,7 +347,7 @@ export class CalendarComponent implements OnInit {
 			}
 		});
 	}
-	updateFullCalendarComponent(updatedEvent: ICalendarEvent) {
+	updateFullCalendarComponent() {
 		setTimeout(() => {
 			this.reloadComponent(); 
 		  }, 100); 
