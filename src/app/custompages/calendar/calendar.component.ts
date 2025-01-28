@@ -198,17 +198,14 @@ export class CalendarComponent implements OnInit {
 
 	openEditEventModal(arg): void {
 		const event = arg.event;
-		console.log(event);
 		const eventDateString = moment(event.start).format('YYYY-MM-DD');
 		this.selectedEventId = event.id;
 		// Buscar o evento correspondente em this.eventsData pelo ID
 		const selectedEvent: ICalendarEvent = this.getEventSelected();
-		this.isEditMode = true;
-
-		if (selectedEvent && selectedEvent.editable || event.backgroundColor !== 'gray' ) {
+		if (selectedEvent && selectedEvent.editable || event.backgroundColor !== 'gray') {
+			this.isEditMode = true;
 			// Atualiza os valores do formulário de forma dinâmica
 			this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
-
 			this.inputDateIsoString = eventDateString;
 			this.selectedEvent = selectedEvent;
 			this.setToShowModal();
