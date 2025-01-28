@@ -156,7 +156,13 @@
       "labelRecurrenceWeekly": "Weekly",
       "labelRecurrenceMonthly": "Monthly",
       "labelRecurrenceYearly": "Yearly",
-      "labelUpdateSeries": "Update in series"
+      "labelUpdateSeries": "Update in series",
+      "confirmDelete": {
+        "title": "Are you sure?",
+        "text": "You won't be able to revert this!",
+        "confirmButtonText": "Yes, delete it!",
+        "cancelButtonText": "Cancel"
+      }
     }
   },
   "appsetting": {
