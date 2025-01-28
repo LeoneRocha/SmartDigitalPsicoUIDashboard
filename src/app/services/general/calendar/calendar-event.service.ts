@@ -19,6 +19,7 @@ import { TimeSlotDto } from 'app/models/medicalcalendar/TimeSlotDto';
 import { LanguageService } from '../language.service';
 import { GetMedicalCalendarTimeSlotDto } from 'app/models/medicalcalendar/GetMedicalCalendarTimeSlotDto';
 import { DayOfWeek } from 'app/models/general/day-of-week';
+import { DayCalendarDto } from 'app/models/medicalcalendar/DayCalendarDto';
 @Injectable({
   providedIn: 'root',
 })
@@ -83,22 +84,22 @@ export class CalendarEventService {
   private processCalendarResponse(response: ServiceResponse<CalendarDto>): ICalendarEvent[] {
     const sortedDays = DateHelper.sortTimeSlots(response.data.days);
     response.data.days = DateHelper.fillAddDayOfWeek(sortedDays);
-    const resultCalendarData = response.data;
-    return resultCalendarData.days.flatMap(day => this.filterAndMapTimeSlots(day.timeSlots));
+    const resultCalendarData = response.data; 
+    return resultCalendarData.days.flatMap(day => this.filterAndMapTimeSlots(day, day.timeSlots));
   }
 
-  private filterAndMapTimeSlots(timeSlots: any[]): ICalendarEvent[] {
+  private filterAndMapTimeSlots(day: DayCalendarDto, timeSlots: any[]): ICalendarEvent[] {
     const isAvailableLabel = this.languageService.getTranslateInformationAsync('general.calendar.labelIsAvailable');
     const isNotAvailableLabel = this.languageService.getTranslateInformationAsync('general.calendar.labelIsNotAvailable');
     return timeSlots
       .filter(this.isSlotValid)
-      .map(data => this.mapToCalendarEvent(data, isAvailableLabel, isNotAvailableLabel));
+      .map(timeSlot => this.mapToCalendarEvent(day, timeSlot, isAvailableLabel, isNotAvailableLabel));
   }
   private isSlotValid(slot: TimeSlotDto): boolean {
     return slot.isAvailable || slot.medicalCalendar !== null;
   }
 
-  private mapToCalendarEvent(slot: TimeSlotDto, isAvailableLabel: string, isNotAvailableLabel: string): ICalendarEvent {
+  private mapToCalendarEvent(day: DayCalendarDto, slot: TimeSlotDto, isAvailableLabel: string, isNotAvailableLabel: string): ICalendarEvent {
     const medicalCalendar = slot.medicalCalendar;
     const title = medicalCalendar ? medicalCalendar.patientName : (slot.isAvailable && slot.isPast == false ? isAvailableLabel : isNotAvailableLabel);
     const className = slot.isAvailable && slot.isPast == false ? 'event-green' : 'event-gray';
@@ -112,6 +113,7 @@ export class CalendarEventService {
       backgroundColor: getColorBackGround(medicalCalendar, slot),
       textColor: '#fff',
       editable: !slot.isPast,
+      isPastDate: day.isPast,
       medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null
     };
     return eventResult;

@@ -26,4 +26,5 @@ export interface ICalendarEvent {
   backgroundColor?:string;
   textColor?:string;
   editable?: boolean;
+  isPastDate?: boolean;
 }
