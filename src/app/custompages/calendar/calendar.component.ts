@@ -172,7 +172,6 @@ export class CalendarComponent implements OnInit {
 		const startDateTime = moment(new Date());
 		const endTimeDateTime = moment(new Date().setHours(startDateTime.hour() + 1));
 		let tiltleEvent = '';
-
 		this.isEditMode = false;
 		this.eventForm.reset();
 		this.eventForm.patchValue({
