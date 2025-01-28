@@ -10,7 +10,6 @@ import { UpdateMedicalCalendarDto } from 'app/models/medicalcalendar/UpdateMedic
 import { ActionMedicalCalendarDtoBase } from 'app/models/medicalcalendar/ActionMedicalCalendarDtoBase';
 import { GetMedicalCalendarDto } from 'app/models/medicalcalendar/GetMedicalCalendarDto';
 import { DeleteMedicalCalendarDto } from 'app/models/modelsbyswagger/deleteMedicalCalendarDto';
-import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
 import { PatientService } from '../principals/patient.service';
 import { PatientModel } from 'app/models/principalsmodel/PatientModel';
@@ -111,7 +110,7 @@ export class CalendarEventService {
       end: DateHelper.convertToLocalTime(slot.endTime),
       className: className,
       backgroundColor: getColorBackGround(medicalCalendar, slot),
-      textColor: '#fff',
+      textColor: '#fff', 
       medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null
     };
   }
