@@ -33,6 +33,7 @@ export class CalendarComponent implements OnInit {
 	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
 	@ViewChild('calendarModalTemplate', { static: true }) calendarModalTemplate: ElementRef;
 
+	eventsDataResult: ICalendarEvent[];
 	eventsData;
 	calendarOptions: CalendarOptions;
 	parentId: number;
@@ -173,23 +174,28 @@ export class CalendarComponent implements OnInit {
 	}
 
 	openAddEventModal(arg): void {
-		const event = arg.event;
-		console.log(event);
-		const startDateTime = moment(new Date());
-		const endTimeDateTime = moment(new Date().setHours(startDateTime.hour() + 1));
-		let tiltleEvent = '';
-		this.isEditMode = false;
-		this.eventForm.reset();
-		this.eventForm.patchValue({
-			dateEvent: arg.dateStr,
-			title: tiltleEvent,
-			startTime: startDateTime.format('HH:mm'),
-			endTime: endTimeDateTime.format('HH:mm'),
-		});
-		// Atualiza o título do modal 
-		this.inputDateIsoString = arg.dateStr;
-		this.selectedEvent = null;
-		this.setToShowModal();
+		const dateArg = moment(arg.date).startOf('day').toDate();
+		const selectedDateEvent: ICalendarEvent = this.eventsDataResult.find(e =>
+			moment(e.start).startOf('day').isSame(moment(dateArg).startOf('day'))
+		);
+		if (selectedDateEvent && selectedDateEvent.isPastDate == false) {
+			const startDateTime = moment(new Date());
+			const endTimeDateTime = moment(new Date().setHours(startDateTime.hour() + 1));
+			let titleEvent = '';
+			this.isEditMode = false;
+			this.eventForm.reset();
+			this.eventForm.patchValue({
+				dateEvent: arg.dateStr,
+				title: titleEvent,
+				startTime: startDateTime.format('HH:mm'),
+				endTime: endTimeDateTime.format('HH:mm'),
+			});
+
+			// Atualiza o título do modal 
+			this.inputDateIsoString = arg.dateStr;
+			this.selectedEvent = null;
+			this.setToShowModal();
+		}
 	}
 
 	getEventSelected(): ICalendarEvent {
@@ -255,7 +261,8 @@ export class CalendarComponent implements OnInit {
 	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
 		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
-			this.eventsData = events; 
+			this.eventsData = events;
+			this.eventsDataResult = events;
 			this.updateCalendarEventsComponent();
 		});
 	}
