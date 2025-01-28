@@ -28,6 +28,7 @@ declare var $: any;
 })
 export class CalendarComponent implements OnInit {
 	//#region Variables	   
+	
 	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
 	@ViewChild('calendarModalTemplate', { static: true }) calendarModalTemplate: ElementRef;
 
@@ -42,7 +43,6 @@ export class CalendarComponent implements OnInit {
 	// Variáveis locais para i18n
 	labelsForm: ILabelsEventModalForm;
 	languageUI: string;
-	//#endregion Variables
 	// Adicione selectedEvent e inputDateIsoString
 	selectedEvent: ICalendarEvent;
 	inputDateIsoString: string;
@@ -50,6 +50,8 @@ export class CalendarComponent implements OnInit {
 	showModal: boolean = false;
 	modalTitle: string;	// Nova variável para controlar a exibição do formulário de evento
 	showEventForm: boolean = false;
+	
+	//#endregion Variables
 
 	//#region Constructor
 	constructor(
@@ -180,8 +182,7 @@ export class CalendarComponent implements OnInit {
 			startTime: startDateTime.format('HH:mm'),
 			endTime: endTimeDateTime.format('HH:mm'),
 		});
-		// Atualiza o título do modal
-		//const modalTitle = this.labelsForm.labelCreateEvent;
+		// Atualiza o título do modal 
 		this.inputDateIsoString = arg.dateStr;
 		this.selectedEvent = null;
 		this.setToShowModal();
@@ -202,8 +203,7 @@ export class CalendarComponent implements OnInit {
 
 		// Atualiza os valores do formulário de forma dinâmica
 		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
-
-		//const modalTitle = this.labelsForm.labelEditEvent;
+ 
 		this.inputDateIsoString = eventDateString;
 		this.selectedEvent = selectedEvent;
 		this.setToShowModal();
