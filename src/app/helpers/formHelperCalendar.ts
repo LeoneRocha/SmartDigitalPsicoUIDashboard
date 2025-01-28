@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DayOfWeek } from 'app/models/general/day-of-week';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
@@ -119,14 +119,25 @@ export class FormHelperCalendar {
   public static checkFormValidity(form: FormGroup): void {
     const invalidFields = [];
     const controls = form.controls;
-  
+
     for (const name in controls) {
       if (controls[name].invalid) {
         invalidFields.push(name);
       }
-    } 
+    }
     console.log('Invalid fields:', invalidFields);
   }
-  
+
+  public static logFormErrors(group: FormGroup): void {
+    Object.keys(group.controls).forEach(key => {
+      const control = group.get(key);
+      if (control instanceof FormControl) {
+        console.log(`Control: ${key}, Valid: ${control.valid}`);
+      } else if (control instanceof FormGroup) {
+        this.logFormErrors(control);
+      }
+    });
+  }
+
 }
 //style="display: none;"

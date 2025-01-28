@@ -84,8 +84,7 @@ export class CalendarEventService {
   private processCalendarResponse(response: ServiceResponse<CalendarDto>): ICalendarEvent[] {
     const sortedDays = DateHelper.sortTimeSlots(response.data.days);
     response.data.days = DateHelper.fillAddDayOfWeek(sortedDays);
-    const resultCalendarData = response.data;
-    console.log(resultCalendarData);
+    const resultCalendarData = response.data; 
     return resultCalendarData.days.flatMap(day => this.filterAndMapTimeSlots(day, day.timeSlots));
   }
 

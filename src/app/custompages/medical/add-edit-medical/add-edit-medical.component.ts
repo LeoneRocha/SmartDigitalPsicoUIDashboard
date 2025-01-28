@@ -16,6 +16,7 @@ import { SpecialtyService } from 'app/services/general/simple/specialty.service'
 import { SpecialtyModel } from 'app/models/simplemodel/SpecialtyModel';
 import { forkJoin } from 'rxjs';
 import { LanguageService } from 'app/services/general/language.service';
+import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 
 declare var $: any;
 
@@ -419,21 +420,10 @@ export class AddEditMedicalComponent implements OnInit {
                 i++;
             });
         }
-        this.logFormErrors(this.registerForm);
+        FormHelperCalendar.logFormErrors(this.registerForm);
     }
     getSelectedCheckboxes(controlName) {
         const selectedValues = (this.registerForm.get(controlName) as FormArray).value;
         return selectedValues;
-    }
-
-    logFormErrors(group: FormGroup): void {
-        Object.keys(group.controls).forEach(key => {
-            const control = group.get(key);
-            if (control instanceof FormControl) {
-                console.log(`Control: ${key}, Valid: ${control.valid}`);
-            } else if (control instanceof FormGroup) {
-                this.logFormErrors(control);
-            }
-        });
-    }
+    } 
 }
