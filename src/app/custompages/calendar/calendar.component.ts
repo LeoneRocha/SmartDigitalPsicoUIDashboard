@@ -171,7 +171,7 @@ export class CalendarComponent implements OnInit {
 	openAddEventModal(arg): void {
 		const startDateTime = moment(new Date());
 		const endTimeDateTime = moment(new Date().setHours(startDateTime.hour() + 1));
-		let tiltleEvent = 'Digite aqui';
+		let tiltleEvent = '';
 
 		this.isEditMode = false;
 		this.eventForm.reset();
@@ -181,15 +181,11 @@ export class CalendarComponent implements OnInit {
 			startTime: startDateTime.format('HH:mm'),
 			endTime: endTimeDateTime.format('HH:mm'),
 		});
-		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
 		// Atualiza o título do modal
 		//const modalTitle = this.labelsForm.labelCreateEvent;
 		this.inputDateIsoString = arg.dateStr;
 		this.selectedEvent = null;
-		// Mostra o modal usando SweetAlert2
-		this.showModal = true;
-		// Mostra o formulário de evento
-		this.showEventForm = true;
+		this.setToShowModal();
 	}
 
 	getEventSelected(): ICalendarEvent {
@@ -211,22 +207,14 @@ export class CalendarComponent implements OnInit {
 		//const modalTitle = this.labelsForm.labelEditEvent;
 		this.inputDateIsoString = eventDateString;
 		this.selectedEvent = selectedEvent;
-
-		// Mostra o modal
-		this.showModal = true;
-		// Mostra o formulário de evento
-		this.showEventForm = true;
-
-		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
+		this.setToShowModal();
 	}
 
 	closeEventForm(): void {
-		 this.setToCloseModal();
+		this.setToCloseModal();
 	}
 
 	deleteEventForm(): void {
-		console.log('deleteEventForm');
-
 		swal.fire({
 			title: this.languageService.getTranslateInformationAsync('general.calendar.confirmDelete.title'),
 			text: this.languageService.getTranslateInformationAsync('general.calendar.confirmDelete.text'),
@@ -238,7 +226,6 @@ export class CalendarComponent implements OnInit {
 			cancelButtonText: this.languageService.getTranslateInformationAsync('general.calendar.confirmDelete.cancelButtonText')
 		}).then((result) => {
 			if (result.isConfirmed) {
-
 				const updatedEvent: ICalendarEvent = this.eventsData.find(e => e.id == this.selectedEventId);
 				this.deleteEventFromService(updatedEvent.id ?? 0);
 			}
@@ -313,7 +300,7 @@ export class CalendarComponent implements OnInit {
 	}
 	deleteEventFromService(eventId: number): void {
 		this.calendarEventService.deleteCalendarEvent(eventId).subscribe({
-			next: (response) => {  
+			next: (response) => {
 				SuccessHelper.displaySuccess(response);
 				this.setToCloseModal();
 				this.updateFullCalendarComponent();
@@ -332,6 +319,12 @@ export class CalendarComponent implements OnInit {
 	setToCloseModal() {
 		this.showModal = false;
 		this.showEventForm = false;
+	}
+	setToShowModal() {
+		// Mostra o modal
+		this.showModal = true;
+		// Mostra o formulário de evento
+		this.showEventForm = true;
 	}
 	//#endregion ACTIONS E LOAD API DATA 
 
@@ -399,7 +392,7 @@ export class CalendarComponent implements OnInit {
 		const startDateTime = moment(event.start);
 		const endTimeDateTime = moment(event.end);
 
-		let tiltleEvent = 'Digite aqui';
+		let tiltleEvent = '';
 		if (selectedEvent && selectedEvent.medicalCalendar) {
 			tiltleEvent = selectedEvent.medicalCalendar.title ?? selectedEvent.medicalCalendar.patientName;
 		}
@@ -480,7 +473,6 @@ export class CalendarComponent implements OnInit {
 		const labelRecurrenceYearly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceYearly');
 		const labelUpdateSeries: string = this.languageService.getTranslateInformationAsync('general.calendar.labelUpdateSeries');
 
-
 		this.languageUI = this.languageService.getLanguageToLocalStorage();
 
 		this.labelsForm = {
@@ -512,10 +504,6 @@ export class CalendarComponent implements OnInit {
 			labelFieldIsRequired: labelFieldIsRequired,
 			labelBtnDelete: labelBtnDelete
 		};
-	}
-	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {
-		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, this.labelsForm, inputDateIsoString, selectedEvent);
-		return formHtml;
-	}
+	} 
 	//#endregion AUXILIAR 
 }
