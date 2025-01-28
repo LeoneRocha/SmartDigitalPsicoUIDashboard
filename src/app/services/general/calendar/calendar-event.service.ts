@@ -110,6 +110,7 @@ export class CalendarEventService {
       start: DateHelper.convertToLocalTime(slot.startTime),
       end: DateHelper.convertToLocalTime(slot.endTime),
       className: className,
+      backgroundColor: getColorBackGround(medicalCalendar, slot),
       medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null
     };
   }
@@ -177,14 +178,14 @@ export class CalendarEventService {
       medicalId: event.medicalId ?? 0,
       patientId: event.patientId ?? 0,
       createdUserId: null,
-      modifyUserId: null, 
+      modifyUserId: null,
       updateSeries: event.updateSeries ?? false,
-      tokenRecurrence: event.tokenRecurrence 
+      tokenRecurrence: event.tokenRecurrence
     };
 
     // Convert dates to UTC format
     newEntity.startDateTime = moment(newEntity.startDateTime).utc(true).toDate();
-    newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate(); 
+    newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate();
     return newEntity;
   }
 
@@ -200,4 +201,16 @@ export class CalendarEventService {
       ...baseDto
     };
   }
+}
+
+function getColorBackGround(medicalCalendar: GetMedicalCalendarTimeSlotDto, slot: TimeSlotDto): string {
+
+  if (medicalCalendar && medicalCalendar.colorCategoryHexa) {
+    return medicalCalendar.colorCategoryHexa;
+  }
+
+  if (slot.isAvailable) {
+    return 'green';
+  }
+  return null;
 }

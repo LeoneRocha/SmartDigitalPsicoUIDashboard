@@ -19,6 +19,7 @@ import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
 import swal from 'sweetalert2';
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
+//https://fullcalendar.io/docs/event-object
 declare var $: any;
 @Component({
 	moduleId: module.id,
@@ -28,7 +29,7 @@ declare var $: any;
 })
 export class CalendarComponent implements OnInit {
 	//#region Variables	   
-	
+
 	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
 	@ViewChild('calendarModalTemplate', { static: true }) calendarModalTemplate: ElementRef;
 
@@ -50,7 +51,7 @@ export class CalendarComponent implements OnInit {
 	showModal: boolean = false;
 	modalTitle: string;	// Nova variável para controlar a exibição do formulário de evento
 	showEventForm: boolean = false;
-	
+
 	//#endregion Variables
 
 	//#region Constructor
@@ -84,6 +85,7 @@ export class CalendarComponent implements OnInit {
 	//#region FULL CALENDAR 
 	loadDefinitionsFullCalendar(): void {
 		this.calendarOptions = {
+			themeSystem: 'bootstrap',
 			headerToolbar: {
 				right: 'prev,next today',
 				center: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -203,7 +205,7 @@ export class CalendarComponent implements OnInit {
 
 		// Atualiza os valores do formulário de forma dinâmica
 		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
- 
+
 		this.inputDateIsoString = eventDateString;
 		this.selectedEvent = selectedEvent;
 		this.setToShowModal();
@@ -503,6 +505,6 @@ export class CalendarComponent implements OnInit {
 			labelFieldIsRequired: labelFieldIsRequired,
 			labelBtnDelete: labelBtnDelete
 		};
-	} 
+	}
 	//#endregion AUXILIAR 
 }

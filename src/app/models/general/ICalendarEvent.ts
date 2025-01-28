@@ -23,4 +23,5 @@ export interface ICalendarEvent {
   recurrenceCount?: number;
   updateSeries?: boolean;
   tokenRecurrence?: string;
+  backgroundColor?:string;
 }
