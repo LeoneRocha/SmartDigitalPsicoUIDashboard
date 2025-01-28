@@ -111,6 +111,7 @@ export class CalendarEventService {
       end: DateHelper.convertToLocalTime(slot.endTime),
       className: className,
       backgroundColor: getColorBackGround(medicalCalendar, slot),
+      textColor: '#fff',
       medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null
     };
   }
