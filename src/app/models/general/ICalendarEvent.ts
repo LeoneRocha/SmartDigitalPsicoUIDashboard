@@ -25,4 +25,5 @@ export interface ICalendarEvent {
   tokenRecurrence?: string;
   backgroundColor?:string;
   textColor?:string;
+  editable?: boolean;
 }

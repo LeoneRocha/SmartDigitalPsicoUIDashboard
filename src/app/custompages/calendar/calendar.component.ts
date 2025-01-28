@@ -173,6 +173,8 @@ export class CalendarComponent implements OnInit {
 	}
 
 	openAddEventModal(arg): void {
+		const event = arg.event;
+		console.log(event);
 		const startDateTime = moment(new Date());
 		const endTimeDateTime = moment(new Date().setHours(startDateTime.hour() + 1));
 		let tiltleEvent = '';
@@ -195,20 +197,22 @@ export class CalendarComponent implements OnInit {
 	}
 
 	openEditEventModal(arg): void {
-		this.isEditMode = true;
 		const event = arg.event;
+		console.log(event);
 		const eventDateString = moment(event.start).format('YYYY-MM-DD');
 		this.selectedEventId = event.id;
-
 		// Buscar o evento correspondente em this.eventsData pelo ID
 		const selectedEvent: ICalendarEvent = this.getEventSelected();
+		this.isEditMode = true;
 
-		// Atualiza os valores do formulário de forma dinâmica
-		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
+		if (selectedEvent && selectedEvent.editable || event.backgroundColor !== 'gray' ) {
+			// Atualiza os valores do formulário de forma dinâmica
+			this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
 
-		this.inputDateIsoString = eventDateString;
-		this.selectedEvent = selectedEvent;
-		this.setToShowModal();
+			this.inputDateIsoString = eventDateString;
+			this.selectedEvent = selectedEvent;
+			this.setToShowModal();
+		}
 	}
 
 	closeEventForm(): void {

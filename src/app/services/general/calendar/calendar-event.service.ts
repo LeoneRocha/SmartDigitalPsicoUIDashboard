@@ -100,19 +100,21 @@ export class CalendarEventService {
 
   private mapToCalendarEvent(slot: TimeSlotDto, isAvailableLabel: string, isNotAvailableLabel: string): ICalendarEvent {
     const medicalCalendar = slot.medicalCalendar;
-    const title = medicalCalendar ? medicalCalendar.patientName : (slot.isAvailable ? isAvailableLabel : isNotAvailableLabel);
-    const className = slot.isAvailable ? 'event-green' : 'event-gray';
+    const title = medicalCalendar ? medicalCalendar.patientName : (slot.isAvailable && slot.isPast == false ? isAvailableLabel : isNotAvailableLabel);
+    const className = slot.isAvailable && slot.isPast == false ? 'event-green' : 'event-gray';
 
-    return {
+    const eventResult: ICalendarEvent = {
       id: medicalCalendar ? medicalCalendar.id : 0,
       title: title,
       start: DateHelper.convertToLocalTime(slot.startTime),
       end: DateHelper.convertToLocalTime(slot.endTime),
       className: className,
       backgroundColor: getColorBackGround(medicalCalendar, slot),
-      textColor: '#fff', 
+      textColor: '#fff',
+      editable: !slot.isPast,
       medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null
     };
+    return eventResult;
   }
 
   private mapMedicalCalendar(medicalCalendar: GetMedicalCalendarTimeSlotDto): GetMedicalCalendarTimeSlotDto {
@@ -208,9 +210,11 @@ function getColorBackGround(medicalCalendar: GetMedicalCalendarTimeSlotDto, slot
   if (medicalCalendar && medicalCalendar.colorCategoryHexa) {
     return medicalCalendar.colorCategoryHexa;
   }
-
-  if (slot.isAvailable) {
+  if (slot.isAvailable && !slot.isPast) {
     return 'green';
+  }
+  if (slot.isPast) {
+    return 'gray';
   }
   return null;
 }
