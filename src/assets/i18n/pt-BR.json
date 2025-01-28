@@ -156,7 +156,17 @@
       "labelRecurrenceWeekly": "Semanal",
       "labelRecurrenceMonthly": "Mensal",
       "labelRecurrenceYearly": "Anual",
-      "labelUpdateSeries": "Atualizar em serie"
+      "labelUpdateSeries": "Atualizar em série",
+      "confirmDelete": {
+        "title": "Você tem certeza?",
+        "text": "Você não poderá desfazer essa ação!",
+        "icon": "warning",
+        "showCancelButton": true,
+        "confirmButtonColor": "#3085d6",
+        "cancelButtonColor": "#d33",
+        "confirmButtonText": "Sim, excluir!",
+        "cancelButtonText": "Cancelar"
+      }
     }
   },
   "appsetting": {
