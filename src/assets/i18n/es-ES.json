@@ -129,7 +129,7 @@
       "TitleView": "Ver archivo",
       "title": "Archivo",
       "required": "Se requiere archivo"
-    },
+    }, 
     "calendar": {
       "title": "Calendario",
       "labelPatient": "Paciente",
@@ -146,17 +146,23 @@
       "labelColor": "Color",
       "labelLocation": "Ubicación",
       "labelRecurrence": "Recurrencia",
-      "labelRecurrenceType": "Recurrencia",
+      "labelRecurrenceType": "Tipo de Recurrencia",
       "labelRecurrenceDays": "Días de Recurrencia",
-      "labelRecurrenceEndDate": "Fecha de Fin de Recurrencia",
-      "labelRecurrenceCount": "Cantidad de Recurrencia",
+      "labelRecurrenceEndDate": "Fecha de Finalización de Recurrencia",
+      "labelRecurrenceCount": "Número de Recurrencias",
       "labelSelectRecurrence": "Seleccionar Recurrencia",
       "labelRecurrenceNone": "Ninguna",
       "labelRecurrenceDaily": "Diaria",
       "labelRecurrenceWeekly": "Semanal",
       "labelRecurrenceMonthly": "Mensual",
       "labelRecurrenceYearly": "Anual",
-      "labelUpdateSeries": "Actualización en serie"
+      "labelUpdateSeries": "Actualizar en serie",
+      "confirmDelete": {
+        "title": "¿Estás seguro?",
+        "text": "¡No podrás revertir esto!",                        
+        "confirmButtonText": "¡Sí, eliminar!",
+        "cancelButtonText": "Cancelar"
+      }
     }
   },
   "appsetting": {

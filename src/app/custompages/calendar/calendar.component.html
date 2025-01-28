@@ -8,9 +8,8 @@
             <div *ngIf="showEventForm">
               <app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labelsForm"
                 [languageUI]="languageUI" [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString"
-                (onClose)="closeEventForm()" 
-                (onConfirm)="confirmEventForm()">
-              </app-calendar-event-modal> 
+                (onClose)="closeEventForm()" (onConfirm)="confirmEventForm()" (onDelete)="deleteEventForm()">
+              </app-calendar-event-modal>
             </div>
             <!-- Calendário -->
             <div *ngIf="!showEventForm">

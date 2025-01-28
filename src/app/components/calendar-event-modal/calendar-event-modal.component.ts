@@ -27,6 +27,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
 
   @Output() onClose = new EventEmitter<void>(); // Adicione isso para o evento de fechar
   @Output() onConfirm = new EventEmitter<void>(); // Adicione isso para o evento de confirmar
+  @Output() onDelete = new EventEmitter<void>(); // 
 
   @ViewChild('titleInput') titleInput: ElementRef; // ViewChild para acessar o input do título
 

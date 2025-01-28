@@ -24,6 +24,7 @@ export interface ILabelsEventModalForm {
   labelRecurrenceYearly: string;
   labelRecurrenceType: string;
   labelUpdateSeries: string;
-  labelFieldIsRequired: string;
+  labelFieldIsRequired: string; 
+  labelBtnDelete: string;
 }
 

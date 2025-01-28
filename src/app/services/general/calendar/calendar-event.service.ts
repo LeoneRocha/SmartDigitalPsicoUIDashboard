@@ -10,7 +10,6 @@ import { UpdateMedicalCalendarDto } from 'app/models/medicalcalendar/UpdateMedic
 import { ActionMedicalCalendarDtoBase } from 'app/models/medicalcalendar/ActionMedicalCalendarDtoBase';
 import { GetMedicalCalendarDto } from 'app/models/medicalcalendar/GetMedicalCalendarDto';
 import { DeleteMedicalCalendarDto } from 'app/models/modelsbyswagger/deleteMedicalCalendarDto';
-import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
 import { PatientService } from '../principals/patient.service';
 import { PatientModel } from 'app/models/principalsmodel/PatientModel';
@@ -101,17 +100,21 @@ export class CalendarEventService {
 
   private mapToCalendarEvent(slot: TimeSlotDto, isAvailableLabel: string, isNotAvailableLabel: string): ICalendarEvent {
     const medicalCalendar = slot.medicalCalendar;
-    const title = medicalCalendar ? medicalCalendar.patientName : (slot.isAvailable ? isAvailableLabel : isNotAvailableLabel);
-    const className = slot.isAvailable ? 'event-green' : 'event-gray';
+    const title = medicalCalendar ? medicalCalendar.patientName : (slot.isAvailable && slot.isPast == false ? isAvailableLabel : isNotAvailableLabel);
+    const className = slot.isAvailable && slot.isPast == false ? 'event-green' : 'event-gray';
 
-    return {
+    const eventResult: ICalendarEvent = {
       id: medicalCalendar ? medicalCalendar.id : 0,
       title: title,
       start: DateHelper.convertToLocalTime(slot.startTime),
       end: DateHelper.convertToLocalTime(slot.endTime),
       className: className,
+      backgroundColor: getColorBackGround(medicalCalendar, slot),
+      textColor: '#fff',
+      editable: !slot.isPast,
       medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null
     };
+    return eventResult;
   }
 
   private mapMedicalCalendar(medicalCalendar: GetMedicalCalendarTimeSlotDto): GetMedicalCalendarTimeSlotDto {
@@ -177,14 +180,14 @@ export class CalendarEventService {
       medicalId: event.medicalId ?? 0,
       patientId: event.patientId ?? 0,
       createdUserId: null,
-      modifyUserId: null, 
+      modifyUserId: null,
       updateSeries: event.updateSeries ?? false,
-      tokenRecurrence: event.tokenRecurrence 
+      tokenRecurrence: event.tokenRecurrence
     };
 
     // Convert dates to UTC format
     newEntity.startDateTime = moment(newEntity.startDateTime).utc(true).toDate();
-    newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate(); 
+    newEntity.endDateTime = moment(newEntity.endDateTime).utc(true).toDate();
     return newEntity;
   }
 
@@ -200,4 +203,18 @@ export class CalendarEventService {
       ...baseDto
     };
   }
+}
+
+function getColorBackGround(medicalCalendar: GetMedicalCalendarTimeSlotDto, slot: TimeSlotDto): string {
+
+  if (medicalCalendar && medicalCalendar.colorCategoryHexa) {
+    return medicalCalendar.colorCategoryHexa;
+  }
+  if (slot.isAvailable && !slot.isPast) {
+    return 'green';
+  }
+  if (slot.isPast) {
+    return 'gray';
+  }
+  return null;
 }

@@ -16,8 +16,10 @@ import { LanguageService } from 'app/services/general/language.service';
 import localesAll from '@fullcalendar/core/locales-all';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
+import swal from 'sweetalert2';
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
+//https://fullcalendar.io/docs/event-object
 declare var $: any;
 @Component({
 	moduleId: module.id,
@@ -27,6 +29,7 @@ declare var $: any;
 })
 export class CalendarComponent implements OnInit {
 	//#region Variables	   
+
 	@ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
 	@ViewChild('calendarModalTemplate', { static: true }) calendarModalTemplate: ElementRef;
 
@@ -41,7 +44,6 @@ export class CalendarComponent implements OnInit {
 	// Variáveis locais para i18n
 	labelsForm: ILabelsEventModalForm;
 	languageUI: string;
-	//#endregion Variables
 	// Adicione selectedEvent e inputDateIsoString
 	selectedEvent: ICalendarEvent;
 	inputDateIsoString: string;
@@ -49,6 +51,8 @@ export class CalendarComponent implements OnInit {
 	showModal: boolean = false;
 	modalTitle: string;	// Nova variável para controlar a exibição do formulário de evento
 	showEventForm: boolean = false;
+
+	//#endregion Variables
 
 	//#region Constructor
 	constructor(
@@ -66,7 +70,6 @@ export class CalendarComponent implements OnInit {
 	//#region Lifecycle Hooks
 	ngOnInit(): void {
 		this.loadDefinitionsFullCalendar();
-		//this.loadDataFromApi(null);
 		this.initForm();
 		this.loadPatientsFromService();
 		this.loadLablesModalEveent();
@@ -82,6 +85,7 @@ export class CalendarComponent implements OnInit {
 	//#region FULL CALENDAR 
 	loadDefinitionsFullCalendar(): void {
 		this.calendarOptions = {
+			themeSystem: 'bootstrap',
 			headerToolbar: {
 				right: 'prev,next today',
 				center: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -123,7 +127,6 @@ export class CalendarComponent implements OnInit {
 			eventClick: this.openEditEventModal.bind(this),
 			eventDrop: this.updateEvent.bind(this),
 			eventResize: this.updateEvent.bind(this),
-			//eventContent: this.renderEventContent.bind(this), // Adiciona o método renderEventContent
 			datesSet: this.handleDatesSet.bind(this) // Adiciona o evento datesSet
 		};
 	}
@@ -136,25 +139,6 @@ export class CalendarComponent implements OnInit {
 	//#endregion FULL CALENDAR 
 
 	//#region FULL CALENDAR - EVENTS
-	renderEventContent(eventInfo) {
-		const deleteIcon = document.createElement('span');
-		deleteIcon.innerHTML = '🗑️';
-		deleteIcon.classList.add('delete-event');
-		deleteIcon.addEventListener('click', (e) => {
-			e.stopPropagation(); // Para evitar o disparo do eventClick
-			this.handleDeleteEvent(eventInfo.event);
-		});
-		const title = document.createElement('span');
-		title.innerHTML = eventInfo.event.title;
-		const eventEl = document.createElement('div');
-		eventEl.appendChild(title);
-		eventEl.appendChild(deleteIcon);
-		return { domNodes: [eventEl] };
-	}
-	handleDeleteEvent(event) {
-		//this.calendarComponent.getApi().getEventById(event.id).remove();
-		// Aqui você pode adicionar a lógica para apagar o evento do servidor, se necessário
-	}
 
 	handleDatesSet(arg: DatesSetArg) {
 		const start = arg.start;
@@ -189,10 +173,11 @@ export class CalendarComponent implements OnInit {
 	}
 
 	openAddEventModal(arg): void {
+		const event = arg.event;
+		console.log(event);
 		const startDateTime = moment(new Date());
 		const endTimeDateTime = moment(new Date().setHours(startDateTime.hour() + 1));
-		let tiltleEvent = 'Digite aqui';
-
+		let tiltleEvent = '';
 		this.isEditMode = false;
 		this.eventForm.reset();
 		this.eventForm.patchValue({
@@ -201,32 +186,10 @@ export class CalendarComponent implements OnInit {
 			startTime: startDateTime.format('HH:mm'),
 			endTime: endTimeDateTime.format('HH:mm'),
 		});
-		const formHtml = this.getFormCalendar(this.eventForm, arg.dateStr, null);
-		// Atualiza o título do modal
-		//const modalTitle = this.labelsForm.labelCreateEvent;
+		// Atualiza o título do modal 
 		this.inputDateIsoString = arg.dateStr;
 		this.selectedEvent = null;
-		// Mostra o modal usando SweetAlert2
-		this.showModal = true;
-		// Mostra o formulário de evento
-		this.showEventForm = true;
-		// swal.fire({
-		// 	title: this.labelsForm.labelCreateEvent,
-		// 	//html: formHtml,
-		// 	//html: this.modalContainer.element.nativeElement,
-		// 	html: this.calendarModalTemplate.nativeElement,
-		// 	focusConfirm: false,
-		// 	showCancelButton: true,
-		// 	confirmButtonText: this.labelsForm.labelSave,
-		// 	preConfirm: () => this.saveEventFromSwal(arg.dateStr)
-		// }).then(() => {
-		// 	//this.modalContainer.clear(); // Limpa o container após fechar o modal
-		// 	//componentRef.destroy(); // Destroi o componente após fechar o modal
-		// 	document.getElementById('modal-cancel-button').onclick = () => {
-		// 		this.showModal = false;
-		// 		swal.close();
-		// 	};
-		// });
+		this.setToShowModal();
 	}
 
 	getEventSelected(): ICalendarEvent {
@@ -234,43 +197,41 @@ export class CalendarComponent implements OnInit {
 	}
 
 	openEditEventModal(arg): void {
-		this.isEditMode = true;
 		const event = arg.event;
 		const eventDateString = moment(event.start).format('YYYY-MM-DD');
 		this.selectedEventId = event.id;
-
 		// Buscar o evento correspondente em this.eventsData pelo ID
 		const selectedEvent: ICalendarEvent = this.getEventSelected();
-
-		// Atualiza os valores do formulário de forma dinâmica
-		this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
-
-		//const modalTitle = this.labelsForm.labelEditEvent;
-		this.inputDateIsoString = eventDateString;
-		this.selectedEvent = selectedEvent;
-
-		// Mostra o modal
-		this.showModal = true;
-		// Mostra o formulário de evento
-		this.showEventForm = true;
-
-		const formHtml = this.getFormCalendar(this.eventForm, eventDateString, selectedEvent);
-		/*swal.fire({
-			title: this.selectedEventId > 0 ? this.labelsForm.labelEditEvent : this.labelsForm.labelCreateEvent,
-			html: formHtml,
-			//html: this.modalContainer.element.nativeElement,
-			//html: modalContent,
-			//html: this.calendarModalTemplate.nativeElement,
-			focusConfirm: false,
-			showCancelButton: true,
-			confirmButtonText: this.labelsForm.labelSave,
-			preConfirm: () => this.saveEventFromSwal(eventDateString)
-		}).then(() => {
-		});*/
+		if (selectedEvent && selectedEvent.editable || event.backgroundColor !== 'gray') {
+			this.isEditMode = true;
+			// Atualiza os valores do formulário de forma dinâmica
+			this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
+			this.inputDateIsoString = eventDateString;
+			this.selectedEvent = selectedEvent;
+			this.setToShowModal();
+		}
 	}
+
 	closeEventForm(): void {
-		this.showModal = false;
-		this.showEventForm = false;
+		this.setToCloseModal();
+	}
+
+	deleteEventForm(): void {
+		swal.fire({
+			title: this.languageService.getTranslateInformationAsync('general.calendar.confirmDelete.title'),
+			text: this.languageService.getTranslateInformationAsync('general.calendar.confirmDelete.text'),
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: this.languageService.getTranslateInformationAsync('general.calendar.confirmDelete.confirmButtonText'),
+			cancelButtonText: this.languageService.getTranslateInformationAsync('general.calendar.confirmDelete.cancelButtonText')
+		}).then((result) => {
+			if (result.isConfirmed) {
+				const updatedEvent: ICalendarEvent = this.eventsData.find(e => e.id == this.selectedEventId);
+				this.deleteEventFromService(updatedEvent.id ?? 0);
+			}
+		});
 	}
 
 	confirmEventForm(): void {
@@ -302,7 +263,7 @@ export class CalendarComponent implements OnInit {
 		const newEventData = this.getEventDataFromFormModal(dateStr);
 		const newEvent: ICalendarEvent = newEventData.event;
 		const newEventInput = newEventData.eventInput;
-		 
+
 		if (this.isEditMode && this.selectedEventId > 0) {
 			newEvent.id = this.selectedEventId;
 			const selectedEvent: ICalendarEvent = this.getEventSelected();
@@ -317,7 +278,7 @@ export class CalendarComponent implements OnInit {
 			next: (response) => {
 				newEvent.id = response.data.id;
 				SuccessHelper.displaySuccess(response);
-				this.setToCloseModal(); 
+				this.setToCloseModal();
 				this.updateFullCalendarComponent();
 			},
 			error: (err) => {
@@ -329,32 +290,43 @@ export class CalendarComponent implements OnInit {
 	updateCalendarEventFromService(updatedEvent: ICalendarEvent): void {
 		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
 			next: (response) => {
-				SuccessHelper.displaySuccess(response); 
+				SuccessHelper.displaySuccess(response);
 				this.setToCloseModal();
 				this.updateFullCalendarComponent();
 			},
-			error: (err) => { 
+			error: (err) => {
 				const errors = Array.isArray(err?.originalError?.error) ? err?.originalError?.error : [{ message: 'An error occurred while updating the event.' }];
 				ErrorHelper.displayErrors(errors);
 			}
 		});
 	}
 	deleteEventFromService(eventId: number): void {
-		this.calendarEventService.deleteCalendarEvent(eventId).subscribe(() => {
-			const event = this.fullcalendar.getApi().getEventById(eventId.toString());
-			if (event) {
-				event.remove();
+		this.calendarEventService.deleteCalendarEvent(eventId).subscribe({
+			next: (response) => {
+				SuccessHelper.displaySuccess(response);
+				this.setToCloseModal();
+				this.updateFullCalendarComponent();
+			},
+			error: (err) => {
+				const errors = Array.isArray(err?.originalError?.error) ? err?.originalError?.error : [{ message: 'An error occurred while delete the event.' }];
+				ErrorHelper.displayErrors(errors);
 			}
 		});
 	}
 	updateFullCalendarComponent() {
 		setTimeout(() => {
-			this.reloadComponent(); 
-		  }, 100); 
+			this.reloadComponent();
+		}, 100);
 	}
 	setToCloseModal() {
 		this.showModal = false;
 		this.showEventForm = false;
+	}
+	setToShowModal() {
+		// Mostra o modal
+		this.showModal = true;
+		// Mostra o formulário de evento
+		this.showEventForm = true;
 	}
 	//#endregion ACTIONS E LOAD API DATA 
 
@@ -422,7 +394,7 @@ export class CalendarComponent implements OnInit {
 		const startDateTime = moment(event.start);
 		const endTimeDateTime = moment(event.end);
 
-		let tiltleEvent = 'Digite aqui';
+		let tiltleEvent = '';
 		if (selectedEvent && selectedEvent.medicalCalendar) {
 			tiltleEvent = selectedEvent.medicalCalendar.title ?? selectedEvent.medicalCalendar.patientName;
 		}
@@ -479,7 +451,8 @@ export class CalendarComponent implements OnInit {
 		const labelBtnUpdate: string = this.languageService.getTranslateInformationAsync('general.updateregisterbtn');
 		const labelBtnCancel: string = this.languageService.getTranslateInformationAsync('general.cancelbtn');
 		const labelFieldIsRequired: string = this.languageService.getTranslateInformationAsync('general.isRequired');
- 
+		const labelBtnDelete: string = this.languageService.getTranslateInformationAsync('general.altDelete');
+
 		const labelPatient: string = this.languageService.getTranslateInformationAsync('general.calendar.labelPatient');
 		const labelTitle: string = this.languageService.getTranslateInformationAsync('general.calendar.labelTitle');
 		const labelStartTime: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStartTime');
@@ -501,7 +474,6 @@ export class CalendarComponent implements OnInit {
 		const labelRecurrenceMonthly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceMonthly');
 		const labelRecurrenceYearly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceYearly');
 		const labelUpdateSeries: string = this.languageService.getTranslateInformationAsync('general.calendar.labelUpdateSeries');
-
 
 		this.languageUI = this.languageService.getLanguageToLocalStorage();
 
@@ -531,12 +503,9 @@ export class CalendarComponent implements OnInit {
 			labelRecurrenceYearly: labelRecurrenceYearly,
 			labelRecurrenceType: labelRecurrenceType,
 			labelUpdateSeries: labelUpdateSeries,
-			labelFieldIsRequired: labelFieldIsRequired
+			labelFieldIsRequired: labelFieldIsRequired,
+			labelBtnDelete: labelBtnDelete
 		};
-	}
-	getFormCalendar(eventForm: FormGroup, inputDateIsoString: string, selectedEvent: any): string {
-		const formHtml = FormHelperCalendar.getFormHtml(eventForm, this.patients, this.labelsForm, inputDateIsoString, selectedEvent);
-		return formHtml;
 	}
 	//#endregion AUXILIAR 
 }
