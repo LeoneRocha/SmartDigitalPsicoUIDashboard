@@ -256,6 +256,7 @@ export class CalendarComponent implements OnInit {
 		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
 		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
 			this.eventsData = events;
+			console.log(events);
 			this.updateCalendarEventsComponent();
 		});
 	}
