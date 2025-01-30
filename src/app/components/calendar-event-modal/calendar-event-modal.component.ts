@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
 import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
+import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
 
 @Component({
   selector: 'app-calendar-event-modal',
@@ -33,6 +34,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
 
   daysOfWeek = [];
   recurrenceOptions = [];
+  statusOptions = []; // Adicione isso para listar as opções de status
   public isRecurring: boolean = false; // Adicione isso para controlar o estado do switch
   isEditMode: boolean = false; // Controle do modo de edição
   tokenRecurrence: string | null = null; // Token de recorrência
@@ -53,12 +55,13 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       startTime: [this.form.value.startTime, Validators.required],
       endTime: [this.form.value.endTime, Validators.required],
       location: [''],
-      colorCategoryHexa: [''],
+      colorCategoryHexa: ['#000000', Validators.required],
       allDay: [false],
       recurrenceType: [''],
       recurrenceDays: this.fb.array([]),
       recurrenceEndDate: [''],
       recurrenceCount: [0],
+      status: ['', Validators.required],
       updateSeries: [false]
     });
 
@@ -70,6 +73,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     this.tokenRecurrence = this.selectedEvent?.medicalCalendar?.tokenRecurrence || null;
 
     this.initializeRecurrenceOptions();
+    this.initializeStatusOptions();
     this.initializeDaysOfWeek();
     this.populateForm();
     this.setRecurrenceValidators();
@@ -115,6 +119,17 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       }));
   }
 
+  initializeStatusOptions(): void {
+    this.statusOptions = Object.keys(EStatusCalendar)
+      .filter(key => isNaN(Number(key))) // Filtra apenas as chaves que não são números
+      .map(key => ({
+        value: EStatusCalendar[key],
+        label: this.labels[`labelStatus${key}`]
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label)); // Ordena as opções pelo label de forma crescente 
+  }
+
+
   populateForm(): void {
     const startDateTime = moment(this.selectedEvent?.start);
     const endTimeDateTime = moment(this.selectedEvent?.end);
@@ -138,7 +153,8 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
         recurrenceType: dataRegister.recurrenceType,
         recurrenceEndDate: dataRegister.recurrenceEndDate ? moment(dataRegister.recurrenceEndDate).format('YYYY-MM-DD') : '',
         recurrenceCount: dataRegister.recurrenceCount,
-        updateSeries: false
+        updateSeries: false, 
+        status: dataRegister.status
       });
 
       if (dataRegister?.recurrenceDays) {
@@ -159,7 +175,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       this.form.get('recurrenceDays').setErrors({ required: true });
     } else {
       this.form.get('recurrenceDays').setErrors(null);
-    }    
+    }
     this.form.get('recurrenceDays').updateValueAndValidity();
   }
 
@@ -171,19 +187,19 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     } else {
       recurrenceDaysArray.push(this.fb.control(day));
     }
-  
+
     this.form.setControl('recurrenceDays', recurrenceDaysArray); // Adiciona o array ao campo recurrenceDays
     this.checkRecurrenceDaysFormIsValid();
   }
-  
- 
+
+
   setRecurrenceValidators(): void {
     if (this.isRecurring) {
       this.form.get('recurrenceType').setValidators(Validators.required);
       this.form.get('recurrenceDays').setValidators(Validators.required);
       this.form.get('recurrenceEndDate').setValidators(Validators.required);
       this.form.get('recurrenceCount').setValidators(Validators.required);
-      this.checkRecurrenceDaysFormIsValid(); 
+      this.checkRecurrenceDaysFormIsValid();
     } else {
       this.form.get('recurrenceType').clearValidators();
       this.form.get('recurrenceDays').clearValidators();

@@ -1,4 +1,5 @@
 import { ERecurrenceCalendarType } from "../medicalcalendar/enuns/ERecurrenceCalendarType";
+import { EStatusCalendar } from "../medicalcalendar/enuns/EStatusCalendar";
 import { GetMedicalCalendarTimeSlotDto } from "../medicalcalendar/GetMedicalCalendarTimeSlotDto";
 import { DayOfWeek } from "./day-of-week";
 
@@ -27,4 +28,5 @@ export interface ICalendarEvent {
   textColor?:string;
   editable?: boolean;
   isPastDate?: boolean;
+  status?: EStatusCalendar;
 }
