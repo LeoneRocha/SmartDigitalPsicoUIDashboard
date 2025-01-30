@@ -129,7 +129,7 @@
       "TitleView": "Ver archivo",
       "title": "Archivo",
       "required": "Se requiere archivo"
-    }, 
+    },
     "calendar": {
       "title": "Calendario",
       "labelPatient": "Paciente",
@@ -157,9 +157,22 @@
       "labelRecurrenceMonthly": "Mensual",
       "labelRecurrenceYearly": "Anual",
       "labelUpdateSeries": "Actualizar en serie",
+      "labelStatus": "Estado",
+      "labelSelectStatus": "Seleccionar Estado",
+      "labelStatusActive": "Activo",
+      "labelStatusScheduled": "Programado",
+      "labelStatusConfirmed": "Confirmado",
+      "labelStatusRefused": "Rechazado",
+      "labelStatusCompleted": "Completado",
+      "labelStatusNoShow": "No Asistió",
+      "labelStatusPendingConfirmation": "Pendiente de Confirmación",
+      "labelStatusInProgress": "En Progreso",
+      "labelStatusRescheduled": "Reprogramado",
+      "labelStatusCanceled": "Cancelado",
+      "labelStatusPendingCancellation": "Pendiente de Cancelación",
       "confirmDelete": {
         "title": "¿Estás seguro?",
-        "text": "¡No podrás revertir esto!",                        
+        "text": "¡No podrás revertir esto!",
         "confirmButtonText": "¡Sí, eliminar!",
         "cancelButtonText": "Cancelar"
       }
