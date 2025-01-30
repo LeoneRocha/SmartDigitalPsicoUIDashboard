@@ -84,7 +84,7 @@ export class CalendarEventService {
   private processCalendarResponse(response: ServiceResponse<CalendarDto>): ICalendarEvent[] {
     const sortedDays = DateHelper.sortTimeSlots(response.data.days);
     response.data.days = DateHelper.fillAddDayOfWeek(sortedDays);
-    const resultCalendarData = response.data; 
+    const resultCalendarData = response.data;
     return resultCalendarData.days.flatMap(day => this.filterAndMapTimeSlots(day, day.timeSlots));
   }
 
@@ -114,7 +114,8 @@ export class CalendarEventService {
       textColor: '#fff',
       editable: !slot.isPast,
       isPastDate: day.isPast,
-      medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null
+      medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null,
+      status: medicalCalendar ? medicalCalendar.status : 0,
     };
     return eventResult;
   }
@@ -158,10 +159,7 @@ export class CalendarEventService {
 
     if (event.recurrenceDays && event.recurrenceDays.length > 0) {
       recurrenceDaysValue = event.recurrenceDays.filter(day => !isNaN(Number(day)));
-    }
-
-    let statusEvent = EStatusCalendar.Scheduled;//TODO: PEGAR NA TELA QUANDO FOR ATUALIZAR
-
+    } 
     let newEntity: ActionMedicalCalendarDtoBase = {
       enable: true,
       id: event.id ?? 0,
@@ -169,7 +167,7 @@ export class CalendarEventService {
       startDateTime: event.start,
       endDateTime: event.end,
       isAllDay: event.allDay ?? false,
-      status: statusEvent,
+      status: event.status ?? 0,
       colorCategoryHexa: event.colorCategoryHexa ?? '#000000',
       isPushedCalendar: false,
       timeZone: 'America/Sao_Paulo',

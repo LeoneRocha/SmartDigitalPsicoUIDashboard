@@ -26,5 +26,18 @@ export interface ILabelsEventModalForm {
   labelUpdateSeries: string;
   labelFieldIsRequired: string; 
   labelBtnDelete: string;
+  labelStatus: string;
+  labelSelectStatus: string;
+  labelStatusActive: string;
+  labelStatusScheduled: string;
+  labelStatusConfirmed: string;
+  labelStatusRefused: string;
+  labelStatusCompleted: string;
+  labelStatusNoShow: string;
+  labelStatusPendingConfirmation: string;
+  labelStatusInProgress: string;
+  labelStatusRescheduled: string;
+  labelStatusCanceled: string;
+  labelStatusPendingCancellation: string;
 }
 

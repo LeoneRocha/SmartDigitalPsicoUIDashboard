@@ -359,6 +359,8 @@ export class CalendarComponent implements OnInit {
 
 		const updateSeries = FormHelperCalendar.getValue('swal-updateSeries', false);
 
+		const status = FormHelperCalendar.getValue('swal-status', '0');
+
 		const newEvent: ICalendarEvent = {
 			title: title,
 			start: startDateTime,
@@ -366,6 +368,7 @@ export class CalendarComponent implements OnInit {
 			className: 'event-default',
 			medicalId: this.getParentId(),
 			patientId: Number(patientId),
+			status: Number(status),
 			location: location,
 			colorCategoryHexa: colorCategoryHexa,
 			allDay: allDay,
@@ -469,6 +472,8 @@ export class CalendarComponent implements OnInit {
 		const labelAllDay: string = this.languageService.getTranslateInformationAsync('general.calendar.labelAllDay');
 		const labelColor: string = this.languageService.getTranslateInformationAsync('general.calendar.labelColor');
 		const labelLocation: string = this.languageService.getTranslateInformationAsync('general.calendar.labelLocation');
+
+		//Recurrence
 		const labelRecurrence: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrence');
 		const labelRecurrenceDays: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceDays');
 		const labelRecurrenceCount: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceCount');
@@ -480,6 +485,22 @@ export class CalendarComponent implements OnInit {
 		const labelRecurrenceWeekly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceWeekly');
 		const labelRecurrenceMonthly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceMonthly');
 		const labelRecurrenceYearly: string = this.languageService.getTranslateInformationAsync('general.calendar.labelRecurrenceYearly');
+
+		//status   
+		const labelStatus: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatus');
+		const labelSelectStatus: string = this.languageService.getTranslateInformationAsync('general.calendar.labelSelectStatus');
+		const labelStatusActive: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusActive');
+		const labelStatusScheduled: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusScheduled');
+		const labelStatusConfirmed: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusConfirmed');
+		const labelStatusRefused: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusRefused');
+		const labelStatusCompleted: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusCompleted');
+		const labelStatusNoShow: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusNoShow');
+		const labelStatusPendingConfirmation: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusPendingConfirmation');
+		const labelStatusInProgress: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusInProgress');
+		const labelStatusRescheduled: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusRescheduled');
+		const labelStatusCanceled: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusCanceled');
+		const labelStatusPendingCancellation: string = this.languageService.getTranslateInformationAsync('general.calendar.labelStatusPendingCancellation');
+
 		const labelUpdateSeries: string = this.languageService.getTranslateInformationAsync('general.calendar.labelUpdateSeries');
 
 		this.languageUI = this.languageService.getLanguageToLocalStorage();
@@ -511,7 +532,20 @@ export class CalendarComponent implements OnInit {
 			labelRecurrenceType: labelRecurrenceType,
 			labelUpdateSeries: labelUpdateSeries,
 			labelFieldIsRequired: labelFieldIsRequired,
-			labelBtnDelete: labelBtnDelete
+			labelBtnDelete: labelBtnDelete,
+			labelStatus: labelStatus,
+			labelSelectStatus: labelSelectStatus,
+			labelStatusActive: labelStatusActive,
+			labelStatusScheduled: labelStatusScheduled,
+			labelStatusConfirmed: labelStatusConfirmed,
+			labelStatusRefused: labelStatusRefused,
+			labelStatusCompleted: labelStatusCompleted,
+			labelStatusNoShow: labelStatusNoShow,
+			labelStatusPendingConfirmation: labelStatusPendingConfirmation,
+			labelStatusInProgress: labelStatusInProgress,
+			labelStatusRescheduled: labelStatusRescheduled,
+			labelStatusCanceled: labelStatusCanceled,
+			labelStatusPendingCancellation: labelStatusPendingCancellation
 		};
 	}
 	//#endregion AUXILIAR 
