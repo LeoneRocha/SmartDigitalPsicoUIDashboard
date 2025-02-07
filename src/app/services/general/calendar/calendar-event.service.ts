@@ -102,7 +102,7 @@ export class CalendarEventService {
   private mapToCalendarEvent(day: DayCalendarDto, slot: TimeSlotDto, isAvailableLabel: string, isNotAvailableLabel: string): ICalendarEvent {
     const medicalCalendar = slot.medicalCalendar;
     const title = medicalCalendar ? medicalCalendar.patientName : (slot.isAvailable && slot.isPast == false ? isAvailableLabel : isNotAvailableLabel);
-    const className = slot.isAvailable && slot.isPast == false ? 'event-green' : 'event-gray';
+    const className = getClassNameEvent(slot, medicalCalendar);
 
     const eventResult: ICalendarEvent = {
       id: medicalCalendar ? medicalCalendar.id : 0,
@@ -159,7 +159,7 @@ export class CalendarEventService {
 
     if (event.recurrenceDays && event.recurrenceDays.length > 0) {
       recurrenceDaysValue = event.recurrenceDays.filter(day => !isNaN(Number(day)));
-    } 
+    }
     let newEntity: ActionMedicalCalendarDtoBase = {
       enable: true,
       id: event.id ?? 0,
@@ -218,3 +218,13 @@ function getColorBackGround(medicalCalendar: GetMedicalCalendarTimeSlotDto, slot
   }
   return null;
 }
+function getClassNameEvent(slot: TimeSlotDto, medicalCalendar: GetMedicalCalendarTimeSlotDto): string {
+  let classResult = "event-gray";
+  if (medicalCalendar && medicalCalendar.id > 0 && !slot.isPast) {
+    return 'event-azure';
+  }
+  if (slot.isAvailable && !slot.isPast) {
+    return 'event-green';
+  }
+  return classResult;
+} 
