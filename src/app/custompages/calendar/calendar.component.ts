@@ -338,9 +338,15 @@ export class CalendarComponent implements OnInit {
 	//#endregion ACTIONS E LOAD API DATA 
 
 	//#region AUXILIAR   
+	// Método para remover NaN do array
+	// Método para remover NaN do array
+	removeNaNFromArray(array: number[]): number[] {		
+		const result = array.filter(item => !isNaN(item));		
+		return result;
+	}
 
-	getEventDataFromFormModal(dateStr: string): any {
-
+	// Função ajustada
+	getEventDataFromFormModal(dateStr: string): any {		
 		const title = FormHelperCalendar.getValue('swal-title', 'Untitled');
 		const startTime = FormHelperCalendar.getValue('swal-startTime', '00:00');
 		const endTime = FormHelperCalendar.getValue('swal-endTime', '');
@@ -353,12 +359,12 @@ export class CalendarComponent implements OnInit {
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
 
 		const recurrenceType = FormHelperCalendar.getValue('swal-recurrence', 'None');
-		const recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));
+		let recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));		 
+		recurrenceDays = this.removeNaNFromArray(recurrenceDays);		
 		const recurrenceEndDate = FormHelperCalendar.getValue('swal-recurrenceEndDate', null) ? new Date(FormHelperCalendar.getValue('swal-recurrenceEndDate', null)) : null;
 		const recurrenceCount = FormHelperCalendar.getValue('swal-recurrenceCount', null) ? Number(FormHelperCalendar.getValue('swal-recurrenceCount', '0')) : null;
 
 		const updateSeries = FormHelperCalendar.getValue('swal-updateSeries', false);
-
 		const status = FormHelperCalendar.getValue('swal-status', '0');
 
 		const newEvent: ICalendarEvent = {
@@ -380,7 +386,7 @@ export class CalendarComponent implements OnInit {
 		};
 
 		const newEventInput: any = newEvent;
-		const resultForm = { event: newEvent, eventInput: newEventInput };
+		const resultForm = { event: newEvent, eventInput: newEventInput };		
 		return resultForm;
 	}
 
