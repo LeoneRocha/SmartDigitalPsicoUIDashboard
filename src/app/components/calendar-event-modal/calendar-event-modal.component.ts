@@ -40,6 +40,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
   tokenRecurrence: string | null = null; // Token de recorrência
 
   public isAllDay: boolean = false;
+  public isTimeFieldsDisabled: boolean = true;
 
   constructor(private datePipe: DatePipe, private fb: FormBuilder) { }
 
@@ -68,6 +69,8 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     // Configure se necessário
     this.labelFormTitle = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelEditEvent : this.labels.labelCreateEvent;
     this.labelFormSave = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelBtnUpdate : this.labels.labelBtnSave;
+    
+    this.isTimeFieldsDisabled = this.selectedEvent?.isTimeFieldEditable ?? false;
 
     this.isEditMode = !!this.selectedEvent && !!this.selectedEvent.id;
     this.tokenRecurrence = this.selectedEvent?.medicalCalendar?.tokenRecurrence || null;
@@ -153,7 +156,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
         recurrenceType: dataRegister.recurrenceType,
         recurrenceEndDate: dataRegister.recurrenceEndDate ? moment(dataRegister.recurrenceEndDate).format('YYYY-MM-DD') : '',
         recurrenceCount: dataRegister.recurrenceCount,
-        updateSeries: false, 
+        updateSeries: false,
         status: dataRegister.status
       });
 
