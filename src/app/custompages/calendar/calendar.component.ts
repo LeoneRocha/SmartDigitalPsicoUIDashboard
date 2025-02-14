@@ -213,6 +213,7 @@ export class CalendarComponent implements OnInit {
 			// Atualiza os valores do formulário de forma dinâmica
 			this.updateForm_WithEventValues(event, selectedEvent, eventDateString);
 			this.inputDateIsoString = eventDateString;
+			selectedEvent.isTimeFieldEditable = true;
 			this.selectedEvent = selectedEvent;
 			this.setToShowModal();
 		}
@@ -382,7 +383,8 @@ export class CalendarComponent implements OnInit {
 			recurrenceDays: recurrenceDays.length ? recurrenceDays : [],
 			recurrenceEndDate: recurrenceEndDate,
 			recurrenceCount: recurrenceCount,
-			updateSeries: updateSeries
+			updateSeries: updateSeries, 
+			isTimeFieldEditable: false,
 		};
 
 		const newEventInput: any = newEvent;

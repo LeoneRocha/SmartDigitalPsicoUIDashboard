@@ -116,6 +116,7 @@ export class CalendarEventService {
       isPastDate: day.isPast,
       medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null,
       status: medicalCalendar ? medicalCalendar.status : 0,
+      isTimeFieldEditable: false,
     };
     return eventResult;
   }
