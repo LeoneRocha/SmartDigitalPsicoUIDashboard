@@ -23,6 +23,7 @@ import { GlobalizationCultureService } from './services/general/simple/globaliza
 import { GlobalizationTimeZonesService } from './services/general/simple/globalizationtimezone.service';
 import { NgxTranslateModule } from './translate/translate.module';
 import { LanguageService } from './services/general/language.service'; 
+import { AutocompleteComponent } from './shared/components/autocomplete/autocomplete.component';
 //import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
@@ -38,13 +39,18 @@ import { LanguageService } from './services/general/language.service';
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         NgxTranslateModule,
+        
         //SweetAlert2Module.forRoot(), // Adicione isto        
     ],
     declarations: [  
         AppComponent,
         AdminLayoutComponent,
         AuthLayoutComponent,
-        CountDownTimerComponent
+        CountDownTimerComponent,
+        AutocompleteComponent,
+    ],
+    exports: [
+        AutocompleteComponent
     ],
     bootstrap: [AppComponent],
     providers: [

@@ -1,0 +1,19 @@
+<div class="autocomplete-container">
+  <input
+    type="text"
+    class="form-control"
+    [placeholder]="placeholder"
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearch($event)"
+    (focus)="onFocus()"
+  />
+  <div class="suggestions-list" *ngIf="showSuggestions">
+    <div
+      *ngFor="let item of filteredItems"
+      class="suggestion-item"
+      (click)="selectItem(item)"
+    >
+      {{ item.text }}
+    </div>
+  </div>
+</div>
