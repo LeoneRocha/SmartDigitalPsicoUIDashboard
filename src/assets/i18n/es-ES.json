@@ -131,6 +131,8 @@
       "required": "Se requiere archivo"
     },
     "calendar": {
+      "error": "Error de Calendario",
+      "unknownError": "Se produjo un error inesperado al procesar su solicitud",
       "title": "Calendario",
       "labelPatient": "Paciente",
       "labelTitle": "Título",

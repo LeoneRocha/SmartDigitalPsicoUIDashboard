@@ -52,6 +52,8 @@ export class CalendarComponent implements OnInit {
 	showModal: boolean = false;
 	modalTitle: string;	// Nova variável para controlar a exibição do formulário de evento
 	showEventForm: boolean = false;
+	titleError: string = '';
+	defaultError: string = '';
 
 	//#endregion Variables
 
@@ -254,8 +256,8 @@ export class CalendarComponent implements OnInit {
 			next: (response: DropDownEntityModelSelect[]) => {
 				this.patients = response;
 			},
-			error: (err) => {
-				console.error('Erro ao carregar pacientes do médico', err);
+			error: (err) => { 
+				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
 			}
 		});
 	}
@@ -290,7 +292,7 @@ export class CalendarComponent implements OnInit {
 				this.updateFullCalendarComponent();
 			},
 			error: (err) => {
-				ErrorHelper.displayErrors(err?.originalError?.error || [{ message: 'An error occurred while adding the event.' }]);
+				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
 			}
 		});
 	}
@@ -303,8 +305,7 @@ export class CalendarComponent implements OnInit {
 				this.updateFullCalendarComponent();
 			},
 			error: (err) => {
-				const errors = Array.isArray(err?.originalError?.error) ? err?.originalError?.error : [{ message: 'An error occurred while updating the event.' }];
-				ErrorHelper.displayErrors(errors);
+				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
 			}
 		});
 	}
@@ -316,8 +317,7 @@ export class CalendarComponent implements OnInit {
 				this.updateFullCalendarComponent();
 			},
 			error: (err) => {
-				const errors = Array.isArray(err?.originalError?.error) ? err?.originalError?.error : [{ message: 'An error occurred while delete the event.' }];
-				ErrorHelper.displayErrors(errors);
+				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
 			}
 		});
 	}
@@ -341,13 +341,13 @@ export class CalendarComponent implements OnInit {
 	//#region AUXILIAR   
 	// Método para remover NaN do array
 	// Método para remover NaN do array
-	removeNaNFromArray(array: number[]): number[] {		
-		const result = array.filter(item => !isNaN(item));		
+	removeNaNFromArray(array: number[]): number[] {
+		const result = array.filter(item => !isNaN(item));
 		return result;
 	}
 
 	// Função ajustada
-	getEventDataFromFormModal(dateStr: string): any {		
+	getEventDataFromFormModal(dateStr: string): any {
 		const title = FormHelperCalendar.getValue('swal-title', 'Untitled');
 		const startTime = FormHelperCalendar.getValue('swal-startTime', '00:00');
 		const endTime = FormHelperCalendar.getValue('swal-endTime', '');
@@ -360,8 +360,8 @@ export class CalendarComponent implements OnInit {
 		const endDateTime = endTime ? moment(`${dateStr}T${endTime}`).toDate() : null;
 
 		const recurrenceType = FormHelperCalendar.getValue('swal-recurrence', 'None');
-		let recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));		 
-		recurrenceDays = this.removeNaNFromArray(recurrenceDays);		
+		let recurrenceDays = Array.from(document.querySelectorAll('.form-check-input:checked')).map((checkbox: HTMLInputElement) => Number(checkbox.value));
+		recurrenceDays = this.removeNaNFromArray(recurrenceDays);
 		const recurrenceEndDate = FormHelperCalendar.getValue('swal-recurrenceEndDate', null) ? new Date(FormHelperCalendar.getValue('swal-recurrenceEndDate', null)) : null;
 		const recurrenceCount = FormHelperCalendar.getValue('swal-recurrenceCount', null) ? Number(FormHelperCalendar.getValue('swal-recurrenceCount', '0')) : null;
 
@@ -383,12 +383,12 @@ export class CalendarComponent implements OnInit {
 			recurrenceDays: recurrenceDays.length ? recurrenceDays : [],
 			recurrenceEndDate: recurrenceEndDate,
 			recurrenceCount: recurrenceCount,
-			updateSeries: updateSeries, 
+			updateSeries: updateSeries,
 			isTimeFieldEditable: false,
 		};
 
 		const newEventInput: any = newEvent;
-		const resultForm = { event: newEvent, eventInput: newEventInput };		
+		const resultForm = { event: newEvent, eventInput: newEventInput };
 		return resultForm;
 	}
 
@@ -462,6 +462,10 @@ export class CalendarComponent implements OnInit {
 		return medicalId;
 	}
 	loadLablesModalEveent() {
+
+		this.titleError = this.languageService.getTranslateInformationAsync('general.calendar.error');
+		this.defaultError = this.languageService.getTranslateInformationAsync('general.calendar.unknownError');
+
 		const labelCreateEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelCreateEvent');
 		const labelEditEvent: string = this.languageService.getTranslateInformationAsync('general.calendar.labelEditEvent');
 

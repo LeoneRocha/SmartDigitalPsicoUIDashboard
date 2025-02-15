@@ -131,6 +131,8 @@
       "required": "File is required"
     },
     "calendar": {
+      "error": "Calendar Error",
+      "unknownError": "An unexpected error occurred while processing your request",
       "title": "Calendar",
       "labelPatient": "Patient",
       "labelTitle": "Title",

@@ -131,6 +131,8 @@
       "required": "Arquivo é obrigatório"
     },
     "calendar": {
+      "error": "Erro no Calendário",
+      "unknownError": "Ocorreu um erro inesperado ao processar sua solicitação",
       "title": "Calendário",
       "labelPatient": "Paciente",
       "labelTitle": "Título",
@@ -180,8 +182,7 @@
         "confirmButtonText": "Sim, excluir!",
         "cancelButtonText": "Cancelar"
       }
-    }
-  },
+    }  },
   "appsetting": {
     "title": "Configuração",
     "category": "Lista de Configurações",
