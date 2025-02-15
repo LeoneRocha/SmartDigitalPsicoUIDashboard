@@ -25,7 +25,8 @@
                 <ng-autocomplete [data]="patientsFiltered" [searchKeyword]="'text'"
                   [placeholder]="selectedPatient?.text" [itemTemplate]="itemTemplate"
                   [notFoundTemplate]="notFoundTemplate" (selected)='selectEvent($event)'
-                  (inputChanged)='filterPatientsInMemory($event)' [minQueryLength]="3" formControlName="patientId">
+                  (inputChanged)='filterPatientsInMemory($event)' [minQueryLength]="3"  
+                  formControlName="patientId">
                 </ng-autocomplete>
                 <ng-template #itemTemplate let-item>
                   <span [innerHTML]="item.text"></span>
