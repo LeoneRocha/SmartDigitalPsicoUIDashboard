@@ -256,17 +256,22 @@ export class CalendarComponent implements OnInit {
 			next: (response: DropDownEntityModelSelect[]) => {
 				this.patients = response;
 			},
-			error: (err) => { 
-				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
+			error: (err) => {
+				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError); 
 			}
 		});
 	}
 	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
 		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
-		this.calendarEventService.getCalendarEvents(criteria).subscribe(events => {
-			this.eventsData = events;
-			this.eventsDataResult = events;
-			this.updateCalendarEventsComponent();
+		this.calendarEventService.getCalendarEvents(criteria).subscribe({
+			next: (events) => {
+				this.eventsData = events;
+				this.eventsDataResult = events;
+				this.updateCalendarEventsComponent();
+			},
+			error: (err) => {
+				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError); 
+			}
 		});
 	}
 	saveEventFromSwal(dateStr: string): void {

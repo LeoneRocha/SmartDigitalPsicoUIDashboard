@@ -34,9 +34,8 @@ export class CalendarEventService {
   getCalendarEvents(criteria: CalendarCriteriaDto): Observable<ICalendarEvent[]> {
     return this.medicalCalendarService.getMonthlyCalendar(criteria).pipe(
       map((response: ServiceResponse<CalendarDto>) => this.processCalendarResponse(response)),
-      catchError(error => {
-        console.error('Erro ao carregar eventos do calendário', error);
-        return [];
+      catchError(error => { 
+        throw error;
       })
     );
   }
@@ -50,8 +49,7 @@ export class CalendarEventService {
         }))
       ),
       catchError(error => {
-        console.error('Erro ao carregar pacientes do médico', error);
-        return [];
+        throw error;
       })
     );
   }
@@ -60,12 +58,10 @@ export class CalendarEventService {
     return this.patientService.getAllByParentId(medicalId, 'medicalId').pipe(
       map((response: any) => response.data),
       catchError(error => {
-        console.error('Erro ao carregar pacientes do médico', error);
-        return [];
+        throw error;
       })
     );
   }
-
   addCalendarEvent(event: ICalendarEvent): Observable<ServiceResponse<GetMedicalCalendarDto>> {
     const newAppointment = this.mapToAddCalendarEvent(event);
     return this.medicalCalendarService.create(newAppointment);

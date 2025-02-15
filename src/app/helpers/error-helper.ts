@@ -2,7 +2,7 @@ import { ServiceResponse } from 'app/models/ServiceResponse';
 import swal from 'sweetalert2';
 
 export class ErrorHelper {
-  static displayErrors(errorResponse: ServiceResponse<any>): void {    
+  static displayErrors(errorResponse: ServiceResponse<any>): void {
     const errors = errorResponse.errors || [{ message: 'An unknown error occurred.' }];
     let errorMessagesArray = [];
     for (let error of errors) {
@@ -12,7 +12,7 @@ export class ErrorHelper {
       }
       errorMessagesArray.push(message.split('|').pop());
     }
-    const errorMessages = errorMessagesArray.join('\n'); 
+    const errorMessages = errorMessagesArray.join('\n');
     swal.fire({
       icon: 'error',
       title: errorResponse.message,
@@ -21,8 +21,17 @@ export class ErrorHelper {
   }
 
   static displayHttpErrors(error: any, titleError: string, defaultError: string): void {
+
+    if (error?.originalError?.status === 0 && error?.originalError?.statusText === "Unknown Error") {
+      swal.fire({
+        icon: 'error',
+        title: titleError,
+        text: defaultError
+      });
+      return;
+    }
     const errorResponse = error?.originalError?.error;
-    
+
     if (!errorResponse) {
       swal.fire({
         icon: 'error',
@@ -33,11 +42,11 @@ export class ErrorHelper {
     }
 
     const mainMessage = errorResponse.message || titleError;
-    const detailedMessages = errorResponse.errors 
+    const detailedMessages = errorResponse.errors
       ? errorResponse.errors.map(e => e.message).join('\n')
       : '';
 
-    const fullMessage = detailedMessages 
+    const fullMessage = detailedMessages
       ? `${mainMessage}\n\n${detailedMessages}`
       : mainMessage;
 
