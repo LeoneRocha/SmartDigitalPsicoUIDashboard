@@ -5,13 +5,14 @@
     [placeholder]="placeholder"
     [(ngModel)]="searchText"
     (ngModelChange)="onSearch($event)"
-    (focus)="onFocus()"
+    (focus)="onFocus()" 
   />
-  <div class="suggestions-list" *ngIf="showSuggestions">
+  <div class="suggestions-list" *ngIf="showSuggestions && filteredItems.length > 0">
     <div
       *ngFor="let item of filteredItems"
       class="suggestion-item"
       (click)="selectItem(item)"
+      [class.active]="selectedValue === item.id"
     >
       {{ item.text }}
     </div>

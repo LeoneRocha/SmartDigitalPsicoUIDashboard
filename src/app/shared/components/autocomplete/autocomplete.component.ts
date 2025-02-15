@@ -27,6 +27,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
   private onTouched: any = () => {};
 
   onSearch(term: string) {
+    console.log('Search term:', term);  
     if (term.length >= 3) {
       this.search.emit(term);
       this.showSuggestions = true;
@@ -37,6 +38,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
   }
 
   selectItem(item: any) {
+    console.log('Selected item:', item);  
     this.selectedValue = item.id;
     this.searchText = item.text;
     this.showSuggestions = false;

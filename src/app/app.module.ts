@@ -22,8 +22,7 @@ import { appReducer } from './storereduxngrx/shared/app.reducer';
 import { GlobalizationCultureService } from './services/general/simple/globalizationculture.service';
 import { GlobalizationTimeZonesService } from './services/general/simple/globalizationtimezone.service';
 import { NgxTranslateModule } from './translate/translate.module';
-import { LanguageService } from './services/general/language.service'; 
-import { AutocompleteComponent } from './shared/components/autocomplete/autocomplete.component';
+import { LanguageService } from './services/general/language.service';  
 //import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
@@ -46,11 +45,9 @@ import { AutocompleteComponent } from './shared/components/autocomplete/autocomp
         AppComponent,
         AdminLayoutComponent,
         AuthLayoutComponent,
-        CountDownTimerComponent,
-        AutocompleteComponent,
+        CountDownTimerComponent, 
     ],
-    exports: [
-        AutocompleteComponent
+    exports: [ 
     ],
     bootstrap: [AppComponent],
     providers: [
