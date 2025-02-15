@@ -51,6 +51,8 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
   medicalId: number;
   userLoged: any;
   patientsFiltered: DropDownEntityModelSelect[] = [];
+  selectedPatient?: DropDownEntityModelSelect = null;
+
 
   constructor(
     private datePipe: DatePipe, private fb: FormBuilder,
@@ -67,7 +69,8 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
 
     // Inicialize o FormGroup com os controles de formulário necessários
     this.form = this.fb.group({
-      title: ['', Validators.required],
+      title: ['', Validators.required], 
+      swalpatient: [''],
       patientId: ['', Validators.required],
       startTime: [this.form.value.startTime, Validators.required],
       endTime: [this.form.value.endTime, Validators.required],
@@ -96,8 +99,17 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     this.initializeDaysOfWeek();
     this.populateForm();
     this.setRecurrenceValidators();
+
+    // ... other init code ...
+    this.setInitialPatient();
   }
 
+  setInitialPatient() {
+    const patientId = this.form.get('patientId').value;
+    if (patientId) {
+      this.selectedPatient = this.patients.find(p => p.id === patientId);
+    }
+  }
   ngAfterViewInit(): void {
     // Coloca o foco no campo título quando o componente for renderizado
     setTimeout(() => {
@@ -126,20 +138,27 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getSelectedPatientText() {
+    const result = this.selectedPatient?.text || '';
+    return result;
+  }
+
+  selectEvent(item: any) {
+    this.selectedPatient = item;
+    this.form.get('patientId').setValue(item.id);
+    this.form.get('patientId').markAsTouched();
+  }
+
   filterPatientsInMemory(searchTerm: string) {
     if (!searchTerm.trim()) {
-      this.patientsFiltered = [...this.patients].sort((a, b) =>
-        a.text.toLowerCase().localeCompare(b.text.toLowerCase())
-      );
+      this.patientsFiltered = [...this.patients];
       return;
     }
 
     const term = searchTerm.toLowerCase().trim();
     this.patientsFiltered = this.patients
-      .filter(patient => patient.text.toLowerCase().includes(term))
-      .sort((a, b) => a.text.toLowerCase().localeCompare(b.text.toLowerCase()));
+      .filter(patient => patient.text.toLowerCase().includes(term));
   }
-
 
   getFormattedDate(dateStr: string): string {
     return moment(dateStr).locale(this.languageUI).format('LL'); // Formata a data de acordo com o idioma
@@ -280,4 +299,10 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     this.isRecurring = !this.isRecurring;
     this.setRecurrenceValidators();
   }
+  getInitialValue() {
+    const patientId = this.form.get('patientId').value;
+    return this.patients.find(p => p.id === patientId)?.text || '';
+  }
 }
+
+

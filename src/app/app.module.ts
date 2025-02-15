@@ -24,6 +24,7 @@ import { GlobalizationTimeZonesService } from './services/general/simple/globali
 import { NgxTranslateModule } from './translate/translate.module';
 import { LanguageService } from './services/general/language.service';  
 //import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 @NgModule({
     imports: [
@@ -38,6 +39,7 @@ import { LanguageService } from './services/general/language.service';
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         NgxTranslateModule,
+        AutocompleteLibModule,
         
         //SweetAlert2Module.forRoot(), // Adicione isto        
     ],
