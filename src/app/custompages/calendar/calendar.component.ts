@@ -248,7 +248,8 @@ export class CalendarComponent implements OnInit {
 	}
 
 	//#endregion FULL CALENDAR - EVENTS
-
+    //TODO NO FORMULARIO BUSCAR PACIENTE 
+	
 	//#region ACTIONS E LOAD API DATA   
 	loadPatientsFromService(): void {
 		const medicalId: number = this.getParentId();
