@@ -1,15 +1,33 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core'; 
+import { LoadingService } from 'app/services/loading.service';
 
 @Component({
   selector: 'app-loading',
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.css']
 })
-export class LoadingComponent {
+export class LoadingComponent implements OnInit {
   @Input() message: string = 'Loading...';
   @Input() fullScreen: boolean = false;
   @Input() showSpinner: boolean = true;
+  
+  loading: boolean = false;
+
+  constructor(private loadingService: LoadingService) {}
+
+  ngOnInit() {
+    this.loadingService.loading$.subscribe(
+      (loading: boolean) => {
+
+
+        this.loading = loading;
+      }
+    );
+
+    console.log('LoadingComponent', this.loading);  
+  }
 }
+
 
 
 /*<!-- Full screen loading -->

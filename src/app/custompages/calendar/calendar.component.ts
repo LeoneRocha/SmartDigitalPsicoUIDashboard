@@ -18,6 +18,7 @@ import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecur
 import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
 import swal from 'sweetalert2';
 import { ProgressBarService } from 'app/services/progress-bar.service';
+import { LoadingService } from 'app/services/loading.service';
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
 //https://fullcalendar.io/docs/event-object
@@ -67,7 +68,8 @@ export class CalendarComponent implements OnInit {
 		@Inject(AuthService) private authService: AuthService,
 		private cdr: ChangeDetectorRef,
 		private readonly languageService: LanguageService,
-		private readonly progressService: ProgressBarService
+		private readonly progressService: ProgressBarService,
+		private readonly loadingService: LoadingService
 	) {
 	}
 	//#endregion Constructor
@@ -267,18 +269,18 @@ export class CalendarComponent implements OnInit {
 	}
  
 	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
-		this.isLoading = true;
+		this.loadingService.show();
 		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
 		this.calendarEventService.getCalendarEvents(criteria).subscribe({
 			next: (events) => {
 				this.eventsData = events;
 				this.eventsDataResult = events;
 				this.updateCalendarEventsComponent();
-				this.isLoading = false;
+				this.loadingService.hide();
 			},
 			error: (err) => {
 				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
-				this.isLoading = false;
+				this.loadingService.hide();
 			}
 		});
 	}

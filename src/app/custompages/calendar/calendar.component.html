@@ -4,21 +4,16 @@
       <div class="col-md-10 col-md-offset-1">
         <div class="card card-calendar">
           <div class="content">
-            <div *ngIf="isLoading">
-              <app-loading *ngIf="isLoading && !showEventForm" message="Loading Calendar..."></app-loading>
+            <!-- Formulário de Evento -->
+            <div *ngIf="showEventForm">
+              <app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labelsForm"
+                [languageUI]="languageUI" [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString"
+                (onClose)="closeEventForm()" (onConfirm)="confirmEventForm()" (onDelete)="deleteEventForm()">
+              </app-calendar-event-modal>
             </div>
-            <div>
-              <!-- Formulário de Evento -->
-              <div *ngIf="showEventForm">
-                <app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labelsForm"
-                  [languageUI]="languageUI" [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString"
-                  (onClose)="closeEventForm()" (onConfirm)="confirmEventForm()" (onDelete)="deleteEventForm()">
-                </app-calendar-event-modal>
-              </div>
-              <!-- Calendário -->
-              <div *ngIf="!showEventForm">
-                <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
-              </div>
+            <!-- Calendário -->
+            <div *ngIf="!showEventForm">
+              <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
             </div>
           </div>
         </div>
