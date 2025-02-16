@@ -23,6 +23,7 @@ export class ProgressBarComponent implements OnInit {
       this.title = progress.title;
       this.progressValue = progress.value;
       this.progressMessage = progress.message;
+      //console.log('ProgressBarComponent', progress);
     });
   }
 }

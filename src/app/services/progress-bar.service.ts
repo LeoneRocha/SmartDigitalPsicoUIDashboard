@@ -26,6 +26,7 @@ export class ProgressBarService {
       message: 'Starting...',
       title
     });
+    //console.log('ProgressBarService', this.progressSubject);
   }
 
   updateProgress(value: number, message: string) {

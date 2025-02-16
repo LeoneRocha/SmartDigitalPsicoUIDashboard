@@ -78,6 +78,9 @@ export class CalendarComponent implements OnInit {
 		this.initForm();
 		this.loadPatientsFromService();
 		this.loadLablesModalEveent();
+
+		//const savingMsg = this.languageService.getTranslateInformationAsync('general.calendar.progress.saving');
+		//this.progressService.show(savingMsg);
 	}
 	reloadComponent() {
 		const currentUrl = this.router.url;

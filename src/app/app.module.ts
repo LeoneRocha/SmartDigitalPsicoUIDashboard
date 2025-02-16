@@ -25,7 +25,8 @@ import { LanguageService } from './services/general/language.service';
 //import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { ProgressBarComponent } from './custom/components/progress-bar/progress-bar.component'; 
-import { CustomBoardModule } from './custom/customboard.module';
+import { CustomBoardModule } from './custom/customboard.module'; 
+import { ProgressBarService } from './services/progress-bar.service';
 @NgModule({
     imports: [
         BrowserAnimationsModule,
@@ -39,10 +40,8 @@ import { CustomBoardModule } from './custom/customboard.module';
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         NgxTranslateModule,
-        AutocompleteLibModule,
-        
-        CustomBoardModule
-        
+        AutocompleteLibModule, 
+        CustomBoardModule 
         //SweetAlert2Module.forRoot(), // Adicione isto        
     ],
     declarations: [  
@@ -50,9 +49,10 @@ import { CustomBoardModule } from './custom/customboard.module';
         AdminLayoutComponent,
         AuthLayoutComponent,
         CountDownTimerComponent, 
-        
+        ProgressBarComponent 
         ],
     exports: [  
+        ProgressBarComponent
     ],
     bootstrap: [AppComponent],
     providers: [
@@ -60,8 +60,8 @@ import { CustomBoardModule } from './custom/customboard.module';
         AuthService
         , GlobalizationCultureService
         , GlobalizationTimeZonesService
-        , LanguageService
-
+        , LanguageService  
+        ,ProgressBarService      
         //Guards
         , AuthGuard, AdminAuthGuard, AdminOrMedicalAuthGuard, AuthGuard, MedicalAuthGuard, PatientAuthGuard
     ],
