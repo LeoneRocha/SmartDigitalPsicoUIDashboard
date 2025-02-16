@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core'; 
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { LanguageService } from 'app/services/general/language.service';
 import { LoadingService } from 'app/services/loading.service';
 
 @Component({
@@ -7,24 +8,30 @@ import { LoadingService } from 'app/services/loading.service';
   styleUrls: ['./loading.component.css']
 })
 export class LoadingComponent implements OnInit {
-  @Input() message: string = 'Loading...';
+  @Input() message: string = '';
   @Input() fullScreen: boolean = false;
   @Input() showSpinner: boolean = true;
-  
+ 
   loading: boolean = false;
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(@Inject(LanguageService) private languageService: LanguageService,
+    private loadingService: LoadingService) { }
 
-  ngOnInit() {
+  ngOnInit() { 
+
+    console.log('LoadingComponent.ngOnInit',this.message );
+
+
+    if(this.message == null || this.message == undefined || this.message == '') { 
+      const loadingText = this.languageService.getTranslateInformationAsync('general.loading.message');
+      this.message = loadingText;
+    }
+    
     this.loadingService.loading$.subscribe(
-      (loading: boolean) => {
-
-
+      (loading: boolean) => { 
         this.loading = loading;
       }
-    );
-
-    console.log('LoadingComponent', this.loading);  
+    ); 
   }
 }
 

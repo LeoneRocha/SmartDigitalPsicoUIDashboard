@@ -130,6 +130,9 @@
       "title": "File",
       "required": "File is required"
     },
+    "loading": {
+      "message": "Loading..."
+    },
     "calendar": {
       "progress": {
         "saving": "Saving Event",

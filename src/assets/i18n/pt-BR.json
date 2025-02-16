@@ -130,6 +130,9 @@
       "title": "Arquivo",
       "required": "Arquivo é obrigatório"
     },
+    "loading": {
+      "message": "Carregando..."
+    },
     "calendar": {
       "progress": {
         "saving": "Salvando Evento",
@@ -189,7 +192,8 @@
         "confirmButtonText": "Sim, excluir!",
         "cancelButtonText": "Cancelar"
       }
-    }  },
+    }
+  },
   "appsetting": {
     "title": "Configuração",
     "category": "Lista de Configurações",
