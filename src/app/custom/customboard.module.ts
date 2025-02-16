@@ -6,23 +6,25 @@ import { MedicalCalendarService } from 'app/services/general/principals/medicalC
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { PatientService } from 'app/services/general/principals/patient.service';
 import { ProgressBarService } from 'app/services/progress-bar.service';
-
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 @NgModule({
   declarations: [
-    DailyScheduleComponent
+    DailyScheduleComponent,
+    ProgressBarComponent,
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    DailyScheduleComponent
+    DailyScheduleComponent,
+    ProgressBarComponent,
   ],
-    providers: [
-      , LanguageService
-      , MedicalCalendarService
-      , CalendarEventService
-      , PatientService
-      ,ProgressBarService      
-    ] 
+  providers: [
+    , LanguageService
+    , MedicalCalendarService
+    , CalendarEventService
+    , PatientService
+    , ProgressBarService
+  ]
 })
 export class CustomBoardModule { }

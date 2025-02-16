@@ -50,11 +50,9 @@ import { CustomBoardModule } from './custom/customboard.module';
         AdminLayoutComponent,
         AuthLayoutComponent,
         CountDownTimerComponent, 
-         ProgressBarComponent, 
         
         ],
-    exports: [ 
-        ProgressBarComponent,
+    exports: [  
     ],
     bootstrap: [AppComponent],
     providers: [
