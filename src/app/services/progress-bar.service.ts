@@ -35,6 +35,12 @@ export class ProgressBarService {
       value,
       message
     });
+
+    if (value >= 100) {
+      setTimeout(() => {
+        this.hide();
+      }, 1000);
+    }
   }
 
   hide() {

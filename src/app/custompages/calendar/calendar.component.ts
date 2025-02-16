@@ -78,7 +78,6 @@ export class CalendarComponent implements OnInit {
 		this.initForm();
 		this.loadPatientsFromService();
 		this.loadLablesModalEveent();
-		this.progressService.show('Saving Event');
 	}
 	reloadComponent() {
 		const currentUrl = this.router.url;
@@ -300,11 +299,13 @@ export class CalendarComponent implements OnInit {
 			next: (response) => {
 				this.progressService.updateProgress(100, 'Event saved successfully!');
 				newEvent.id = response.data.id;
+				this.progressService.hide();
 				SuccessHelper.displaySuccess(response);
 				this.setToCloseModal();
 				this.updateFullCalendarComponent();
 			},
 			error: (err) => {
+				this.progressService.hide();
 				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
 			}
 		});
@@ -317,11 +318,13 @@ export class CalendarComponent implements OnInit {
 		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
 			next: (response) => {
 				this.progressService.updateProgress(100, 'Event updated successfully!');
+				this.progressService.hide();
 				SuccessHelper.displaySuccess(response);
 				this.setToCloseModal();
 				this.updateFullCalendarComponent();
 			},
 			error: (err) => {
+				this.progressService.hide();
 				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
 			}
 		});
@@ -405,7 +408,7 @@ export class CalendarComponent implements OnInit {
 		};
 
 		const newEventInput: any = newEvent;
-		const resultForm = { event: newEvent, eventInput: newEventInput };
+		const resultForm = { event: newEvent, eventInput: newEventInput }; 
 		return resultForm;
 	}
 

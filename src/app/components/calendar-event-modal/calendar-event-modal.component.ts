@@ -69,7 +69,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
 
     // Inicialize o FormGroup com os controles de formulário necessários
     this.form = this.fb.group({
-      title: ['', Validators.required], 
+      title: ['', Validators.required],
       swalpatient: [''],
       patientId: ['', Validators.required],
       startTime: [this.form.value.startTime, Validators.required],
@@ -105,10 +105,14 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
   }
 
   setInitialPatient() {
-    const patientId = this.form.get('patientId').value;
-    if (patientId) {
-      this.selectedPatient = this.patients.find(p => p.id === patientId);
-    }
+    if (this.selectedEvent && this.selectedEvent.id > 0 && this.selectedEvent?.medicalCalendar) {
+      this.selectedPatient = this.patients.find(p => p.id === this.selectedEvent?.medicalCalendar.patientId);
+    } else {
+      const patientId = this.form.get('patientId').value;
+      if (patientId) {
+        this.selectedPatient = this.patients.find(p => p.id === patientId); 
+      }
+    } 
   }
   ngAfterViewInit(): void {
     // Coloca o foco no campo título quando o componente for renderizado
@@ -146,6 +150,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
   selectEvent(item: any) {
     this.selectedPatient = item;
     this.form.get('patientId').setValue(item.id);
+    this.form.get('swalpatient').setValue(item.id);
     this.form.get('patientId').markAsTouched();
   }
 
@@ -223,6 +228,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       this.form.patchValue({
         title: tiltleEvent,
         patientId: dataRegister.patientId,
+        swalpatient: dataRegister.patientId,
         startTime: startDateTime.format('HH:mm'),
         endTime: endTimeDateTime.format('HH:mm'),
         location: dataRegister.location,

@@ -20,12 +20,7 @@ export class ProgressBarComponent implements OnInit {
       this.isVisible = progress.isVisible;
       this.title = progress.title;
       this.progressValue = progress.value;
-      this.progressMessage = progress.message;
-
-
-console.log('ProgressBarComponent');
-      console.log(progress);
-
+      this.progressMessage = progress.message; 
     });
   }
 }
