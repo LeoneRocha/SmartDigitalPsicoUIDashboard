@@ -1,0 +1,42 @@
+.overlay-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 99999;  /* Increase z-index */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-content {
+    text-align: center;
+    color: white;
+}
+
+.loading-spinner {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    background: url('/assets/img/loading.gif') no-repeat center;
+}
+
+.progress-container {
+    width: 300px;
+}
+
+.progress {
+    height: 20px;
+    background: rgba(255,255,255,0.2);
+}
+
+.progress-bar {
+    transition: width 0.3s ease-in-out;
+}
+
+.progress-text {
+    margin-top: 10px;
+    font-size: 14px;
+}

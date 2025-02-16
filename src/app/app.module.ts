@@ -25,7 +25,7 @@ import { NgxTranslateModule } from './translate/translate.module';
 import { LanguageService } from './services/general/language.service';  
 //import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
-
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 @NgModule({
     imports: [
         BrowserAnimationsModule,
@@ -40,6 +40,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         NgxTranslateModule,
         AutocompleteLibModule,
+       
         
         //SweetAlert2Module.forRoot(), // Adicione isto        
     ],
@@ -48,8 +49,11 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
         AdminLayoutComponent,
         AuthLayoutComponent,
         CountDownTimerComponent, 
+         ProgressBarComponent,
+        
     ],
     exports: [ 
+        ProgressBarComponent,
     ],
     bootstrap: [AppComponent],
     providers: [

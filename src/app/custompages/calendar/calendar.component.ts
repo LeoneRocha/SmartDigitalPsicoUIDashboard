@@ -17,6 +17,7 @@ import localesAll from '@fullcalendar/core/locales-all';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
 import swal from 'sweetalert2';
+import { ProgressBarService } from 'app/services/progress-bar.service';
 //https://fullcalendar.io/demos
 //or https://github.com/mattlewis92/angular-calendar/tree/v0.30.1
 //https://fullcalendar.io/docs/event-object
@@ -66,6 +67,7 @@ export class CalendarComponent implements OnInit {
 		@Inject(AuthService) private authService: AuthService,
 		private cdr: ChangeDetectorRef,
 		private readonly languageService: LanguageService,
+		private readonly progressService: ProgressBarService
 	) {
 	}
 	//#endregion Constructor
@@ -76,6 +78,7 @@ export class CalendarComponent implements OnInit {
 		this.initForm();
 		this.loadPatientsFromService();
 		this.loadLablesModalEveent();
+		this.progressService.show('Saving Event');
 	}
 	reloadComponent() {
 		const currentUrl = this.router.url;
@@ -248,8 +251,8 @@ export class CalendarComponent implements OnInit {
 	}
 
 	//#endregion FULL CALENDAR - EVENTS
-    //TODO NO FORMULARIO BUSCAR PACIENTE 
-	
+	//TODO NO FORMULARIO BUSCAR PACIENTE 
+
 	//#region ACTIONS E LOAD API DATA   
 	loadPatientsFromService(): void {
 		const medicalId: number = this.getParentId();
@@ -258,7 +261,7 @@ export class CalendarComponent implements OnInit {
 				this.patients = response;
 			},
 			error: (err) => {
-				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError); 
+				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
 			}
 		});
 	}
@@ -271,7 +274,7 @@ export class CalendarComponent implements OnInit {
 				this.updateCalendarEventsComponent();
 			},
 			error: (err) => {
-				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError); 
+				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
 			}
 		});
 	}
@@ -280,6 +283,7 @@ export class CalendarComponent implements OnInit {
 		const newEvent: ICalendarEvent = newEventData.event;
 		const newEventInput = newEventData.eventInput;
 
+		this.progressService.show('Saving Event');
 		if (this.isEditMode && this.selectedEventId > 0) {
 			newEvent.id = this.selectedEventId;
 			const selectedEvent: ICalendarEvent = this.getEventSelected();
@@ -290,8 +294,11 @@ export class CalendarComponent implements OnInit {
 		}
 	}
 	addCalendarEventFromService(newEvent: any, newEventInput: any): void {
+		this.progressService.updateProgress(30, 'Adding new event...');
+
 		this.calendarEventService.addCalendarEvent(newEvent).subscribe({
 			next: (response) => {
+				this.progressService.updateProgress(100, 'Event saved successfully!');
 				newEvent.id = response.data.id;
 				SuccessHelper.displaySuccess(response);
 				this.setToCloseModal();
@@ -304,8 +311,12 @@ export class CalendarComponent implements OnInit {
 	}
 
 	updateCalendarEventFromService(updatedEvent: ICalendarEvent): void {
+		this.progressService.updateProgress(30, 'Updating event...');
+
+
 		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
 			next: (response) => {
+				this.progressService.updateProgress(100, 'Event updated successfully!');
 				SuccessHelper.displaySuccess(response);
 				this.setToCloseModal();
 				this.updateFullCalendarComponent();
