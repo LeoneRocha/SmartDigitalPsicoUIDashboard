@@ -1,0 +1,21 @@
+<div class="container mt-4" *ngIf="events.length > 0">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Schedule for {{ today | date:'fullDate' }}</h4>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let event of events">
+          <div class="d-flex justify-content-between">
+            <div>{{ event.time }}</div>
+            <div>{{ event.title }}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="container mt-4" *ngIf="events.length === 0">
+    <div class="alert alert-info">
+      No events scheduled for today.
+    </div>
+  </div>
+  

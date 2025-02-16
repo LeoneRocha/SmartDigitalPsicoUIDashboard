@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Inject, Input, OnInit } from "@angular/core";
 import { ProgressBarService } from "app/services/progress-bar.service";
 
 @Component({
@@ -13,14 +13,16 @@ export class ProgressBarComponent implements OnInit {
   progressValue: number = 0;
   progressMessage: string = '';
 
-  constructor(private progressService: ProgressBarService) { }
+  constructor(
+    @Inject(ProgressBarService) private progressService: ProgressBarService,
+  ) { }
 
   ngOnInit(): void {
     this.progress$.subscribe(progress => {
       this.isVisible = progress.isVisible;
       this.title = progress.title;
       this.progressValue = progress.value;
-      this.progressMessage = progress.message; 
+      this.progressMessage = progress.message;
     });
   }
 }

@@ -31,7 +31,10 @@ ng generate component testpages/MedicalCalendarTest --project pd-pro-angularcli
 
 ng generate component components\CalendarEventModal --project pd-pro-angularcli
 
+ ng generate component 
  
+ng generate component src/app/components\dailyschedule --project pd-pro-angularcli
+
 
 
 docker build . -t leonecr/smartdigitalpsico_ui_local:latest --force-rm --no-cache

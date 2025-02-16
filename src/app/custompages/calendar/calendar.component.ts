@@ -249,9 +249,7 @@ export class CalendarComponent implements OnInit {
 		this.saveEventFromSwal(this.inputDateIsoString);
 	}
 
-	//#endregion FULL CALENDAR - EVENTS
-	//TODO NO FORMULARIO BUSCAR PACIENTE 
-
+	//#endregion FULL CALENDAR - EVENTS  
 	//#region ACTIONS E LOAD API DATA   
 	loadPatientsFromService(): void {
 		const medicalId: number = this.getParentId();

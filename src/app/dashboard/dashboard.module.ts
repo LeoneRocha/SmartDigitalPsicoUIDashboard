@@ -7,6 +7,7 @@ import { LbdModule } from '../lbd/lbd.module';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutes } from './dashboard.routing';
 import { NgxTranslateModule } from 'app/translate/translate.module';
+import { CustomBoardModule } from 'app/custom/customboard.module';
 
 @NgModule({
     imports: [
@@ -14,6 +15,7 @@ import { NgxTranslateModule } from 'app/translate/translate.module';
         RouterModule.forChild(DashboardRoutes),
         FormsModule,
         LbdModule, NgxTranslateModule, 
+        CustomBoardModule  
     ],
     declarations: [DashboardComponent]
 })

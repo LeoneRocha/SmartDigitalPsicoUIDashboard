@@ -1,15 +1,13 @@
 <div class="main-content">
-    <div class="container-fluid">
- 
-          <div class="col-md-12" >
-            <lbd-task-list
-              [title]="'Tasks'"
-              [subtitle]="'Backend development'"
-              [tasks]="tasks"
-              [withHr]="true"
-              [footerIconClass]="'fa fa-history'"
-              [footerText]="'Updated 3 minutes ago'">
-            </lbd-task-list>
-          </div>
-        </div> 
+  <div class="container-fluid">
+
+    <div class="col-md-12">
+      <lbd-task-list [title]="'Tasks'" [subtitle]="'Backend development'" [tasks]="tasks" [withHr]="true"
+        [footerIconClass]="'fa fa-history'" [footerText]="'Updated 3 minutes ago'">
+      </lbd-task-list>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <app-daily-schedule></app-daily-schedule>
+  </div>
 </div>
