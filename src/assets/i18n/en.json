@@ -131,6 +131,13 @@
       "required": "File is required"
     },
     "calendar": {
+      "progress": {
+        "saving": "Saving Event",
+        "adding": "Adding new event...",
+        "updating": "Updating event...",
+        "saveSuccess": "Event saved successfully!",
+        "updateSuccess": "Event updated successfully!"
+      },
       "error": "Calendar Error",
       "unknownError": "An unexpected error occurred while processing your request",
       "title": "Calendar",

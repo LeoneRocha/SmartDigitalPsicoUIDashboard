@@ -282,7 +282,10 @@ export class CalendarComponent implements OnInit {
 		const newEvent: ICalendarEvent = newEventData.event;
 		const newEventInput = newEventData.eventInput;
 
-		this.progressService.show('Saving Event');
+
+		const savingMsg = this.languageService.getTranslateInformationAsync('general.calendar.progress.saving');
+		this.progressService.show(savingMsg);
+
 		if (this.isEditMode && this.selectedEventId > 0) {
 			newEvent.id = this.selectedEventId;
 			const selectedEvent: ICalendarEvent = this.getEventSelected();
@@ -293,11 +296,15 @@ export class CalendarComponent implements OnInit {
 		}
 	}
 	addCalendarEventFromService(newEvent: any, newEventInput: any): void {
-		this.progressService.updateProgress(30, 'Adding new event...');
+
+		const addingMsg = this.languageService.getTranslateInformationAsync('general.calendar.progress.adding');
+		const successMsg = this.languageService.getTranslateInformationAsync('general.calendar.progress.saveSuccess');
+
+		this.progressService.updateProgress(50, addingMsg);
 
 		this.calendarEventService.addCalendarEvent(newEvent).subscribe({
 			next: (response) => {
-				this.progressService.updateProgress(100, 'Event saved successfully!');
+				this.progressService.updateProgress(100, successMsg);
 				newEvent.id = response.data.id;
 				this.progressService.hide();
 				SuccessHelper.displaySuccess(response);
@@ -312,12 +319,15 @@ export class CalendarComponent implements OnInit {
 	}
 
 	updateCalendarEventFromService(updatedEvent: ICalendarEvent): void {
-		this.progressService.updateProgress(30, 'Updating event...');
+		const updatingMsg = this.languageService.getTranslateInformationAsync('general.calendar.progress.updating');
+		const successMsg = this.languageService.getTranslateInformationAsync('general.calendar.progress.updateSuccess');
+
+		this.progressService.updateProgress(50, updatingMsg);
 
 
 		this.calendarEventService.updateCalendarEvent(updatedEvent).subscribe({
 			next: (response) => {
-				this.progressService.updateProgress(100, 'Event updated successfully!');
+				this.progressService.updateProgress(100, successMsg);
 				this.progressService.hide();
 				SuccessHelper.displaySuccess(response);
 				this.setToCloseModal();
@@ -408,7 +418,7 @@ export class CalendarComponent implements OnInit {
 		};
 
 		const newEventInput: any = newEvent;
-		const resultForm = { event: newEvent, eventInput: newEventInput }; 
+		const resultForm = { event: newEvent, eventInput: newEventInput };
 		return resultForm;
 	}
 

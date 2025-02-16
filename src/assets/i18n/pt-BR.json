@@ -131,6 +131,13 @@
       "required": "Arquivo é obrigatório"
     },
     "calendar": {
+      "progress": {
+        "saving": "Salvando Evento",
+        "adding": "Adicionando novo evento...",
+        "updating": "Atualizando evento...",
+        "saveSuccess": "Evento salvo com sucesso!",
+        "updateSuccess": "Evento atualizado com sucesso!"
+      },
       "error": "Erro no Calendário",
       "unknownError": "Ocorreu um erro inesperado ao processar sua solicitação",
       "title": "Calendário",
