@@ -1,21 +1,53 @@
-<div class="container mt-4" *ngIf="events.length > 0">
-    <div class="card">
-      <div class="card-header bg-primary text-white">
-        <h4 class="mb-0">Schedule for {{ today | date:'fullDate' }}</h4>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item" *ngFor="let event of events">
-          <div class="d-flex justify-content-between">
-            <div>{{ event.time }}</div>
-            <div>{{ event.title }}</div>
+<div class="container-fluid">
+  <div class="row mb-3">
+    <div class="col">
+      <h3 class="mb-0">Schedule for {{ today | date:'fullDate' }}</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
           </div>
-        </li>
-      </ul>
+
+          <div *ngIf="!loading" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>{{ 'calendar.time' }}</th>
+                  <th>{{ 'calendar.patient' }}</th>
+                  <th>{{ 'calendar.title' }}</th>
+                  <th>{{ 'calendar.status' }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let event of events">
+                  <td>{{ event.start | date:'shortTime':undefined:languageUI }}</td>
+                  <td>{{ event.patientName }}</td>
+                  <td>{{ event.title }}</td>
+                  <td><span class="badge" [ngClass]="{'bg-success': event.status === 'Confirmed', 
+                                                     'bg-warning': event.status === 'Pending',
+                                                     'bg-danger': event.status === 'Cancelled'}">
+                      {{ event.status }}
+                    </span></td>
+                </tr>
+                <tr *ngIf="events.length === 0">
+                  <td colspan="4" class="text-center">{{ 'calendar.noEvents' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="container mt-4" *ngIf="events.length === 0">
     <div class="alert alert-info">
       No events scheduled for today.
     </div>
-  </div>
-  
+</div>

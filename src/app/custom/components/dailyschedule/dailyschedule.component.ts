@@ -7,7 +7,7 @@ import { AuthService } from 'app/services/auth/auth.service';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { LanguageService } from 'app/services/general/language.service';
 import * as moment from 'moment';
- 
+
 @Component({
   selector: 'app-daily-schedule',
   templateUrl: './dailyschedule.component.html',
@@ -22,28 +22,31 @@ export class DailyScheduleComponent implements OnInit {
   parentId: number;
 
   constructor(
+    @Inject(AuthService) private authService: AuthService,
+    @Inject(LanguageService) private languageService: LanguageService,
     @Inject(CalendarEventService) private calendarEventService: CalendarEventService,
-   @Inject(AuthService) private authService: AuthService,
-   @Inject(Router) private router: Router,
-   @Inject(ActivatedRoute) private route: ActivatedRoute,
-   @Inject(LanguageService) private languageService: LanguageService
+    @Inject(Router) private router: Router,
+    @Inject(ActivatedRoute) private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-   // this.languageUI = this.languageService.getLanguageToLocalStorage();
-    //this.loadTodayEvents();
+    this.languageUI = this.languageService.getLanguageToLocalStorage();
+    this.loadTodayEvents();
   }
-/*
+
   loadTodayEvents(): void {
     this.loading = true;
-    const startDate = new Date(this.today.setHours(0, 0, 0, 0));
-    const endDate = new Date(this.today.setHours(23, 59, 59, 999));
- 
+    let todayDate = this.today;
+    todayDate = new Date(2025, 2, 26);//FOR TESTING
+    const startDate = new Date(todayDate.setHours(0, 0, 0, 0));
+    const endDate = new Date(todayDate.setHours(23, 59, 59, 999));
+
     const criteria: CalendarCriteriaDto = this.createCriteria(startDate, endDate);
 
     this.calendarEventService.getCalendarEvents(criteria).subscribe({
       next: (events) => {
         this.events = events;
+        console.log('Events loaded:', this.events);
         this.loading = false;
       },
       error: (error) => {
@@ -80,5 +83,5 @@ export class DailyScheduleComponent implements OnInit {
     const medicalId = userLogger.typeUser === "Medical" && userLogger.medicalId ? userLogger.medicalId : 0;
     this.parentId = medicalId;
     return medicalId;
-  }*/
+  }
 }
