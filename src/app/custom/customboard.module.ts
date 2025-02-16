@@ -5,6 +5,7 @@ import { LanguageService } from 'app/services/general/language.service';
 import { MedicalCalendarService } from 'app/services/general/principals/medicalCalendar.service';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { PatientService } from 'app/services/general/principals/patient.service';
+import { ProgressBarService } from 'app/services/progress-bar.service';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { PatientService } from 'app/services/general/principals/patient.service'
       , MedicalCalendarService
       , CalendarEventService
       , PatientService
+      ,ProgressBarService      
     ] 
 })
 export class CustomBoardModule { }

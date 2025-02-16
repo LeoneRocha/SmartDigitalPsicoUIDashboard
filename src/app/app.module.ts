@@ -1,7 +1,6 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router'; 
 import { AppComponent } from './app.component';
 import { FixedPluginModule } from './shared/fixedplugin/fixedplugin.module';
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
@@ -25,7 +24,7 @@ import { NgxTranslateModule } from './translate/translate.module';
 import { LanguageService } from './services/general/language.service';  
 //import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
-import { ProgressBarComponent } from './components/progress-bar/progress-bar.component'; 
+import { ProgressBarComponent } from './custom/components/progress-bar/progress-bar.component'; 
 import { CustomBoardModule } from './custom/customboard.module';
 @NgModule({
     imports: [
@@ -64,6 +63,7 @@ import { CustomBoardModule } from './custom/customboard.module';
         , GlobalizationCultureService
         , GlobalizationTimeZonesService
         , LanguageService
+
         //Guards
         , AuthGuard, AdminAuthGuard, AdminOrMedicalAuthGuard, AuthGuard, MedicalAuthGuard, PatientAuthGuard
     ],

@@ -55,7 +55,7 @@ export class CalendarComponent implements OnInit {
 	showEventForm: boolean = false;
 	titleError: string = '';
 	defaultError: string = '';
-
+	public isLoading: boolean = false;
 	//#endregion Variables
 
 	//#region Constructor
@@ -262,16 +262,20 @@ export class CalendarComponent implements OnInit {
 			}
 		});
 	}
+ 
 	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
+		this.isLoading = true;
 		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
 		this.calendarEventService.getCalendarEvents(criteria).subscribe({
 			next: (events) => {
 				this.eventsData = events;
 				this.eventsDataResult = events;
 				this.updateCalendarEventsComponent();
+				this.isLoading = false;
 			},
 			error: (err) => {
 				ErrorHelper.displayHttpErrors(err, this.titleError, this.defaultError);
+				this.isLoading = false;
 			}
 		});
 	}
