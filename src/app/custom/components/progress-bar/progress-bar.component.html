@@ -1,0 +1,16 @@
+<div id="ProgressBarComponent" class="overlay-container" *ngIf="isVisible">
+    <div class="progress-modal">
+      <div class="progress-title">
+        {{title}}
+      </div>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" [style.width.%]="progressValue">
+          {{progressValue}}%
+        </div>
+      </div>
+      <div class="progress-text">
+        {{progressMessage}}
+      </div>
+    </div>
+  </div>
+  

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { DayOfWeek } from 'app/models/general/day-of-week';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
@@ -8,6 +8,12 @@ import * as moment from 'moment';
 import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
 import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
+import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'app/services/auth/auth.service';
+import { PatientSearchCriteriaDto } from 'app/models/principalsmodel/PatientSearchCriteriaDto';
+import { ErrorHelper } from 'app/helpers/error-helper';
+import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
 
 @Component({
   selector: 'app-calendar-event-modal',
@@ -41,9 +47,21 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
 
   public isAllDay: boolean = false;
   public isTimeFieldsDisabled: boolean = true;
+  parentId: number;
+  medicalId: number;
+  userLoged: any;
+  patientsFiltered: DropDownEntityModelSelect[] = [];
+  selectedPatient?: DropDownEntityModelSelect = null;
 
-  constructor(private datePipe: DatePipe, private fb: FormBuilder) { }
 
+  constructor(
+    private datePipe: DatePipe, private fb: FormBuilder,
+    @Inject(CalendarEventService) private calendarEventService: CalendarEventService,
+    @Inject(Router) private router: Router,
+    @Inject(ActivatedRoute) private route: ActivatedRoute,
+    @Inject(AuthService) private authService: AuthService,
+  ) {
+  }
   ngOnInit(): void {
     // Initialize if necessary
     //console.log('----------------------CalendarEventModalComponent - ngOnInit-------------------------');
@@ -52,6 +70,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     // Inicialize o FormGroup com os controles de formulário necessários
     this.form = this.fb.group({
       title: ['', Validators.required],
+      swalpatient: [''],
       patientId: ['', Validators.required],
       startTime: [this.form.value.startTime, Validators.required],
       endTime: [this.form.value.endTime, Validators.required],
@@ -69,7 +88,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     // Configure se necessário
     this.labelFormTitle = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelEditEvent : this.labels.labelCreateEvent;
     this.labelFormSave = this.selectedEvent && this.selectedEvent.id > 0 ? this.labels.labelBtnUpdate : this.labels.labelBtnSave;
-    
+
     this.isTimeFieldsDisabled = this.selectedEvent?.isTimeFieldEditable ?? false;
 
     this.isEditMode = !!this.selectedEvent && !!this.selectedEvent.id;
@@ -80,8 +99,21 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     this.initializeDaysOfWeek();
     this.populateForm();
     this.setRecurrenceValidators();
+
+    // ... other init code ...
+    this.setInitialPatient();
   }
 
+  setInitialPatient() {
+    if (this.selectedEvent && this.selectedEvent.id > 0 && this.selectedEvent?.medicalCalendar) {
+      this.selectedPatient = this.patients.find(p => p.id === this.selectedEvent?.medicalCalendar.patientId);
+    } else {
+      const patientId = this.form.get('patientId').value;
+      if (patientId) {
+        this.selectedPatient = this.patients.find(p => p.id === patientId); 
+      }
+    } 
+  }
   ngAfterViewInit(): void {
     // Coloca o foco no campo título quando o componente for renderizado
     setTimeout(() => {
@@ -93,9 +125,57 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       }
     }, 0);
   }
+  searchPatients(searchTerm: string) {
+    this.userLoged = this.authService.getLocalStorageUser();
+    const searchCriteria: PatientSearchCriteriaDto = {
+      medicalId: this.getParentId(),
+      name: searchTerm
+    };
+
+    this.calendarEventService.patientSearch(searchCriteria).subscribe({
+      next: (patients) => {
+        this.patients = patients;
+      },
+      error: (err) => {
+        ErrorHelper.displayHttpErrors(err, this.labels.labelTitle, this.labels.labelFieldIsRequired);
+      }
+    });
+  }
+
+  getSelectedPatientText() {
+    const result = this.selectedPatient?.text || '';
+    return result;
+  }
+
+  selectEvent(item: any) {
+    this.selectedPatient = item;
+    this.form.get('patientId').setValue(item.id);
+    this.form.get('swalpatient').setValue(item.id);
+    this.form.get('patientId').markAsTouched();
+  }
+
+  filterPatientsInMemory(searchTerm: string) {
+    if (!searchTerm.trim()) {
+      this.patientsFiltered = [...this.patients];
+      return;
+    }
+
+    const term = searchTerm.toLowerCase().trim();
+    this.patientsFiltered = this.patients
+      .filter(patient => patient.text.toLowerCase().includes(term));
+  }
 
   getFormattedDate(dateStr: string): string {
     return moment(dateStr).locale(this.languageUI).format('LL'); // Formata a data de acordo com o idioma
+  }
+
+  getParentId(): number {
+    const userLogger = this.authService.getLocalStorageUser();
+    const paramsUrl = this.route.snapshot.paramMap;
+    this.parentId = Number(paramsUrl.get('parentId'));
+    const medicalId = userLogger.typeUser === "Medical" && userLogger.medicalId ? userLogger.medicalId : 0;
+    this.parentId = medicalId;
+    return medicalId;
   }
 
   initializeDaysOfWeek(): void {
@@ -148,6 +228,7 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
       this.form.patchValue({
         title: tiltleEvent,
         patientId: dataRegister.patientId,
+        swalpatient: dataRegister.patientId,
         startTime: startDateTime.format('HH:mm'),
         endTime: endTimeDateTime.format('HH:mm'),
         location: dataRegister.location,
@@ -224,4 +305,10 @@ export class CalendarEventModalComponent implements OnInit, AfterViewInit {
     this.isRecurring = !this.isRecurring;
     this.setRecurrenceValidators();
   }
+  getInitialValue() {
+    const patientId = this.form.get('patientId').value;
+    return this.patients.find(p => p.id === patientId)?.text || '';
+  }
 }
+
+
