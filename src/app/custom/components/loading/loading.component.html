@@ -1,4 +1,4 @@
-<div id="loading-overlay" *ngIf="loading">
+<div id="loading-overlay" *ngIf="isLoading">
   <div [ngClass]="{'loading-overlay': fullScreen, 'component-scope': !fullScreen}" *ngIf="showSpinner">
     <div class="loading-content">
       <div class="spinner-border text-primary" role="status">
