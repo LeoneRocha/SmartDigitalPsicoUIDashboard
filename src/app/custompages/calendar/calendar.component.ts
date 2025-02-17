@@ -271,8 +271,7 @@ export class CalendarComponent implements OnInit {
 
 	loadDataFromService(startDateTime?: Date, endDateTime?: Date): void {
 		const criteria: CalendarCriteriaDto = this.createCriteria(startDateTime, endDateTime);
-		const loadingMsg = this.languageService.getTranslateInformationAsync('general.loading.message');
-		console.log(loadingMsg);
+		const loadingMsg = this.languageService.getTranslateInformationAsync('general.loading.message'); 
 		this.loadingService.show(loadingMsg, true, true);
 		this.calendarEventService.getCalendarEvents(criteria).subscribe({
 			next: (events) => {

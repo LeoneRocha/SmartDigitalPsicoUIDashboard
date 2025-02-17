@@ -41,8 +41,7 @@ export class LoadingComponent implements OnInit {
 
   ngOnInit() {
     this.loadingService.loading$.subscribe(
-      (state) => {
-        console.log('Loading state:', state);
+      (state) => { 
         this.isLoading = state.isLoading;
         this._showSpinner = state.showSpinner ?? this._showSpinner;
         this._message = state.message ?? this._message;

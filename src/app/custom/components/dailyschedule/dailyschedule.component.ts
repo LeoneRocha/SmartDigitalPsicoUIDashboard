@@ -46,11 +46,9 @@ export class DailyScheduleComponent implements OnInit {
     this.calendarEventService.getCalendarEvents(criteria).subscribe({
       next: (events) => {
         this.events = events;
-        console.log('Events loaded:', this.events);
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error loading events:', error);
         this.loading = false;
       }
     });
