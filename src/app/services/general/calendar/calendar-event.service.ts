@@ -10,7 +10,6 @@ import { UpdateMedicalCalendarDto } from 'app/models/medicalcalendar/UpdateMedic
 import { ActionMedicalCalendarDtoBase } from 'app/models/medicalcalendar/ActionMedicalCalendarDtoBase';
 import { GetMedicalCalendarDto } from 'app/models/medicalcalendar/GetMedicalCalendarDto';
 import { DeleteMedicalCalendarDto } from 'app/models/modelsbyswagger/deleteMedicalCalendarDto';
-import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
 import { PatientService } from '../principals/patient.service';
 import { PatientModel } from 'app/models/principalsmodel/PatientModel';
 import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
@@ -20,6 +19,7 @@ import { LanguageService } from '../language.service';
 import { GetMedicalCalendarTimeSlotDto } from 'app/models/medicalcalendar/GetMedicalCalendarTimeSlotDto';
 import { DayOfWeek } from 'app/models/general/day-of-week';
 import { DayCalendarDto } from 'app/models/medicalcalendar/DayCalendarDto';
+import { PatientSearchCriteriaDto } from 'app/models/principalsmodel/PatientSearchCriteriaDto';
 @Injectable({
   providedIn: 'root',
 })
@@ -35,8 +35,7 @@ export class CalendarEventService {
     return this.medicalCalendarService.getMonthlyCalendar(criteria).pipe(
       map((response: ServiceResponse<CalendarDto>) => this.processCalendarResponse(response)),
       catchError(error => {
-        console.error('Erro ao carregar eventos do calendário', error);
-        return [];
+        throw error;
       })
     );
   }
@@ -50,8 +49,21 @@ export class CalendarEventService {
         }))
       ),
       catchError(error => {
-        console.error('Erro ao carregar pacientes do médico', error);
-        return [];
+        throw error;
+      })
+    );
+  }
+
+  patientSearch(criteria: PatientSearchCriteriaDto): Observable<DropDownEntityModelSelect[]> {
+    return this.patientService.patientSearch(criteria).pipe(
+      map((response: ServiceResponse<PatientModel[]>) =>
+        response.data.map(patient => ({
+          id: patient.id,
+          text: patient.name
+        }))
+      ),
+      catchError(error => {
+        throw error;
       })
     );
   }
@@ -60,12 +72,10 @@ export class CalendarEventService {
     return this.patientService.getAllByParentId(medicalId, 'medicalId').pipe(
       map((response: any) => response.data),
       catchError(error => {
-        console.error('Erro ao carregar pacientes do médico', error);
-        return [];
+        throw error;
       })
     );
   }
-
   addCalendarEvent(event: ICalendarEvent): Observable<ServiceResponse<GetMedicalCalendarDto>> {
     const newAppointment = this.mapToAddCalendarEvent(event);
     return this.medicalCalendarService.create(newAppointment);

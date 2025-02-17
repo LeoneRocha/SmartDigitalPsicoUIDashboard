@@ -130,7 +130,19 @@
       "title": "Archivo",
       "required": "Se requiere archivo"
     },
+    "loading": {
+      "message":"Cargando..."
+    },
     "calendar": {
+      "progress": {
+        "saving": "Guardando Evento",
+        "adding": "Agregando nuevo evento...",
+        "updating": "Actualizando evento...",
+        "saveSuccess": "¡Evento guardado exitosamente!",
+        "updateSuccess": "¡Evento actualizado exitosamente!"
+      },
+      "error": "Error de Calendario",
+      "unknownError": "Se produjo un error inesperado al procesar su solicitud",
       "title": "Calendario",
       "labelPatient": "Paciente",
       "labelTitle": "Título",

@@ -15,6 +15,7 @@ import { PatientService } from 'app/services/general/principals/patient.service'
 import { LanguageService } from 'app/services/general/language.service';  
 import { CalendarEventModalComponent } from 'app/components/calendar-event-modal/calendar-event-modal.component';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
@@ -28,6 +29,7 @@ FullCalendarModule.registerPlugins([
     FullCalendarModule,
     ReactiveFormsModule, // Adicione isto,  
     JwBootstrapSwitchNg2Module,
+    AutocompleteLibModule
   ],
   declarations: [CalendarComponent, CalendarEventModalComponent],
   providers: [

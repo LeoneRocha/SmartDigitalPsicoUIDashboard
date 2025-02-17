@@ -27,10 +27,18 @@ import { CalendarEventModalComponent } from './calendar-event-modal/calendar-eve
         NotificationsComponent,
         PanelsComponent,
         SweetAlertComponent,
-        TypographyComponent,  
-    ], 
-    exports: [ 
-      ]
+        TypographyComponent,
+
+    ],
+    exports: [
+        ButtonsComponent,
+        GridSystemComponent,
+        IconsComponent,
+        NotificationsComponent,
+        PanelsComponent,
+        SweetAlertComponent,
+        TypographyComponent,
+    ]
 })
 
-export class ComponentsModule {}
+export class ComponentsModule { }

@@ -45,8 +45,19 @@ export class GenericService<T, E, ID> implements GenericServiceModel<T, E, ID> {
   delete(id: ID): Observable<any> {
     let headers = this.getHeaders();
     return this.http.delete<T>(`${this.baseUrl}/${id}`, { headers: headers }).pipe(map(response => { return response; }), catchError(this.customHandleError));
-  } 
- 
+  }
+  search(criteria: any): Observable<any> {
+    let headers = this.getHeaders();
+    return this.http.post<any>(`${this.baseUrl}/Search`, criteria, { headers: headers })
+      .pipe(
+        map(response => {
+          CaptureTologFunc('GenericService-search', response);
+          return response;
+        }),
+        catchError(this.customHandleError)
+      );
+  }
+
   getHeaders(): HttpHeaders {
 
     let token: string = localStorage.getItem('tokenjwt');
@@ -74,3 +85,5 @@ export class GenericService<T, E, ID> implements GenericServiceModel<T, E, ID> {
     return throwError(() => new AppError(error));
   }
 }
+
+

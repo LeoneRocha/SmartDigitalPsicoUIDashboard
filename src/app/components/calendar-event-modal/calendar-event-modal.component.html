@@ -20,14 +20,22 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="swal-patient" class="text-left">{{ labels.labelPatient }}</label>
-              <select class="form-control" formControlName="patientId" id="swal-patient">
-                <option value="">{{ labels.labelSelectPatient }}</option>
-                <ng-container *ngFor="let p of patients">
-                  <option [value]="p.id" [selected]="selectedEvent?.medicalCalendar?.patientId === p.id">
-                    {{ p.text }}
-                  </option>
-                </ng-container>
-              </select>
+              <div class="ng-autocomplete">
+                <input type="hidden" id="swal-patient" [value]="selectedPatient?.id" formControlName="swalpatient">
+                <ng-autocomplete [data]="patientsFiltered" [searchKeyword]="'text'"
+                  [placeholder]="selectedPatient?.text" [itemTemplate]="itemTemplate"
+                  [notFoundTemplate]="notFoundTemplate" (selected)='selectEvent($event)'
+                  (inputChanged)='filterPatientsInMemory($event)' [minQueryLength]="3"  
+                  formControlName="patientId">
+                </ng-autocomplete>
+                <ng-template #itemTemplate let-item>
+                  <span [innerHTML]="item.text"></span>
+                </ng-template>
+
+                <ng-template #notFoundTemplate let-notFound>
+                  <span>{{ labels.labelNoResults }}</span>
+                </ng-template>
+              </div>
               <div
                 *ngIf="form.get('patientId').invalid && (form.get('patientId').dirty || form.get('patientId').touched)"
                 class="text-danger">
@@ -46,10 +54,8 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="swal-startTime" class="text-left">{{ labels.labelStartTime }}</label>
-              <input type="time" class="form-control" id="swal-startTime" 
-                      formControlName="startTime" 
-                      [readonly]="isTimeFieldsDisabled"
-                      [disabled]="isTimeFieldsDisabled">
+              <input type="time" class="form-control" id="swal-startTime" formControlName="startTime"
+                [readonly]="isTimeFieldsDisabled" [disabled]="isTimeFieldsDisabled">
               <div
                 *ngIf="form.get('startTime').invalid && (form.get('startTime').dirty || form.get('startTime').touched)"
                 class="text-danger">
@@ -58,10 +64,8 @@
             </div>
             <div class="form-group col-md-6">
               <label for="swal-endTime" class="text-left">{{ labels.labelEndTime }}</label>
-              <input type="time" class="form-control" id="swal-endTime" 
-                      formControlName="endTime"
-                      [readonly]="isTimeFieldsDisabled"
-                      [disabled]="isTimeFieldsDisabled">
+              <input type="time" class="form-control" id="swal-endTime" formControlName="endTime"
+                [readonly]="isTimeFieldsDisabled" [disabled]="isTimeFieldsDisabled">
               <div *ngIf="form.get('endTime').invalid && (form.get('endTime').dirty || form.get('endTime').touched)"
                 class="text-danger">
                 {{ labels.labelEndTime }} {{ labels.labelFieldIsRequired }}.
@@ -85,14 +89,14 @@
                 <option value="">{{ labels.labelSelectStatus }}</option>
                 <ng-container *ngFor="let option of statusOptions">
                   <option [value]="option.value">{{ option.label }}</option>
-                </ng-container>  
+                </ng-container>
               </select>
               <div *ngIf="form.get('status').invalid && (form.get('status').dirty || form.get('status').touched)"
                 class="text-danger">
                 {{ labels.labelStatus }} {{ labels.labelFieldIsRequired }}.
               </div>
             </div>
-            <div class="form-group col-md-12"> 
+            <div class="form-group col-md-12">
             </div>
           </div>
           <div class="form-row">
