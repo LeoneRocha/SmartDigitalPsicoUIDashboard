@@ -29,6 +29,7 @@ import { CustomBoardModule } from './custom/customboard.module';
 import { ProgressBarService } from './services/progress-bar.service';
 import { LoadingComponent } from './custom/components/loading/loading.component';
 import { LoadingService } from './services/loading.service';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 @NgModule({
     imports: [
         BrowserAnimationsModule,
@@ -43,7 +44,8 @@ import { LoadingService } from './services/loading.service';
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
         NgxTranslateModule,
         AutocompleteLibModule,
-        CustomBoardModule
+        CustomBoardModule,
+        AngularEditorModule
         //SweetAlert2Module.forRoot(), // Adicione isto        
     ],
     declarations: [

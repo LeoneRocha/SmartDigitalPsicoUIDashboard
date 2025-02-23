@@ -17,7 +17,7 @@
                     <div class="content">
                         <form #rF="ngForm" [formGroup]="registerForm">
                             <div class="row">
-                                <div class="col-md-6"> 
+                                <div class="col-md-6">
                                     <!--description-->
                                     <div class="form-group">
                                         <label for="description">{{ "general.description.title" | translate }}:</label>
@@ -48,11 +48,11 @@
                                         </small>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
 
                             <div class="row">
                                 <div class="col-md-6">
-                                       <!--subject-->
+                                    <!--subject-->
                                     <div class="form-group">
                                         <label for="subject">{{ "emailtemplate.subject" | translate }}:</label>
                                         <span class="star">*</span>
@@ -63,23 +63,21 @@
                                             {{ "emailtemplate.subject_required" | translate }}
                                         </small>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="body">{{ "emailtemplate.body" | translate }}:</label>
                                         <span class="star">*</span>
-                                        <textarea class="form-control" id="body" name="body"
-                                            formControlName="body" rows="10"
-                                            [ngClass]="!isValidFormBody() ? '' : 'error'"></textarea>
+                                        <angular-editor id="body" formControlName="body" [config]="editorConfig"></angular-editor>
                                         <small [hidden]="!isValidFormBody()" class="text-danger">
                                             {{ "emailtemplate.body_required" | translate }}
                                         </small>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">

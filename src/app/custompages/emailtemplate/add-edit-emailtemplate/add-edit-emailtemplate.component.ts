@@ -11,6 +11,7 @@ import { ResourceKeyOptions } from 'app/common/enuns/language-options copy';
 import { LanguageService } from 'app/services/general/language.service';
 import { EmailTemplateService } from 'app/services/general/principals/emailTemplate.service';
 import { EmailTemplateDto } from 'app/models/modelsbyswagger/models';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 @Component({
     moduleId: module.id,
     selector: 'add-edit-emailtemplate',
@@ -29,6 +30,60 @@ export class AddEditEmailTemplateComponent implements OnInit {
     estadoBotao_goBackToList = 'inicial';
     estadoBotao_addRegister = 'inicial';
     estadoBotao_updateRegister = 'inicial';
+
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+          spellcheck: true,
+          height: 'auto',
+          minHeight: '0',
+          maxHeight: 'auto',
+          width: 'auto',
+          minWidth: '0',
+          translate: 'yes',
+          enableToolbar: true,
+          showToolbar: true,
+          placeholder: 'Enter text here...',
+          defaultParagraphSeparator: '',
+          defaultFontName: '',
+          defaultFontSize: '',
+          fonts: [
+            {class: 'arial', name: 'Arial'},
+            {class: 'times-new-roman', name: 'Times New Roman'},
+            {class: 'calibri', name: 'Calibri'},
+            {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+          ],
+          customClasses: [
+          {
+            name: 'quote',
+            class: 'quote',
+          },
+          {
+            name: 'redText',
+            class: 'redText'
+          },
+          {
+            name: 'titleText',
+            class: 'titleText',
+            tag: 'h1',
+          },
+        ],
+        uploadUrl: 'v1/image', 
+        uploadWithCredentials: false,
+        sanitize: false,
+        /*sanitizeFunction: (html: string): string => {
+        // Função customizada de sanitização para permitir certos estilos
+        // Por exemplo, remover apenas scripts enquanto permite estilos inline
+        const sanitizer = new HtmlSanitizer();
+        return sanitizer.sanitize(html, {
+            ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'div', 'span'],
+            ALLOWED_ATTR: ['style', 'href', 'class']
+        },*/
+        toolbarPosition: 'top',
+        toolbarHiddenButtons: [
+          ['bold', 'italic'],
+          ['fontSize']
+        ]
+    };
 
     constructor(@Inject(ActivatedRoute) private route: ActivatedRoute
         , @Inject(EmailTemplateService) private registerService: EmailTemplateService
@@ -65,16 +120,16 @@ export class AddEditEmailTemplateComponent implements OnInit {
 
         if (this.isModeViewForm) {
             formsElement.controls['description'].disable();
-            formsElement.controls['language'].disable();  
+            formsElement.controls['language'].disable();
             formsElement.controls['subject'].disable();
             formsElement.controls['body'].disable();
             formsElement.controls['enableOpt'].disable();
         }
         this.registerId = Number(paramsUrl.get('id'));
 
-        if (this.registerId > 0) { 
+        if (this.registerId > 0) {
             formsElement.controls['language'].disable();
-        } 
+        }
     }
     loadRegister() {
         console.log('loadRegister', this.registerId);
@@ -84,6 +139,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
     }
     addRegister() {
         this.getValuesForm();
+        console.log('addRegister', this.registerModel);
         this.registerService.add(this.registerModel).subscribe({
             next: (response: ServiceResponse<EmailTemplateDto>) => { this.processAddRegister(response); }, error: (err) => { this.processAddRegisterErro(err); },
         });
@@ -165,15 +221,15 @@ export class AddEditEmailTemplateComponent implements OnInit {
         return this.registerForm.controls['language'].touched && this.registerForm.controls['language'].invalid && isValid;
     }
 
-    gerateFormRegister() { 
+    gerateFormRegister() {
         this.registerForm = this.fb.group({
             id: new FormControl(),
             description: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
             subject: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
-            body: new FormControl('', [Validators.required, Validators.minLength(3)]),            
+            body: new FormControl('', [Validators.required, Validators.minLength(3)]),
             language: new FormControl('', Validators.required),
             enableOpt: new FormControl(false, Validators.required),
-        }); 
+        });
     }
     getValuesForm() {
         let formElement = this.registerForm;
