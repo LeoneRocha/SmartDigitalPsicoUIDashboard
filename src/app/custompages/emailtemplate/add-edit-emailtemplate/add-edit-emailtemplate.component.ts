@@ -124,6 +124,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
             formsElement.controls['subject'].disable();
             formsElement.controls['body'].disable();
             formsElement.controls['enableOpt'].disable();
+            this.editorConfig.editable = false; 
         }
         this.registerId = Number(paramsUrl.get('id'));
 
