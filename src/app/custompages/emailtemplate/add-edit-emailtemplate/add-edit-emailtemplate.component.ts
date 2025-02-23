@@ -17,7 +17,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
     selector: 'add-edit-emailtemplate',
     templateUrl: 'add-edit-emailtemplate.component.html'
 })
-
+    
 export class AddEditEmailTemplateComponent implements OnInit {
     registerId: number;
     registerForm: FormGroup;
@@ -33,41 +33,41 @@ export class AddEditEmailTemplateComponent implements OnInit {
 
     editorConfig: AngularEditorConfig = {
         editable: true,
-          spellcheck: true,
-          height: 'auto',
-          minHeight: '0',
-          maxHeight: 'auto',
-          width: 'auto',
-          minWidth: '0',
-          translate: 'yes',
-          enableToolbar: true,
-          showToolbar: true,
-          placeholder: 'Enter text here...',
-          defaultParagraphSeparator: '',
-          defaultFontName: '',
-          defaultFontSize: '',
-          fonts: [
-            {class: 'arial', name: 'Arial'},
-            {class: 'times-new-roman', name: 'Times New Roman'},
-            {class: 'calibri', name: 'Calibri'},
-            {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-          ],
-          customClasses: [
-          {
-            name: 'quote',
-            class: 'quote',
-          },
-          {
-            name: 'redText',
-            class: 'redText'
-          },
-          {
-            name: 'titleText',
-            class: 'titleText',
-            tag: 'h1',
-          },
+        spellcheck: true,
+        height: 'auto',
+        minHeight: '0',
+        maxHeight: 'auto',
+        width: 'auto',
+        minWidth: '0',
+        translate: 'yes',
+        enableToolbar: true,
+        showToolbar: true,
+        placeholder: 'Enter text here...',
+        defaultParagraphSeparator: '',
+        defaultFontName: '',
+        defaultFontSize: '',
+        fonts: [
+            { class: 'arial', name: 'Arial' },
+            { class: 'times-new-roman', name: 'Times New Roman' },
+            { class: 'calibri', name: 'Calibri' },
+            { class: 'comic-sans-ms', name: 'Comic Sans MS' }
         ],
-        uploadUrl: 'v1/image', 
+        customClasses: [
+            {
+                name: 'quote',
+                class: 'quote',
+            },
+            {
+                name: 'redText',
+                class: 'redText'
+            },
+            {
+                name: 'titleText',
+                class: 'titleText',
+                tag: 'h1',
+            },
+        ],
+        uploadUrl: 'v1/image',
         uploadWithCredentials: false,
         sanitize: false,
         /*sanitizeFunction: (html: string): string => {
@@ -80,8 +80,8 @@ export class AddEditEmailTemplateComponent implements OnInit {
         },*/
         toolbarPosition: 'top',
         toolbarHiddenButtons: [
-          ['bold', 'italic'],
-          ['fontSize']
+            ['bold', 'italic'],
+            ['fontSize']
         ]
     };
 
@@ -120,16 +120,18 @@ export class AddEditEmailTemplateComponent implements OnInit {
 
         if (this.isModeViewForm) {
             formsElement.controls['description'].disable();
+            formsElement.controls['tagApi'].disable();
             formsElement.controls['language'].disable();
             formsElement.controls['subject'].disable();
             formsElement.controls['body'].disable();
             formsElement.controls['enableOpt'].disable();
-            this.editorConfig.editable = false; 
+            this.editorConfig.editable = false;
         }
         this.registerId = Number(paramsUrl.get('id'));
 
         if (this.registerId > 0) {
             formsElement.controls['language'].disable();
+            formsElement.controls['tagApi'].disable();
         }
     }
     loadRegister() {
@@ -194,6 +196,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
             subject: responseData?.subject,
             body: responseData?.body,
             description: responseData?.description,
+            tagApi: responseData?.tagApi,
             language: responseData?.language,
             enable: responseData?.enable,
             links: responseData?.links
@@ -202,11 +205,11 @@ export class AddEditEmailTemplateComponent implements OnInit {
         formsElement.controls['subject'].setValue(this.registerModel.subject);
         formsElement.controls['body'].setValue(this.registerModel.body);
         formsElement.controls['description'].setValue(this.registerModel.description);
+        formsElement.controls['tagApi'].setValue(this.registerModel.tagApi);
         formsElement.controls['language'].setValue(this.registerModel.language);
         formsElement.controls['enableOpt'].setValue(this.registerModel.enable);
     } 
-
-
+    
     isValidFormSubject(): boolean {
         let isValid = this.registerForm.get('subject').errors?.required;
         return this.registerForm.controls['subject'].touched && this.registerForm.controls['subject'].invalid && isValid;
@@ -219,6 +222,10 @@ export class AddEditEmailTemplateComponent implements OnInit {
         let isValid = this.registerForm.get('description').errors?.required;
         return this.registerForm.controls['description'].touched && this.registerForm.controls['description'].invalid && isValid;
     }
+    isValidFormTagApi(): boolean {
+        let isValid = this.registerForm.get('tagApi').errors?.required;
+        return this.registerForm.controls['tagApi'].touched && this.registerForm.controls['tagApi'].invalid && isValid;
+    }
     isValidFormLanguage(): boolean {
         let isValid = this.registerForm.get('language').errors?.required;
         return this.registerForm.controls['language'].touched && this.registerForm.controls['language'].invalid && isValid;
@@ -228,6 +235,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
         this.registerForm = this.fb.group({
             id: new FormControl(),
             description: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
+            tagApi: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
             subject: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
             body: new FormControl('', [Validators.required, Validators.minLength(3)]),
             language: new FormControl('', Validators.required),
@@ -239,6 +247,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
         this.registerModel = {
             id: this.registerId ? this.registerId : 0,
             description: formElement.controls['description']?.value,
+            tagApi: formElement.controls['tagApi']?.value,
             language: formElement.controls['language']?.value,
             subject: formElement.controls['subject']?.value,
             body: formElement.controls['body']?.value,
@@ -252,6 +261,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
             body: '',
             enable: false,
             description: '',
+            tagApi: '',
             language: '',
             links: []
         }

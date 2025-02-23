@@ -224,6 +224,8 @@
     "TitleAdd": "Add Email Template",
     "TitleEdit": "Edit Email Template",
     "TitleView": "View Email Template",
+    "tagApi": "Tag",
+    "tagApi_required": "Tag is required",
     "subject": "Subject",
     "subject_required": "Subject is required",
     "body": "Body",

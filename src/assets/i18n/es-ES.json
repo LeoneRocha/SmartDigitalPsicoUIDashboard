@@ -224,6 +224,8 @@
     "TitleAdd": "Agregar Plantilla de Correo",
     "TitleEdit": "Editar Plantilla de Correo",
     "TitleView": "Ver Plantilla de Correo",
+    "tagApi": "Tag",
+    "tagApi_required": "Tag es obligatorio",
     "subject": "Asunto",
     "subject_required": "El asunto es obligatorio",
     "body": "Cuerpo",

@@ -228,6 +228,8 @@
     "TitleAdd": "Adicionar Modelo de Email",
     "TitleEdit": "Editar Modelo de Email",
     "TitleView": "Visualizar Modelo de Email",
+    "tagApi": "Tag",
+    "tagApi_required": "Tag é obrigatório",
     "subject": "Assunto",
     "subject_required": "Assunto é obrigatório",
     "body": "Corpo",

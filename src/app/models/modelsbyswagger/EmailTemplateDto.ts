@@ -19,4 +19,5 @@ export interface EmailTemplateDto {
     links?: Array<HyperMediaLink>;
     id?: number;
     enable: boolean; 
+    tagApi?: string;
 }

@@ -64,6 +64,19 @@
                                         </small>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <!--tagApi-->
+                                    <div class="form-group">
+                                        <label for="tagApi">{{ "emailtemplate.tagApi" | translate }}:</label>
+                                        <span class="star">*</span>
+                                        <input type="text" class="form-control" id="tagApi" name="tagApi"
+                                            formControlName="tagApi" maxlength="255"
+                                            [ngClass]="!isValidFormTagApi() ? '' : 'error'" />
+                                        <small [hidden]="!isValidFormTagApi()" class="text-danger">
+                                            {{ "emailtemplate.tagApi_required" | translate }}
+                                        </small>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row">
@@ -71,7 +84,8 @@
                                     <div class="form-group">
                                         <label for="body">{{ "emailtemplate.body" | translate }}:</label>
                                         <span class="star">*</span>
-                                        <angular-editor id="body" formControlName="body" [config]="editorConfig"></angular-editor>
+                                        <angular-editor id="body" formControlName="body"
+                                            [config]="editorConfig"></angular-editor>
                                         <small [hidden]="!isValidFormBody()" class="text-danger">
                                             {{ "emailtemplate.body_required" | translate }}
                                         </small>
