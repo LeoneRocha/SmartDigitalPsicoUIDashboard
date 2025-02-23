@@ -202,7 +202,9 @@ export class AddEditEmailTemplateComponent implements OnInit {
         formsElement.controls['body'].setValue(this.registerModel.body);
         formsElement.controls['description'].setValue(this.registerModel.description);
         formsElement.controls['language'].setValue(this.registerModel.language);
-    }
+        formsElement.controls['enableOpt'].setValue(this.registerModel.enable);
+    } 
+
 
     isValidFormSubject(): boolean {
         let isValid = this.registerForm.get('subject').errors?.required;
