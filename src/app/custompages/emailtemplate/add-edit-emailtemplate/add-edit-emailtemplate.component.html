@@ -17,7 +17,8 @@
                     <div class="content">
                         <form #rF="ngForm" [formGroup]="registerForm">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6"> 
+                                    <!--description-->
                                     <div class="form-group">
                                         <label for="description">{{ "general.description.title" | translate }}:</label>
                                         <span class="star">*</span>
@@ -30,6 +31,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
+                                    <!--language-->
                                     <div class="form-group">
                                         <label for="language">{{ "general.language.title" | translate }}:</label> <span
                                             class="star">*</span>
@@ -50,6 +52,7 @@
 
                             <div class="row">
                                 <div class="col-md-6">
+                                       <!--subject-->
                                     <div class="form-group">
                                         <label for="subject">{{ "emailtemplate.subject" | translate }}:</label>
                                         <span class="star">*</span>
@@ -60,19 +63,7 @@
                                             {{ "emailtemplate.subject_required" | translate }}
                                         </small>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="description">{{ "general.description.title" | translate }}:</label>
-                                        <span class="star">*</span>
-                                        <input type="text" class="form-control" id="description" name="description"
-                                            formControlName="description" maxlength="255"
-                                            [ngClass]="!isValidFormDescription() ? '' : 'error'" />
-                                        <small [hidden]="!isValidFormDescription()" class="text-danger">
-                                            {{ "general.description.required" | translate }}
-                                        </small>
-                                    </div>
-                                </div>
+                                </div> 
                             </div>
                             
                             <div class="row">
@@ -81,34 +72,24 @@
                                         <label for="body">{{ "emailtemplate.body" | translate }}:</label>
                                         <span class="star">*</span>
                                         <textarea class="form-control" id="body" name="body"
-                                            formControlName="body" rows="4"
+                                            formControlName="body" rows="10"
                                             [ngClass]="!isValidFormBody() ? '' : 'error'"></textarea>
                                         <small [hidden]="!isValidFormBody()" class="text-danger">
                                             {{ "emailtemplate.body_required" | translate }}
                                         </small>
                                     </div>
                                 </div>
-                            </div>
-                            
+                            </div> 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="language">{{ "general.language.title" | translate }}:</label>
-                                        <span class="star">*</span>
-                                        <select formControlName="language" required name="language" class="form-control"
-                                            data-style="btn-default btn-block"
-                                            [ngClass]="!isValidFormLanguage() ? '' : 'error'" data-title="Select"
-                                            data-menu-style="dropdown-blue" (change)="onSelect($event.target.value)">
-                                            <option value="">{{ "general.select" | translate }}</option>
-                                            <option *ngFor="let c of languages" [value]="c.code">{{ c.name }}</option>
-                                        </select>
-                                        <small [hidden]="!isValidFormLanguage()" class="text-danger">
-                                            {{ "general.language.required" | translate }}
-                                        </small>
+                                        <label for="enableOpt"> {{ "general.enable" | translate }}:</label>
+                                        <div class="clearfix"></div>
+                                        <bSwitch formControlName="enableOpt" required [switch-on-color]="'primary'">
+                                        </bSwitch>
                                     </div>
                                 </div>
                             </div>
-
                             <button [@botaoAnimado]="estadoBotao_goBackToList"
                                 (mouseenter)="animarBotao('final', 'goBackToList')"
                                 (mouseleave)="animarBotao('inicial', 'goBackToList')" type="button"

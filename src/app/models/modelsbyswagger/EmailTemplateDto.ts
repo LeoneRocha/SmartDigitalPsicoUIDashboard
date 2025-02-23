@@ -18,4 +18,5 @@ export interface EmailTemplateDto {
     language?: string;
     links?: Array<HyperMediaLink>;
     id?: number;
+    enable: boolean; 
 }

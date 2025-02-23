@@ -14,8 +14,8 @@ import { EmailTemplateDto } from 'app/models/modelsbyswagger/models';
 @Component({
     moduleId: module.id,
     selector: 'add-edit-emailtemplate',
-    templateUrl: 'add-edit-emailtemplate.component.html' 
-}) 
+    templateUrl: 'add-edit-emailtemplate.component.html'
+})
 
 export class AddEditEmailTemplateComponent implements OnInit {
     registerId: number;
@@ -65,21 +65,19 @@ export class AddEditEmailTemplateComponent implements OnInit {
 
         if (this.isModeViewForm) {
             formsElement.controls['description'].disable();
-            formsElement.controls['language'].disable();
-            formsElement.controls['languageKey'].disable();
-            formsElement.controls['languageValue'].disable();
-            formsElement.controls['resourceKey'].disable();
+            formsElement.controls['language'].disable();  
+            formsElement.controls['subject'].disable();
+            formsElement.controls['body'].disable();
             formsElement.controls['enableOpt'].disable();
         }
         this.registerId = Number(paramsUrl.get('id'));
 
-        if (this.registerId > 0) {
-            formsElement.controls['languageKey'].disable();
+        if (this.registerId > 0) { 
             formsElement.controls['language'].disable();
-            //formsElement.controls['resourceKey'].disable();   
-        }
+        } 
     }
     loadRegister() {
+        console.log('loadRegister', this.registerId);
         this.registerService.getById(this.registerId).subscribe({
             next: (response: ServiceResponse<EmailTemplateDto>) => { this.processLoadRegister(response); }, error: (err) => { this.processLoadRegisterErro(err); },
         });
@@ -140,6 +138,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
             body: responseData?.body,
             description: responseData?.description,
             language: responseData?.language,
+            enable: responseData?.enable,
             links: responseData?.links
         };
         let modelEntity = this.registerModel;
@@ -166,14 +165,15 @@ export class AddEditEmailTemplateComponent implements OnInit {
         return this.registerForm.controls['language'].touched && this.registerForm.controls['language'].invalid && isValid;
     }
 
-    gerateFormRegister() {
+    gerateFormRegister() { 
         this.registerForm = this.fb.group({
             id: new FormControl(),
-            subject: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
-            body: new FormControl('', [Validators.required, Validators.minLength(3)]),
             description: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
-            language: new FormControl('', Validators.required)
-        });
+            subject: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
+            body: new FormControl('', [Validators.required, Validators.minLength(3)]),            
+            language: new FormControl('', Validators.required),
+            enableOpt: new FormControl(false, Validators.required),
+        }); 
     }
     getValuesForm() {
         let formElement = this.registerForm;
@@ -183,6 +183,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
             language: formElement.controls['language']?.value,
             subject: formElement.controls['subject']?.value,
             body: formElement.controls['body']?.value,
+            enable: formElement.controls['enableOpt']?.value,
         };
     }
     createEmptyRegister(): void {
@@ -190,6 +191,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
             id: 0,
             subject: '',
             body: '',
+            enable: false,
             description: '',
             language: '',
             links: []
@@ -199,7 +201,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
         //demo
     }
     goBackToList() {
-        this.router.navigate(['/administrative/emailTemplate']);
+        this.router.navigate(['/administrative/emailtemplate']);
     }
     gettranslateInformationAsync(key: string): string {
         let result = this.languageService.translateInformationAsync([key])[0];

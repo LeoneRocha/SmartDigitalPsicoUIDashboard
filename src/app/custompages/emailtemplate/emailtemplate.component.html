@@ -24,9 +24,8 @@
                                         <th>{{ dataTable.headerRow[0] }}</th>
                                         <th>{{ dataTable.headerRow[1] }}</th>
                                         <th>{{ dataTable.headerRow[2] }}</th>
-                                        <th>{{ dataTable.headerRow[3] }}</th>
-                                        <th>{{ dataTable.footerRow[4] }}</th>
-                                        <th class="disabled-sorting text-right">{{ dataTable.headerRow[5] }}</th>
+                                        <th>{{ dataTable.headerRow[3] }}</th> 
+                                        <th class="disabled-sorting text-right">{{ dataTable.headerRow[4] }}</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -34,9 +33,8 @@
                                         <th>{{ dataTable.footerRow[0] }}</th>
                                         <th>{{ dataTable.footerRow[1] }}</th>
                                         <th>{{ dataTable.footerRow[2] }}</th>
-                                        <th>{{ dataTable.footerRow[3] }}</th>
-                                        <th>{{ dataTable.footerRow[4] }}</th>
-                                        <th class="text-right">{{ dataTable.footerRow[5] }}</th>
+                                        <th>{{ dataTable.footerRow[3] }}</th> 
+                                        <th class="text-right">{{ dataTable.footerRow[4] }}</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -44,8 +42,7 @@
                                         <td class="text-center">{{ row.id }}</td>
                                         <td>{{ row.description }}</td>
                                         <td>{{ row.language }}</td>
-                                        <td>{{ row.enable | customtextactive | translate }}</td>
-                                        <td>{{ row.languageKey }}</td>
+                                        <td>{{ row.enable | customtextactive | translate }}</td> 
                                         <td class="text-right">
                                             <a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon eye"
                                                 (click)="viewRegister(row.id)">

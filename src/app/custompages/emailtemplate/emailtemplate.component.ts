@@ -26,8 +26,7 @@ export class EmailTemplateComponent implements OnInit {
         'Id'
         , 'general.description.title'
         , 'applanguage.title'
-        , 'general.enable'
-        , 'applanguage.languageKey'
+        , 'general.enable' 
         , 'general.actions'
     ];
 
