@@ -11,7 +11,7 @@
  */
 import { HyperMediaLink } from './hyperMediaLink';
 
-export interface GetEmailTemplateDto { 
+export interface EmailTemplateDto { 
     subject?: string;
     body?: string;
     description?: string;

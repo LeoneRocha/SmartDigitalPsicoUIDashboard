@@ -46,7 +46,7 @@
     "company": "Empresa",
     "portfolio": "Portfólio",
     "blog": "Blog",
-    "dashboard": "Dashboard",
+    "dashboard": "Painel de Controle",
     "patient": "Pacientes",
     "users": "Usuários",
     "patientrecord": "Registros",
@@ -55,11 +55,12 @@
     "userpage": "Página do Usuário",
     "userregisterpage": "Página de Registro",
     "gender": "Gênero",
-    "office": "Cargo",
+    "office": "Escritório",
     "rolegroup": "Grupo de Funções",
     "specialty": "Especialidade",
     "applicationsetting": "Configurações do Sistema",
     "applicationlanguage": "Idiomas",
+    "emailtemplate": "Modelos de E-mail",
     "medicals": "Médicos"
   },
   "general": {
@@ -219,6 +220,18 @@
       "TitleEdit": "Editar Idioma",
       "TitleView": "Visualizar Idioma"
     }
+  },
+  "emailtemplate": {
+    "title": "Modelos de Emails",
+    "category": "Lista de Modelos de Email",
+    "select": "Selecionar Modelo de Email",
+    "TitleAdd": "Adicionar Modelo de Email",
+    "TitleEdit": "Editar Modelo de Email",
+    "TitleView": "Visualizar Modelo de Email",
+    "subject": "Assunto",
+    "subject_required": "Assunto é obrigatório",
+    "body": "Corpo",
+    "body_required": "Corpo é obrigatório"
   },
   "office": {
     "title": "Profisão",
