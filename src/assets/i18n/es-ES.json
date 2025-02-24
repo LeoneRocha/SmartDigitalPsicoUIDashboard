@@ -46,20 +46,21 @@
     "company": "Empresa",
     "portfolio": "Portafolio",
     "blog": "Blog",
-    "dashboard": "Tablero",
+    "dashboard": "Panel de Control",
     "patient": "Pacientes",
     "users": "Usuarios",
     "patientrecord": "Registros",
     "configurations": "Configuraciones",
     "registers": "Registros",
-    "userpage": "Página de usuario",
-    "userregisterpage": "Página de registro",
+    "userpage": "Página del Usuario",
+    "userregisterpage": "Página de Registro",
     "gender": "Género",
     "office": "Oficina",
-    "rolegroup": "Grupo de roles",
+    "rolegroup": "Grupo de Roles",
     "specialty": "Especialidad",
-    "applicationsetting": "Configuraciones del sistema",
+    "applicationsetting": "Configuraciones del Sistema",
     "applicationlanguage": "Idiomas",
+    "emailtemplate": "Plantillas de Correo",
     "medicals": "Médicos"
   },
   "general": {
@@ -215,6 +216,20 @@
       "TitleEdit": "Editar idioma",
       "TitleView": "Ver idioma"
     }
+  },
+  "emailtemplate": {
+    "title": "Plantilla de Correo",
+    "category": "Lista de Plantilla de Correo",
+    "select": "Seleccionar Plantilla de Correo",
+    "TitleAdd": "Agregar Plantilla de Correo",
+    "TitleEdit": "Editar Plantilla de Correo",
+    "TitleView": "Ver Plantilla de Correo",
+    "tagApi": "Tag",
+    "tagApi_required": "Tag es obligatorio",
+    "subject": "Asunto",
+    "subject_required": "El asunto es obligatorio",
+    "body": "Cuerpo",
+    "body_required": "El cuerpo es obligatorio"
   },
   "office": {
     "title": "Consultorio",

@@ -44,6 +44,11 @@ export const AppRoutes: Routes = [
             path: 'applicationlanguage',
             canActivate: [AuthGuard, AdminAuthGuard],
             loadChildren: () => import('./custompages/applicationlanguage/applicationlanguage.module').then(x => x.ApplicationLanguageModule)
+        }, 
+        {
+            path: 'emailtemplate',
+            canActivate: [AuthGuard, AdminAuthGuard],
+            loadChildren: () => import('./custompages/emailtemplate/emailtemplate.module').then(x => x.EmailTemplateModule)
         }, {
             path: 'usermanagement',
             canActivate: [AuthGuard, AdminAuthGuard],

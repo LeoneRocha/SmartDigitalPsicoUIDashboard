@@ -1,9 +1,5 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef, Directive, Inject } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { TranslateService } from '@ngx-translate/core';
-import { ApplicationLanguageService } from 'app/services/general/simple/applicationlanguage.service';
-import { LanguageService } from 'app/services/general/language.service';
+import { Component, OnInit, Renderer2, ViewChild, ElementRef,  Inject } from '@angular/core'; 
+import { Location  } from '@angular/common';   
 import { AppComponent } from 'app/app.component';
 
 declare var $: any;
