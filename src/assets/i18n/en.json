@@ -49,7 +49,7 @@
     "dashboard": "Dashboard",
     "patient": "Patients",
     "users": "Users",
-    "patientrecord": "records",
+    "patientrecord": "Records",
     "configurations": "Configurations",
     "registers": "Registers",
     "userpage": "User Page",
@@ -58,8 +58,9 @@
     "office": "Office",
     "rolegroup": "Role Group",
     "specialty": "Specialty",
-    "applicationsetting": "Configurações Sistema",
-    "applicationlanguage": "Idiomas",
+    "applicationsetting": "System Configurations",
+    "applicationlanguage": "Languages",
+    "emailtemplate": "Email Templates",
     "medicals": "Medicals"
   },
   "general": {
@@ -215,6 +216,20 @@
       "TitleEdit": "Edit Language",
       "TitleView": "View Language"
     }
+  },
+  "emailtemplate": {
+    "title": "Email Template",
+    "category": "List of Email Template",
+    "select": "Select Email Template",
+    "TitleAdd": "Add Email Template",
+    "TitleEdit": "Edit Email Template",
+    "TitleView": "View Email Template",
+    "tagApi": "Tag",
+    "tagApi_required": "Tag is required",
+    "subject": "Subject",
+    "subject_required": "Subject is required",
+    "body": "Body",
+    "body_required": "Body is required"
   },
   "office": {
     "title": "Office",

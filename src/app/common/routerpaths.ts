@@ -90,8 +90,9 @@ export const ROUTES: RouteInfo[] = [{
         { path: 'office', title: 'navbar.office', ab: 'O' },
         { path: 'rolegroup', title: 'navbar.rolegroup', ab: 'RG' },
         { path: 'specialty', title: 'navbar.specialty', ab: 'S' },
-        { path: 'applicationsetting', title: 'navbar.applicationsetting', ab: 'CS' },
-        { path: 'applicationlanguage', title: 'navbar.applicationlanguage', ab: 'I' },
+        { path: 'applicationsetting', title: 'navbar.applicationsetting', ab: 'AS' },
+        { path: 'applicationlanguage', title: 'navbar.applicationlanguage', ab: 'AL' },
+        { path: 'emailtemplate', title: 'navbar.emailtemplate', ab: 'ET' },
     ]
 } /*{
     path: '/pages',

@@ -12,7 +12,7 @@ $ npm install @ngrx/store-devtools@latest --force
 
 npm install  --force
 
-  $ npm install @ngrx/core --force
+$ npm install @ngrx/core --force
 $ npm install @ngrx/store --force
 $ npm install @ngrx/effects --force
 
