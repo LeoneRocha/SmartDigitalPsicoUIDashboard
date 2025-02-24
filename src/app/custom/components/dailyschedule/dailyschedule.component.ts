@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DateHelper } from 'app/helpers/date-helper';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
-import { AuthService } from 'app/services/auth/auth.service'; 
+import { AuthService } from 'app/services/auth/auth.service';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { LanguageService } from 'app/services/general/language.service';
 import * as moment from 'moment';
@@ -42,7 +42,7 @@ export class DailyScheduleComponent implements OnInit {
   loadTodayEvents(): void {
     this.loading = true;
     let todayDate = this.today;
-    todayDate = new Date(2025, 2, 27);//FOR TESTING
+    todayDate = new Date(2025, 1, 27);//FOR TESTING
     const startDate = new Date(todayDate.setHours(0, 0, 0, 0));
     const endDate = new Date(todayDate.setHours(23, 59, 59, 999));
 
@@ -51,6 +51,7 @@ export class DailyScheduleComponent implements OnInit {
     this.calendarEventService.getCalendarEvents(criteria).subscribe({
       next: (events) => {
         this.events = events;
+        console.log('events', events);
         this.loading = false;
       },
       error: (error) => {
@@ -85,5 +86,9 @@ export class DailyScheduleComponent implements OnInit {
     const medicalId = userLogger.typeUser === "Medical" && userLogger.medicalId ? userLogger.medicalId : 0;
     this.parentId = medicalId;
     return medicalId;
+  }
+
+  formatFullDate(date: Date): string {
+    return DateHelper.formatFullDate(date, this.languageUI);
   }
 }

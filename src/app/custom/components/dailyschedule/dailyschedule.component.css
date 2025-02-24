@@ -1,13 +1,23 @@
 /* CSS */
+#dailyschedulecontainer {
+  border: 1px solid #dee2e6;
+  border-radius: 5px;  
+}
+.cardCustom {  
+  padding-left: 5px;
+  padding-right: 5px;   
+  padding-bottom: 5px;
+}
+
 .header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #f8f9fa;
-  padding-top: 10px;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .header-left {

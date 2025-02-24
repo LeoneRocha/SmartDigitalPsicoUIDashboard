@@ -13,7 +13,7 @@ export class DateHelper {
         const d = today.getDate();
         const dateActual = new Date(y, m, d, 0, 0, 0, 0);
         return dateActual;
-    }    
+    }
     static convertStringToDate(dateStr: string): Date {
         const parts = dateStr.split(/[-T:]/);
         return new Date(
@@ -72,5 +72,9 @@ export class DateHelper {
             console.error('Erro ao converter data para horário local:', error);
         }
         return dateConverted;
+    }
+
+   static formatFullDate(date: Date, languageUI: string): string {
+        return moment(date).locale(languageUI).format('dddd, D MMMM YYYY');
     }
 }
