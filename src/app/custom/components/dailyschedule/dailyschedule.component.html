@@ -1,53 +1,62 @@
-<div class="container-fluid">
-  <div class="row mb-3">
-    <div class="col">
-      <h3 class="mb-0">Schedule for {{ today | date:'fullDate' }}</h3>
+<div class="container-fluid" *ngIf="isCanAccess">
+  <div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-3 header-row">
+      <div class="col-md-6 header-left">
+        <h3 class="mb-0"><i class="pe-7s-date"></i> {{ today | date:'EEEE' }}</h3>
+      </div>
+      <div class="col-md-6 header-right">
+        <h3 class="mb-0">{{ today | date:'MMMM d, y' }}</h3>
+      </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <div *ngIf="loading" class="text-center">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
+    <!-- Card -->
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="loading" class="text-center">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
-          </div>
 
-          <div *ngIf="!loading" class="table-responsive">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>{{ 'calendar.time' }}</th>
-                  <th>{{ 'calendar.patient' }}</th>
-                  <th>{{ 'calendar.title' }}</th>
-                  <th>{{ 'calendar.status' }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let event of events">
-                  <td>{{ event.start | date:'shortTime':undefined:languageUI }}</td>
-                  <td>{{ event.patientName }}</td>
-                  <td>{{ event.title }}</td>
-                  <td><span class="badge" [ngClass]="{'bg-success': event.status === 'Confirmed', 
-                                                     'bg-warning': event.status === 'Pending',
-                                                     'bg-danger': event.status === 'Cancelled'}">
-                      {{ event.status }}
-                    </span></td>
-                </tr>
-                <tr *ngIf="events.length === 0">
-                  <td colspan="4" class="text-center">{{ 'calendar.noEvents' }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div *ngIf="!loading">
+              <div *ngFor="let event of events" class="event-item mb-3 p-3">
+                <div class="row">
+                  <div class="col-md-3 time-font">
+                 <i class="pe-7s-timer"></i>   {{ event.start | date:'HH:mm' }} - {{ event.end | date:'HH:mm' }}
+                  </div>
+                  <div class="col-md-6">
+                    <span class="badge" [ngClass]="{
+                      'bg-success': event.status === 'Confirmed', 
+                      'bg-warning': event.status === 'Pending',
+                      'bg-danger': event.status === 'Cancelled'
+                    }" style="width: 10px; height: 10px; display: inline-block; border-radius: 50%;"></span>
+
+                    <span class="title-font">{{ event.title }}</span>
+
+                  </div>
+                  <div class="col-md-3 text-end">
+                    <button class="btn btn-primary btn-sm  title-font"><i class="bi bi-info-circle"></i>
+                      Detalhes</button>
+                    <button class="btn btn-success btn-sm  title-font"><i class="bi bi-play-circle"></i> Iniciar
+                      Atendimento</button>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="events.length === 0" class="text-center">{{ 'calendar.noEvents' }}</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="container mt-4" *ngIf="events.length === 0">
-    <div class="alert alert-info">
-      No events scheduled for today.
+
+    <!-- Alert -->
+    <div class="container mt-4" *ngIf="events.length === 0">
+      <div class="alert alert-info">
+        No events scheduled for today.
+      </div>
     </div>
+  </div>
 </div>

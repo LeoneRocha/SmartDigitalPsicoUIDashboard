@@ -1,0 +1,25 @@
+/* Tamanho padrão */
+.angular-editor-toolbar .angular-editor-button i {
+  font-size: 24px !important; /* Tamanho padrão dos ícones */
+}
+
+/* Tamanho para telas pequenas */
+@media (max-width: 600px) {
+  .angular-editor-toolbar .angular-editor-button i {
+      font-size: 18px!important; /* Ajuste o tamanho conforme necessário */
+  }
+}
+
+/* Tamanho para telas médias */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .angular-editor-toolbar .angular-editor-button i {
+      font-size: 22px!important; /* Ajuste o tamanho conforme necessário */
+  }
+}
+
+/* Tamanho para telas grandes */
+@media (min-width: 1025px) {
+  .angular-editor-toolbar .angular-editor-button i {
+      font-size: 24px!important; /* Ajuste o tamanho conforme necessário */
+  }
+} 
