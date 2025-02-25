@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AutoRefreshHelper } from 'app/helpers/AutoRefreshHelper';
 import { DateHelper } from 'app/helpers/date-helper';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
@@ -7,45 +8,55 @@ import { AuthService } from 'app/services/auth/auth.service';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { LanguageService } from 'app/services/general/language.service';
 import * as moment from 'moment';
-
 @Component({
-  selector: 'app-daily-schedule',
+  selector: 'daily-schedule',
   templateUrl: './dailyschedule.component.html',
   styleUrls: ['./dailyschedule.component.css']
 })
-export class DailyScheduleComponent implements OnInit {
+
+export class DailyScheduleComponent implements OnInit, OnDestroy {
   today: Date = new Date();
   events: ICalendarEvent[] = [];
   loading: boolean = false;
   languageUI: string;
   userLoged: any;
   parentId: number;
+  protected isCanAccess: boolean = false;
+  private autoRefreshHelper: AutoRefreshHelper;
 
   constructor(
     @Inject(AuthService) private authService: AuthService,
     @Inject(LanguageService) private languageService: LanguageService,
     @Inject(CalendarEventService) private calendarEventService: CalendarEventService,
     @Inject(Router) private router: Router,
-    @Inject(ActivatedRoute) private route: ActivatedRoute,
-  ) { }
+    @Inject(ActivatedRoute) private route: ActivatedRoute
 
-  ngOnInit(): void {
-    this.languageUI = this.languageService.getLanguageToLocalStorage();
-    this.loadTodayEvents();
+  ) {
+    this.autoRefreshHelper = new AutoRefreshHelper(() => this.loadTodayEvents(), 2);
   }
 
+  ngOnInit(): void {
+    this.languageService.loadLanguage();
+    this.isCanAccess = this.authService.isUserContainsRole('Medical');
+    if (this.isCanAccess) {
+      this.languageUI = this.languageService.getLanguageToLocalStorage();
+      this.loadTodayEvents();
+      this.autoRefreshHelper.startAutoRefresh();
+    }
+  }
+  ngOnDestroy(): void {
+    this.autoRefreshHelper.stopAutoRefresh();
+  }
   loadTodayEvents(): void {
     this.loading = true;
     let todayDate = this.today;
-    todayDate = new Date(2025, 2, 26);//FOR TESTING
     const startDate = new Date(todayDate.setHours(0, 0, 0, 0));
     const endDate = new Date(todayDate.setHours(23, 59, 59, 999));
-
     const criteria: CalendarCriteriaDto = this.createCriteria(startDate, endDate);
-
     this.calendarEventService.getCalendarEvents(criteria).subscribe({
       next: (events) => {
         this.events = events;
+        console.log('events' ,this.events);
         this.loading = false;
       },
       error: (error) => {
@@ -70,7 +81,6 @@ export class DailyScheduleComponent implements OnInit {
       startDate: moment(startDateTime).toDate(),
       endDate: moment(endDateTime).toDate(),
     };
-
     return criteria;
   }
 
@@ -81,5 +91,9 @@ export class DailyScheduleComponent implements OnInit {
     const medicalId = userLogger.typeUser === "Medical" && userLogger.medicalId ? userLogger.medicalId : 0;
     this.parentId = medicalId;
     return medicalId;
+  }
+
+  formatFullDate(date: Date): string {
+    return DateHelper.formatFullDate(date, this.languageUI);
   }
 }

@@ -522,5 +522,28 @@
     "other": {
       "title": "Outro"
     }
+  },
+  "calendardailySchedule": {
+    "header": {
+      "title": "Consultas de Hoje",
+      "category": "Consultas agendadas para a data atual",
+      "dateIcon": "Data",
+      "dayOfWeek": "EEEE",
+      "fullDate": "d 'de' MMMM 'de' y"
+    },
+    "loading": "Carregando...",
+    "noEvents": "Nenhuma consulta programada para hoje.",
+    "button": {
+      "startAppointment": "Iniciar Consulta",
+      "details": "Detalhes"
+    },
+    "title": {
+      "iconClockTitle": "Hora de Início da Consulta"
+    },
+    "refresh": {
+      "nextRefresh": "Próxima atualização em",
+      "minutes": "minutos",
+      "time": "Hora"
+    }
   }
 }

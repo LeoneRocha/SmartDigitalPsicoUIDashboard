@@ -19,6 +19,19 @@ $ npm install @ngrx/effects --force
 ng add @ngrx/store-devtools@latest
 ng generate component MedicalCalendarTest
 
+ O layout eu gostaria desse forma 
+ 
+ Header Nome do dia na esquerda data completa a direita , heder com um cinza claro 
+ Exemplo: Domingo                Fevereiro 23 de 2025
+ 
+ A linhas , e cada linha 
+ 
+Horario inicial e final  | Titulo cirulo com a cor do agendamento   | Botoes de acao como detalhes, inciar antendimento (play) todos icones
+
+ 
+ 
+
+ 
 ------------------- GERAR COMPONENTE 
 
 

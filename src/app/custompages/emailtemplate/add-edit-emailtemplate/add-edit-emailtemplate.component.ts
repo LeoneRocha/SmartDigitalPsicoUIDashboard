@@ -12,12 +12,14 @@ import { LanguageService } from 'app/services/general/language.service';
 import { EmailTemplateService } from 'app/services/general/principals/emailTemplate.service';
 import { EmailTemplateDto } from 'app/models/modelsbyswagger/models';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AngularEditorConfigHelper } from 'app/helpers/angularEditorConfigHelper';
 @Component({
     moduleId: module.id,
     selector: 'add-edit-emailtemplate',
-    templateUrl: 'add-edit-emailtemplate.component.html'
+    templateUrl: 'add-edit-emailtemplate.component.html',
+    styleUrls: ['add-edit-emailtemplate.component.css']
 })
-    
+
 export class AddEditEmailTemplateComponent implements OnInit {
     registerId: number;
     registerForm: FormGroup;
@@ -31,59 +33,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
     estadoBotao_addRegister = 'inicial';
     estadoBotao_updateRegister = 'inicial';
 
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: 'auto',
-        minHeight: '0',
-        maxHeight: 'auto',
-        width: 'auto',
-        minWidth: '0',
-        translate: 'yes',
-        enableToolbar: true,
-        showToolbar: true,
-        placeholder: 'Enter text here...',
-        defaultParagraphSeparator: '',
-        defaultFontName: '',
-        defaultFontSize: '',
-        fonts: [
-            { class: 'arial', name: 'Arial' },
-            { class: 'times-new-roman', name: 'Times New Roman' },
-            { class: 'calibri', name: 'Calibri' },
-            { class: 'comic-sans-ms', name: 'Comic Sans MS' }
-        ],
-        customClasses: [
-            {
-                name: 'quote',
-                class: 'quote',
-            },
-            {
-                name: 'redText',
-                class: 'redText'
-            },
-            {
-                name: 'titleText',
-                class: 'titleText',
-                tag: 'h1',
-            },
-        ],
-        uploadUrl: 'v1/image',
-        uploadWithCredentials: false,
-        sanitize: false,
-        /*sanitizeFunction: (html: string): string => {
-        // Função customizada de sanitização para permitir certos estilos
-        // Por exemplo, remover apenas scripts enquanto permite estilos inline
-        const sanitizer = new HtmlSanitizer();
-        return sanitizer.sanitize(html, {
-            ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'div', 'span'],
-            ALLOWED_ATTR: ['style', 'href', 'class']
-        },*/
-        toolbarPosition: 'top',
-        toolbarHiddenButtons: [
-            ['bold', 'italic'],
-            ['fontSize']
-        ]
-    };
+    editorConfig: AngularEditorConfig;
 
     constructor(@Inject(ActivatedRoute) private route: ActivatedRoute
         , @Inject(EmailTemplateService) private registerService: EmailTemplateService
@@ -92,6 +42,9 @@ export class AddEditEmailTemplateComponent implements OnInit {
         this.gerateFormRegister();
     }
     ngOnInit() {
+
+        this.loadEditorConfig();
+
         this.languageService.loadLanguage();
         this.loadFormRegister();
         if (this.registerId)
@@ -101,6 +54,12 @@ export class AddEditEmailTemplateComponent implements OnInit {
             this.createEmptyRegister();
     }
     ngAfterViewInit() {
+    }
+    loadEditorConfig() {
+        this.editorConfig = AngularEditorConfigHelper.getEditorConfig(window.innerWidth);        
+        window.addEventListener('resize', () => {
+            this.editorConfig = AngularEditorConfigHelper.getEditorConfig(window.innerWidth);
+        });
     }
     animarBotao(estado: string, stateBtn: string) {
         // alert(estado);
@@ -208,8 +167,8 @@ export class AddEditEmailTemplateComponent implements OnInit {
         formsElement.controls['tagApi'].setValue(this.registerModel.tagApi);
         formsElement.controls['language'].setValue(this.registerModel.language);
         formsElement.controls['enableOpt'].setValue(this.registerModel.enable);
-    } 
-    
+    }
+
     isValidFormSubject(): boolean {
         let isValid = this.registerForm.get('subject').errors?.required;
         return this.registerForm.controls['subject'].touched && this.registerForm.controls['subject'].invalid && isValid;
