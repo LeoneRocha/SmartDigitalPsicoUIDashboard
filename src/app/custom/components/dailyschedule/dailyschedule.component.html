@@ -40,7 +40,7 @@
                     <span class="title-font">{{ event.title }}</span>
 
                   </div>
-                  <div class="col-md-3 text-end" *ngIf="!event.isPastDate">
+                  <div class="col-md-3 text-end" *ngIf="!event.slotIsPast">
                     <button class="btn btn-success btn-sm title-font"><i class="pe-7s-play"></i> {{
                       "calendardailySchedule.button.startAppointment" | translate }}</button>
                   </div>

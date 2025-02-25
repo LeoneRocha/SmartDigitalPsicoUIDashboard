@@ -30,4 +30,5 @@ export interface ICalendarEvent {
   isPastDate?: boolean;
   status?: EStatusCalendar;
   isTimeFieldEditable?: boolean;
+  slotIsPast?: boolean;
 }
