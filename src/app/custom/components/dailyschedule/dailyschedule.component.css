@@ -42,7 +42,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  margin-right: 10px; /* Adiciona margem à direita da badge */
+  margin-right: 10px;  
 }
 
 .btn-sm {
@@ -52,12 +52,12 @@
 }
 
 .title-font {
-  font-size: 1.50rem; /* Ajuste o tamanho da fonte conforme desejado */ 
+  font-size: 1.50rem;  
   display: inline-block;
-  vertical-align: middle; /* Alinha verticalmente ao centro */
-  margin-left: 10px; /* Adiciona margem à esquerda do título */
+  vertical-align: middle;  
+  margin-left: 10px;  
 }
 
 .time-font {
-  font-size: 1.50rem; /* Ajuste o tamanho da fonte conforme desejado */
+  font-size: 1.50rem;  
 }

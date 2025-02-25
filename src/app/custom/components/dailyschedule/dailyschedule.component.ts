@@ -50,8 +50,9 @@ export class DailyScheduleComponent implements OnInit {
 
     this.calendarEventService.getCalendarEvents(criteria).subscribe({
       next: (events) => {
+        events[0].isPastDate= true;
         this.events = events;
-        console.log('events', events);
+        console.log('events', this.events);
         this.loading = false;
       },
       error: (error) => {
