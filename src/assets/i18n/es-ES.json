@@ -523,18 +523,25 @@
   },
   "calendardailySchedule": {
     "header": {
+      "title": "Consultas de Hoy",
+      "category": "Consultas programadas para la fecha actual",
       "dateIcon": "Fecha",
       "dayOfWeek": "EEEE",
       "fullDate": "d 'de' MMMM 'de' y"
     },
     "loading": "Cargando...",
-    "noEvents": "No hay eventos programados para hoy.",
+    "noEvents": "No hay consultas programadas para hoy.",
     "button": {
-      "startAppointment": "Iniciar Cita",
+      "startAppointment": "Iniciar Consulta",
       "details": "Detalles"
     },
     "title": {
-      "iconClockTitle": "Hora de Inicio del Evento"
+      "iconClockTitle": "Hora de Inicio de la Consulta"
+    },
+    "refresh": {
+      "nextRefresh": "Próxima actualización en",
+      "minutes": "minutos",
+      "time": "Hora"
     }
   }
 }

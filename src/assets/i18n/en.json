@@ -520,20 +520,27 @@
       "title": "other"
     }
   },
-  "calendardailySchedule": {
+"calendardailySchedule": {
     "header": {
+      "title": "Today's Consultations",
+      "category": "Scheduled consultations for the current date",
       "dateIcon": "Date",
       "dayOfWeek": "EEEE",
       "fullDate": "MMMM d, y"
     },
     "loading": "Loading...",
-    "noEvents": "No events scheduled for today.",
+    "noEvents": "No consultations scheduled for today.",
     "button": {
-      "startAppointment": "Start Appointment",
+      "startAppointment": "Start Consultation",
       "details": "Details"
     },
     "title": {
-      "iconClockTitle": "Event Start Time"
+      "iconClockTitle": "Consultation Start Time"
+    },
+    "refresh": {
+      "nextRefresh": "Next refresh in",
+      "minutes": "minutes",
+      "time": "Time"
     }
   }
 }

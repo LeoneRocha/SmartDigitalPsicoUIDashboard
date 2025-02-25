@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AutoRefreshHelper } from 'app/helpers/AutoRefreshHelper';
 import { DateHelper } from 'app/helpers/date-helper';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
@@ -13,7 +14,7 @@ import * as moment from 'moment';
   styleUrls: ['./dailyschedule.component.css']
 })
 
-export class DailyScheduleComponent implements OnInit {
+export class DailyScheduleComponent implements OnInit, OnDestroy {
   today: Date = new Date();
   events: ICalendarEvent[] = [];
   loading: boolean = false;
@@ -21,6 +22,7 @@ export class DailyScheduleComponent implements OnInit {
   userLoged: any;
   parentId: number;
   protected isCanAccess: boolean = false;
+  private autoRefreshHelper: AutoRefreshHelper;
 
   constructor(
     @Inject(AuthService) private authService: AuthService,
@@ -29,7 +31,9 @@ export class DailyScheduleComponent implements OnInit {
     @Inject(Router) private router: Router,
     @Inject(ActivatedRoute) private route: ActivatedRoute
 
-  ) { }
+  ) {
+    this.autoRefreshHelper = new AutoRefreshHelper(() => this.loadTodayEvents(), 2);
+  }
 
   ngOnInit(): void {
     this.languageService.loadLanguage();
@@ -37,21 +41,22 @@ export class DailyScheduleComponent implements OnInit {
     if (this.isCanAccess) {
       this.languageUI = this.languageService.getLanguageToLocalStorage();
       this.loadTodayEvents();
+      this.autoRefreshHelper.startAutoRefresh();
     }
   }
-
+  ngOnDestroy(): void {
+    this.autoRefreshHelper.stopAutoRefresh();
+  }
   loadTodayEvents(): void {
     this.loading = true;
     let todayDate = this.today;
-    todayDate = new Date(2025, 1, 27);//FOR TESTING
     const startDate = new Date(todayDate.setHours(0, 0, 0, 0));
     const endDate = new Date(todayDate.setHours(23, 59, 59, 999));
-
     const criteria: CalendarCriteriaDto = this.createCriteria(startDate, endDate);
-
     this.calendarEventService.getCalendarEvents(criteria).subscribe({
-      next: (events) => { 
-        this.events = events; 
+      next: (events) => {
+        this.events = events;
+        console.log('events' ,this.events);
         this.loading = false;
       },
       error: (error) => {

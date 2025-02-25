@@ -1,6 +1,7 @@
 /* CSS */
 #dailyschedulecontainer {
   border: 1px solid #dee2e6;
+  background-color: #FFFFFF;
   border-radius: 5px;  
 }
 .cardCustom {  
@@ -60,4 +61,50 @@
 
 .time-font {
   font-size: 1.50rem;  
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 15px 0;
+  background: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid #e7e7e7;
+  z-index: 100;
+}
+
+.footer .copyright {
+  color: #777777;
+  padding: 10px 15px;
+  font-size: 14px;
+  margin: 0;
+}
+
+.footer ul {
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer ul li {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 14px;
+}
+
+.fa-spin {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.footer-row {
+  display: flex;  
+  background-color: #FFFFFF;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }

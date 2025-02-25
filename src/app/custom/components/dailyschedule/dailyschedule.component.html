@@ -1,5 +1,10 @@
 <div class="container-fluid" *ngIf="isCanAccess">
   <div id="dailyschedulecontainer" class="container-fluid">
+
+    <div class="header">
+      <h4 class="title"> {{ "calendardailySchedule.header.title" | translate }} </h4>
+      <p class="category"> {{ "calendardailySchedule.header.category" | translate }}</p>
+    </div> 
     <!-- Header -->
     <div class="row mb-3 header-row">
       <div class="col-md-6 header-left">
@@ -10,7 +15,7 @@
       </div>
     </div>
     <!-- Card -->
-    <div class="row">
+    <div class="row mb-3">
       <div class="col">
         <div class="card cardCustom">
           <div class="card-body">
@@ -50,6 +55,16 @@
     <div class="container mt-4" *ngIf="events.length === 0">
       <div class="alert alert-info">
         {{ "calendardailySchedule.noEvents" | translate }}
+      </div>
+    </div>
+    <!-- New Footer -->
+    <div class="row mb-3 footer-row">
+      <div class="col-12">
+        <span>
+          <i class="pe-7s-refresh-2 fa-spin"></i>
+          {{ "calendardailySchedule.refresh.nextRefresh" | translate }}:
+          {{ autoRefreshHelper.minutesUntilRefresh }}:{{ autoRefreshHelper.secondsUntilRefresh | number:'2.0-0' }}
+        </span>
       </div>
     </div>
   </div>
