@@ -132,7 +132,7 @@
       "required": "Se requiere archivo"
     },
     "loading": {
-      "message":"Cargando..."
+      "message": "Cargando..."
     },
     "calendar": {
       "progress": {
@@ -519,6 +519,22 @@
     },
     "other": {
       "title": "Otro"
+    }
+  },
+  "calendardailySchedule": {
+    "header": {
+      "dateIcon": "Fecha",
+      "dayOfWeek": "EEEE",
+      "fullDate": "d 'de' MMMM 'de' y"
+    },
+    "loading": "Cargando...",
+    "noEvents": "No hay eventos programados para hoy.",
+    "button": {
+      "startAppointment": "Iniciar Cita",
+      "details": "Detalles"
+    },
+    "title": {
+      "iconClockTitle": "Hora de Inicio del Evento"
     }
   }
 }

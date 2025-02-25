@@ -32,6 +32,7 @@ export class DailyScheduleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.languageService.loadLanguage();
     this.isCanAccess = this.authService.isUserContainsRole('Medical');
     if (this.isCanAccess) {
       this.languageUI = this.languageService.getLanguageToLocalStorage();
@@ -49,10 +50,8 @@ export class DailyScheduleComponent implements OnInit {
     const criteria: CalendarCriteriaDto = this.createCriteria(startDate, endDate);
 
     this.calendarEventService.getCalendarEvents(criteria).subscribe({
-      next: (events) => {
-        events[0].isPastDate= true;
-        this.events = events;
-        console.log('events', this.events);
+      next: (events) => { 
+        this.events = events; 
         this.loading = false;
       },
       error: (error) => {

@@ -522,5 +522,21 @@
     "other": {
       "title": "Outro"
     }
+  },
+  "calendardailySchedule": {
+    "header": {
+      "dateIcon": "Data",
+      "dayOfWeek": "EEEE",
+      "fullDate": "d 'de' MMMM 'de' y"
+    },
+    "loading": "Carregando...",
+    "noEvents": "Nenhum evento programado para hoje.",
+    "button": {
+      "startAppointment": "Iniciar Atendimento",
+      "details": "Detalhes"
+    },
+    "title": {
+      "iconClockTitle": "Hora de Início do Evento"
+    }
   }
 }

@@ -519,5 +519,21 @@
     "other": {
       "title": "other"
     }
+  },
+  "calendardailySchedule": {
+    "header": {
+      "dateIcon": "Date",
+      "dayOfWeek": "EEEE",
+      "fullDate": "MMMM d, y"
+    },
+    "loading": "Loading...",
+    "noEvents": "No events scheduled for today.",
+    "button": {
+      "startAppointment": "Start Appointment",
+      "details": "Details"
+    },
+    "title": {
+      "iconClockTitle": "Event Start Time"
+    }
   }
 }
