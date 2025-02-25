@@ -91,11 +91,12 @@ export class CalendarEventService {
     return this.medicalCalendarService.deleteByRequest(deleteAppointment);
   }
 
-  private processCalendarResponse(response: ServiceResponse<CalendarDto>): ICalendarEvent[] {
+  private processCalendarResponse(response: ServiceResponse<CalendarDto>): ICalendarEvent[] {    
     const sortedDays = DateHelper.sortTimeSlots(response.data.days);
     response.data.days = DateHelper.fillAddDayOfWeek(sortedDays);
     const resultCalendarData = response.data;
-    return resultCalendarData.days.flatMap(day => this.filterAndMapTimeSlots(day, day.timeSlots));
+    const calendarEvents: ICalendarEvent[] = resultCalendarData.days.flatMap(day => this.filterAndMapTimeSlots(day, day.timeSlots));
+    return calendarEvents;
   }
 
   private filterAndMapTimeSlots(day: DayCalendarDto, timeSlots: any[]): ICalendarEvent[] {
@@ -123,6 +124,7 @@ export class CalendarEventService {
       backgroundColor: getColorBackGround(medicalCalendar, slot),
       textColor: '#fff',
       editable: !slot.isPast,
+      slotIsPast: slot.isPast,
       isPastDate: day.isPast,
       medicalCalendar: medicalCalendar ? this.mapMedicalCalendar(medicalCalendar) : null,
       status: medicalCalendar ? medicalCalendar.status : 0,

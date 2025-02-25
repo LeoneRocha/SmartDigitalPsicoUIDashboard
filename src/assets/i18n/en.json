@@ -519,5 +519,28 @@
     "other": {
       "title": "other"
     }
+  },
+"calendardailySchedule": {
+    "header": {
+      "title": "Today's Consultations",
+      "category": "Scheduled consultations for the current date",
+      "dateIcon": "Date",
+      "dayOfWeek": "EEEE",
+      "fullDate": "MMMM d, y"
+    },
+    "loading": "Loading...",
+    "noEvents": "No consultations scheduled for today.",
+    "button": {
+      "startAppointment": "Start Consultation",
+      "details": "Details"
+    },
+    "title": {
+      "iconClockTitle": "Consultation Start Time"
+    },
+    "refresh": {
+      "nextRefresh": "Next refresh in",
+      "minutes": "minutes",
+      "time": "Time"
+    }
   }
 }
