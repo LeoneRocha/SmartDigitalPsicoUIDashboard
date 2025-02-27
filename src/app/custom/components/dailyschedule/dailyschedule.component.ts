@@ -39,7 +39,9 @@ export class DailyScheduleComponent implements OnInit, OnDestroy {
     this.languageService.loadLanguage();
     this.isCanAccess = this.authService.isUserContainsRole('Medical');
     if (this.isCanAccess) {
-      this.languageUI = this.languageService.getLanguageToLocalStorage();
+      this.languageUI = this.languageService.getLanguageToLocalStorage(); 
+      moment.locale(this.languageUI.toLowerCase());    
+
       this.loadTodayEvents();
       this.autoRefreshHelper.startAutoRefresh();
     }
@@ -95,5 +97,22 @@ export class DailyScheduleComponent implements OnInit, OnDestroy {
 
   formatFullDate(date: Date): string {
     return DateHelper.formatFullDate(date, this.languageUI);
+  }
+
+  private capitalizeFirstLetterOnly(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+  
+  formatWeekday(date: Date): string {
+    return this.capitalizeFirstLetterOnly(moment(date).format('dddd'));
+  }
+  
+  formatFullDateDisplay(date: Date): string {
+    const formattedDate = moment(date).format('LL');   
+    const words = formattedDate.split(' ');
+    if (words.length >= 3) {
+      words[2] = this.capitalizeFirstLetterOnly(words[2]);  
+    }
+    return words.join(' ');
   }
 }
