@@ -2,8 +2,10 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoRefreshHelper } from 'app/helpers/AutoRefreshHelper';
 import { DateHelper } from 'app/helpers/date-helper';
+import { EStatusCalendarHelper } from 'app/helpers/EStatusCalendarHelper';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
+import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
 import { AuthService } from 'app/services/auth/auth.service';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { LanguageService } from 'app/services/general/language.service';
@@ -39,8 +41,8 @@ export class DailyScheduleComponent implements OnInit, OnDestroy {
     this.languageService.loadLanguage();
     this.isCanAccess = this.authService.isUserContainsRole('Medical');
     if (this.isCanAccess) {
-      this.languageUI = this.languageService.getLanguageToLocalStorage(); 
-      moment.locale(this.languageUI.toLowerCase());    
+      this.languageUI = this.languageService.getLanguageToLocalStorage();
+      moment.locale(this.languageUI.toLowerCase());
 
       this.loadTodayEvents();
       this.autoRefreshHelper.startAutoRefresh();
@@ -58,7 +60,6 @@ export class DailyScheduleComponent implements OnInit, OnDestroy {
     this.calendarEventService.getCalendarEvents(criteria).subscribe({
       next: (events) => {
         this.events = events;
-        console.log('events' ,this.events);
         this.loading = false;
       },
       error: (error) => {
@@ -102,17 +103,25 @@ export class DailyScheduleComponent implements OnInit, OnDestroy {
   private capitalizeFirstLetterOnly(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
-  
+
   formatWeekday(date: Date): string {
     return this.capitalizeFirstLetterOnly(moment(date).format('dddd'));
   }
-  
+
   formatFullDateDisplay(date: Date): string {
-    const formattedDate = moment(date).format('LL');   
+    const formattedDate = moment(date).format('LL');
     const words = formattedDate.split(' ');
     if (words.length >= 3) {
-      words[2] = this.capitalizeFirstLetterOnly(words[2]);  
+      words[2] = this.capitalizeFirstLetterOnly(words[2]);
     }
     return words.join(' ');
+  }
+
+  getStatusLabel(status: EStatusCalendar): string {
+    return EStatusCalendarHelper.getStatusLabel(this.languageService, status);
+  }
+
+  getStatusIconAndClass(status: EStatusCalendar):  { icon: string, class: string } {
+    return EStatusCalendarHelper.getStatusIconAndClass(status);
   }
 }

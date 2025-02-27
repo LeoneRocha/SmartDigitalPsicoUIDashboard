@@ -4,25 +4,15 @@
     <div class="header">
       <h4 class="title"> {{ "calendardailySchedule.header.title" | translate }} </h4>
       <p class="category"> {{ "calendardailySchedule.header.category" | translate }}</p>
-    </div> 
+    </div>
     <!-- Header -->
     <div class="row mb-3 header-row">
-
-
       <div class="col-md-6 header-left">
         <h3 class="mb-0"><i class="pe-7s-date"></i> {{ formatWeekday(today) }}</h3>
       </div>
       <div class="col-md-6 header-right">
         <h3 class="mb-0">{{ formatFullDateDisplay(today) }}</h3>
       </div>
-
-
-
-
-
-
-
-      
     </div>
     <!-- Card -->
     <div class="row mb-3">
@@ -42,13 +32,15 @@
                     <i class="pe-7s-clock" title="{{ event.start |  date:'fullDate' }}"></i> {{ event.start |
                     date:'HH:mm' }} - {{ event.end | date:'HH:mm' }}
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <span class="badge" [ngStyle]="{'background-color': event.backgroundColor}"
                       style="width: 10px; height: 10px; display: inline-block; border-radius: 50%;"
                       title="{{ event?.medicalCalendar?.description }} - {{ event.title }}"></span>
-
                     <span class="title-font">{{ event.title }}</span>
-
+                  </div>                  
+                  <div class="col-md-3">
+                    <i [class]="getStatusIconAndClass(event.status).icon + ' icon-large ' + getStatusIconAndClass(event.status).class"></i>
+                    <span class="status-font">{{ getStatusLabel(event.status) }}</span>
                   </div>
                   <div class="col-md-3 text-end" *ngIf="!event.slotIsPast">
                     <button class="btn btn-success btn-sm title-font"><i class="pe-7s-play"></i> {{
