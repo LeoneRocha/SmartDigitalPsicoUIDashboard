@@ -1,4 +1,12 @@
 /* CSS */
+.icon-large {
+  font-size: 24px;   
+  width: 24px;      
+  height: 24px;     
+  padding: 5px;      
+  margin-right: 5px;  
+}
+
 #dailyschedulecontainer {
   border: 1px solid #dee2e6;
   background-color: #FFFFFF;
