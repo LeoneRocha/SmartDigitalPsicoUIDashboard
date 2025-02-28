@@ -37,13 +37,16 @@
                       style="width: 10px; height: 10px; display: inline-block; border-radius: 50%;"
                       title="{{ event?.medicalCalendar?.description }} - {{ event.title }}"></span>
                     <span class="title-font">{{ event.title }}</span>
-                  </div>                  
+                  </div>
                   <div class="col-md-3">
-                    <i [class]="getStatusIconAndClass(event.status).icon + ' icon-large ' + getStatusIconAndClass(event.status).class"></i>
+                    <i
+                      [class]="getStatusIconAndClass(event.status).icon + ' icon-large ' + getStatusIconAndClass(event.status).class"></i>
                     <span class="status-font">{{ getStatusLabel(event.status) }}</span>
                   </div>
-                  <div class="col-md-3 text-end" *ngIf="!event.slotIsPast">
-                    <button class="btn btn-success btn-sm title-font"><i class="pe-7s-play"></i> {{
+                  <div class="col-md-3 text-end" *ngIf="shouldShowStartButton(event)">
+                    <button class="btn btn-success btn-sm title-font"
+                      [ngClass]="{'disabled-button': !isButtonEnabled(event)}"  
+                      (click)="startAppointment()"><i class="pe-7s-play icon-large"></i> {{
                       "calendardailySchedule.button.startAppointment" | translate }}</button>
                   </div>
                 </div>
@@ -52,22 +55,21 @@
           </div>
         </div>
       </div>
-    </div>
-    <!-- Alert -->
-    <div class="container mt-4" *ngIf="events.length === 0">
-      <div class="alert alert-info">
-        {{ "calendardailySchedule.noEvents" | translate }}
+      <!-- Alert -->
+      <div class="container mt-4" *ngIf="events.length === 0">
+        <div class="alert alert-info">
+          {{ "calendardailySchedule.noEvents" | translate }}
+        </div>
       </div>
-    </div>
-    <!-- New Footer -->
-    <div class="row mb-3 footer-row">
-      <div class="col-12">
-        <span>
-          <i class="pe-7s-refresh-2 fa-spin"></i>
-          {{ "calendardailySchedule.refresh.nextRefresh" | translate }}:
-          {{ autoRefreshHelper.minutesUntilRefresh }}:{{ autoRefreshHelper.secondsUntilRefresh | number:'2.0-0' }}
-        </span>
+      <!-- New Footer -->
+      <div class="row mb-3 footer-row">
+        <div class="col-12">
+          <span>
+            <i class="pe-7s-refresh-2 fa-spin"></i>
+            {{ "calendardailySchedule.refresh.nextRefresh" | translate }}:
+            {{ autoRefreshHelper.minutesUntilRefresh }}:{{ autoRefreshHelper.secondsUntilRefresh | number:'2.0-0' }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
-</div>
