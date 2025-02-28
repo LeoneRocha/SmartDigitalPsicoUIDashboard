@@ -53,7 +53,7 @@ export class DailyScheduleComponent implements OnInit, OnDestroy {
   }
   loadTodayEvents(): void {
     this.loading = true;
-    let todayDate = this.today;
+    let todayDate = this.today; 
     const startDate = new Date(todayDate.setHours(0, 0, 0, 0));
     const endDate = new Date(todayDate.setHours(23, 59, 59, 999));
     const criteria: CalendarCriteriaDto = this.createCriteria(startDate, endDate);
@@ -121,7 +121,30 @@ export class DailyScheduleComponent implements OnInit, OnDestroy {
     return EStatusCalendarHelper.getStatusLabel(this.languageService, status);
   }
 
-  getStatusIconAndClass(status: EStatusCalendar):  { icon: string, class: string } {
+  getStatusIconAndClass(status: EStatusCalendar): { icon: string, class: string } {
     return EStatusCalendarHelper.getStatusIconAndClass(status);
   }
+  shouldShowStartButton(event: ICalendarEvent): boolean {
+    const isShow = (event.status === EStatusCalendar.Scheduled || event.status === EStatusCalendar.Confirmed) && !event.slotIsPast;
+    return isShow;
+  }
+
+  isButtonEnabled(event: ICalendarEvent): boolean {
+   
+    const currentTime = moment();
+    const eventStartTime = moment(event.start);
+    const oneHourBeforeStart = eventStartTime.subtract(1, 'hour');  // 1 hora antes da data de início
+    const eventEndTime = moment(event.end);
+    const oneHourAfterEnd = eventEndTime.add(1, 'hour');   
+    const isWithinStartWindow = currentTime.isSameOrAfter(oneHourBeforeStart);
+    const isWithinEndWindow = currentTime.isSameOrBefore(oneHourAfterEnd); 
+    const isEnable = isWithinStartWindow && isWithinEndWindow; 
+    return isEnable;
+  }
+
+
+  onClickStartAppointment(): void {
+    alert('Teste de alerta!');
+  }
+
 }
