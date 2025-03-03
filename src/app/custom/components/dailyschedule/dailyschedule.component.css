@@ -1,20 +1,25 @@
+.row {
+  margin-right: 0px !important;
+  margin-left: 0px !important ;
+}
+
 /* CSS */
 .icon-large {
-  font-size: 24px;   
-  width: 24px;      
-  height: 24px;     
-  padding: 5px;      
-  margin-right: 5px;  
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  padding: 5px;
+  margin-right: 5px;
 }
 
 #dailyschedulecontainer {
   border: 1px solid #dee2e6;
-  background-color: #FFFFFF;
-  border-radius: 5px;  
+  background-color: #ffffff;
+  border-radius: 5px;
 }
-.cardCustom {  
+.cardCustom {
   padding-left: 5px;
-  padding-right: 5px;   
+  padding-right: 5px;
   padding-bottom: 5px;
 }
 
@@ -38,12 +43,16 @@
   text-align: right;
   padding-right: 0;
 }
-
+.card-body {
+  padding: 5px;
+  margin: 5px;
+}
 .event-item {
   border: 1px solid #dee2e6;
   border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 15px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .badge {
@@ -51,7 +60,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  margin-right: 10px;  
+  margin-right: 10px;
 }
 
 .btn-sm {
@@ -61,14 +70,14 @@
 }
 
 .title-font {
-  font-size: 1.50rem;  
+  font-size: 1.5rem;
   display: inline-block;
-  vertical-align: middle;  
-  margin-left: 10px;  
+  vertical-align: middle;
+  margin-left: 10px;
 }
 
 .time-font {
-  font-size: 1.50rem;  
+  font-size: 1.5rem;
 }
 .footer {
   position: fixed;
@@ -104,23 +113,27 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .footer-row {
-  display: flex;  
-  background-color: #FFFFFF;
+  display: contents;
+  background-color: #ffffff;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-.btn-sm.disabled-button { 
+.btn-sm.disabled-button {
   opacity: 0.65; /* Deixa o botão desabilitado um pouco mais translúcido */
   cursor: not-allowed; /* Mostrar cursor de não permitido */
-} 
+}
 
 .btn-sm:disabled {
   opacity: 0.65; /* Deixa o botão desabilitado um pouco mais translúcido */
