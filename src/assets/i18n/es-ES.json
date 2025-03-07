@@ -60,7 +60,7 @@
     "specialty": "Especialidad",
     "applicationsetting": "Configuraciones del Sistema",
     "applicationlanguage": "Idiomas",
-    "emailtemplate": "Plantillas de Correo",
+    "notificationtemplate": "Plantilla de notificación",
     "medicals": "Médicos"
   },
   "general": {
@@ -217,13 +217,13 @@
       "TitleView": "Ver idioma"
     }
   },
-  "emailtemplate": {
-    "title": "Plantilla de Correo",
-    "category": "Lista de Plantilla de Correo",
-    "select": "Seleccionar Plantilla de Correo",
-    "TitleAdd": "Agregar Plantilla de Correo",
-    "TitleEdit": "Editar Plantilla de Correo",
-    "TitleView": "Ver Plantilla de Correo",
+  "notificationtemplate": {
+    "title": "Plantilla de notificación",
+    "category": "Lista de Plantilla de notificación",
+    "select": "Seleccionar Plantilla de notificación",
+    "TitleAdd": "Agregar Plantilla de notificación",
+    "TitleEdit": "Editar Plantilla de notificación",
+    "TitleView": "Ver Plantilla de notificación",
     "tagApi": "Tag",
     "tagApi_required": "Tag es obligatorio",
     "subject": "Asunto",

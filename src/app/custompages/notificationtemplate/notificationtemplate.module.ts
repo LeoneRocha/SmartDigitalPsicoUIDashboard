@@ -4,10 +4,10 @@ import { CustomPagesModule } from 'app/custommodules/custompages.module';
 import { NgxTranslateModule } from 'app/translate/translate.module';
 import { LanguageService } from 'app/services/general/language.service';
 import { CustomPipesModule } from 'app/common/custompipe/custompipe.module';
-import { EmailTemplateComponent } from './emailtemplate.component';
-import { EmailTemplateRoutes } from './emailtemplate.routing';
-import { EmailTemplateService } from 'app/services/general/principals/emailTemplate.service';
-import { AddEditEmailTemplateComponent } from './add-edit-emailtemplate/add-edit-emailtemplate.component';
+import { NotificationTemplateComponent } from './notificationtemplate.component';
+import { EmailTemplateRoutes } from './notificationtemplate.routing';
+import { NotificationTemplateService } from 'app/services/general/principals/notificationtemplate.service';
+import { AddEditNotificationTemplateComponent } from './add-edit-notificationtemplate/add-edit-notificationtemplate.component';
 
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,12 +21,12 @@ import { HttpClientModule } from '@angular/common/http';
         AngularEditorModule
     ],
     declarations: [
-        EmailTemplateComponent,
-        AddEditEmailTemplateComponent
+        NotificationTemplateComponent,
+        AddEditNotificationTemplateComponent
     ]
     ,
     providers: [
-        EmailTemplateService, LanguageService,
+        NotificationTemplateService, LanguageService,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

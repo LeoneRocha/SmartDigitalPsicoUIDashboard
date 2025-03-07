@@ -60,7 +60,7 @@
     "specialty": "Especialidade",
     "applicationsetting": "Configurações do Sistema",
     "applicationlanguage": "Idiomas",
-    "emailtemplate": "Modelos de E-mail",
+    "notificationtemplate": "Modelos de notificação",
     "medicals": "Médicos"
   },
   "general": {
@@ -221,13 +221,13 @@
       "TitleView": "Visualizar Idioma"
     }
   },
-  "emailtemplate": {
-    "title": "Modelos de Emails",
-    "category": "Lista de Modelos de Email",
-    "select": "Selecionar Modelo de Email",
-    "TitleAdd": "Adicionar Modelo de Email",
-    "TitleEdit": "Editar Modelo de Email",
-    "TitleView": "Visualizar Modelo de Email",
+  "notificationtemplate": {
+    "title": "Modelos de notificação",
+    "category": "Lista de Modelos de notificação",
+    "select": "Selecionar Modelo de notificação",
+    "TitleAdd": "Adicionar Modelo de notificação",
+    "TitleEdit": "Editar Modelo de notificação",
+    "TitleView": "Visualizar Modelo de notificação",
     "tagApi": "Tag",
     "tagApi_required": "Tag é obrigatório",
     "subject": "Assunto",
