@@ -8,25 +8,25 @@ import { LanguageOptions } from 'app/common/enuns/language-options';
 import { CaptureTologFunc } from 'app/common/errohandler/app-error-handler';
 import { GetMsgServiceResponse } from 'app/common/helpers/GetMsgServiceResponse';
 import { ResourceKeyOptions } from 'app/common/enuns/language-options copy';
-import { LanguageService } from 'app/services/general/language.service';
-import { EmailTemplateService } from 'app/services/general/principals/emailTemplate.service';
-import { EmailTemplateDto } from 'app/models/modelsbyswagger/models';
+import { LanguageService } from 'app/services/general/language.service'; 
+import { NotificationTemplateDto } from 'app/models/modelsbyswagger/models';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AngularEditorConfigHelper } from 'app/helpers/angularEditorConfigHelper';
+import { NotificationTemplateService } from 'app/services/general/principals/notificationtemplate.service';
 @Component({
     moduleId: module.id,
-    selector: 'add-edit-emailtemplate',
-    templateUrl: 'add-edit-emailtemplate.component.html',
-    styleUrls: ['add-edit-emailtemplate.component.css']
+    selector: 'add-edit-notificationtemplate',
+    templateUrl: 'add-edit-notificationtemplate.component.html',
+    styleUrls: ['add-edit-notificationtemplate.component.css']
 })
 
-export class AddEditEmailTemplateComponent implements OnInit {
+export class AddEditNotificationTemplateComponent implements OnInit {
     registerId: number;
     registerForm: FormGroup;
     isUpdateRegister: boolean = false;
     isModeViewForm: boolean = false;
-    registerModel: EmailTemplateDto;
-    serviceResponse: ServiceResponse<EmailTemplateDto>;
+    registerModel: NotificationTemplateDto;
+    serviceResponse: ServiceResponse<NotificationTemplateDto>;
     public languages = LanguageOptions;
     public resourceKeyOpts = ResourceKeyOptions;
     estadoBotao_goBackToList = 'inicial';
@@ -36,7 +36,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
     editorConfig: AngularEditorConfig;
 
     constructor(@Inject(ActivatedRoute) private route: ActivatedRoute
-        , @Inject(EmailTemplateService) private registerService: EmailTemplateService
+        , @Inject(NotificationTemplateService) private registerService: NotificationTemplateService
         , private fb: FormBuilder, @Inject(Router) private router: Router
         , @Inject(LanguageService) private languageService: LanguageService) {
         this.gerateFormRegister();
@@ -96,24 +96,24 @@ export class AddEditEmailTemplateComponent implements OnInit {
     loadRegister() {
         console.log('loadRegister', this.registerId);
         this.registerService.getById(this.registerId).subscribe({
-            next: (response: ServiceResponse<EmailTemplateDto>) => { this.processLoadRegister(response); }, error: (err) => { this.processLoadRegisterErro(err); },
+            next: (response: ServiceResponse<NotificationTemplateDto>) => { this.processLoadRegister(response); }, error: (err) => { this.processLoadRegisterErro(err); },
         });
     }
     addRegister() {
         this.getValuesForm();
         console.log('addRegister', this.registerModel);
         this.registerService.add(this.registerModel).subscribe({
-            next: (response: ServiceResponse<EmailTemplateDto>) => { this.processAddRegister(response); }, error: (err) => { this.processAddRegisterErro(err); },
+            next: (response: ServiceResponse<NotificationTemplateDto>) => { this.processAddRegister(response); }, error: (err) => { this.processAddRegisterErro(err); },
         });
     }
     updateRegister() {
         this.getValuesForm();
         this.registerService.update(this.registerModel).subscribe({
-            next: (response: ServiceResponse<EmailTemplateDto>) => { this.processUpdateRegister(response); }, error: (err) => { this.processUpdateRegisterErro(err); },
+            next: (response: ServiceResponse<NotificationTemplateDto>) => { this.processUpdateRegister(response); }, error: (err) => { this.processUpdateRegisterErro(err); },
         });
     }
-    processAddRegister(response: ServiceResponse<EmailTemplateDto>) {
-        CaptureTologFunc('processAddRegister-EmailTemplate', response);
+    processAddRegister(response: ServiceResponse<NotificationTemplateDto>) {
+        CaptureTologFunc('processAddRegister-NotificationTemplate', response);
         this.serviceResponse = response;
         if (response?.errors?.length == 0) {
             this.modalSuccessAlert();
@@ -122,29 +122,29 @@ export class AddEditEmailTemplateComponent implements OnInit {
         }
         this.goBackToList();
     }
-    processAddRegisterErro(response: ServiceResponse<EmailTemplateDto>) {
-        CaptureTologFunc('processAddRegisterErro-EmailTemplate', response);
+    processAddRegisterErro(response: ServiceResponse<NotificationTemplateDto>) {
+        CaptureTologFunc('processAddRegisterErro-NotificationTemplate', response);
         this.modalErroAlert(this.gettranslateInformationAsync('modalalert.saved.erro'), response);
     }
 
-    processUpdateRegister(response: ServiceResponse<EmailTemplateDto>) {
-        CaptureTologFunc('processUpdateRegister-EmailTemplate', response);
+    processUpdateRegister(response: ServiceResponse<NotificationTemplateDto>) {
+        CaptureTologFunc('processUpdateRegister-NotificationTemplate', response);
         this.serviceResponse = response;
         this.modalSuccessAlert();
     }
-    processUpdateRegisterErro(response: ServiceResponse<EmailTemplateDto>) {
-        CaptureTologFunc('processUpdateRegisterErro-EmailTemplate', response);
+    processUpdateRegisterErro(response: ServiceResponse<NotificationTemplateDto>) {
+        CaptureTologFunc('processUpdateRegisterErro-NotificationTemplate', response);
         this.modalErroAlert(this.gettranslateInformationAsync('modalalert.saved.erroupdate'), response);
     }
 
-    processLoadRegister(response: ServiceResponse<EmailTemplateDto>) {
-        CaptureTologFunc('processLoadRegister-EmailTemplate', response);
+    processLoadRegister(response: ServiceResponse<NotificationTemplateDto>) {
+        CaptureTologFunc('processLoadRegister-NotificationTemplate', response);
         this.serviceResponse = response;
         this.fillFieldsForm();
         this.isUpdateRegister = true && !this.isModeViewForm;
     }
-    processLoadRegisterErro(response: ServiceResponse<EmailTemplateDto>) {
-        CaptureTologFunc('processLoadRegisterErro-EmailTemplate', response);
+    processLoadRegisterErro(response: ServiceResponse<NotificationTemplateDto>) {
+        CaptureTologFunc('processLoadRegisterErro-NotificationTemplate', response);
         this.modalErroAlert(this.gettranslateInformationAsync('modalalert.load.title'), response);
     }
     fillFieldsForm(): void {
@@ -229,7 +229,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
         //demo
     }
     goBackToList() {
-        this.router.navigate(['/administrative/emailtemplate']);
+        this.router.navigate(['/administrative/notificationtemplate']);
     }
     gettranslateInformationAsync(key: string): string {
         let result = this.languageService.translateInformationAsync([key])[0];
@@ -247,7 +247,7 @@ export class AddEditEmailTemplateComponent implements OnInit {
             icon: "success"
         });
     }
-    modalErroAlert(msgErro: string, response: ServiceResponse<EmailTemplateDto>) {
+    modalErroAlert(msgErro: string, response: ServiceResponse<NotificationTemplateDto>) {
         swal.fire({
             title: msgErro,
             text: GetMsgServiceResponse(response),

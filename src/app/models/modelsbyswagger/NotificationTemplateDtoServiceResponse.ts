@@ -9,15 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { HyperMediaLink } from './hyperMediaLink';
+import { ErrorResponse } from './errorResponse';
+import { NotificationTemplateDto } from './NotificationTemplateDto';
 
-export interface EmailTemplateDto { 
-    subject?: string;
-    body?: string;
-    description?: string;
-    language?: string;
-    links?: Array<HyperMediaLink>;
-    id?: number;
-    enable: boolean; 
-    tagApi?: string;
+export interface NotificationTemplateDtoServiceResponse { 
+    data?: NotificationTemplateDto;
+    success?: boolean;
+    message?: string;
+    errors?: Array<ErrorResponse>;
+    unauthorized?: boolean;
 }

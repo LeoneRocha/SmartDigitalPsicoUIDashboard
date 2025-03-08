@@ -6,20 +6,20 @@ import { ServiceResponse } from 'app/models/ServiceResponse';
 import { CaptureTologFunc } from 'app/common/errohandler/app-error-handler';
 import { DataTable, RouteEntity } from 'app/models/general/DataTable'; 
 import { LanguageService } from 'app/services/general/language.service';
-import { EmailTemplateService } from 'app/services/general/principals/emailTemplate.service';
-import { EmailTemplateDto } from 'app/models/modelsbyswagger/models'; 
+import { NotificationTemplateService } from 'app/services/general/principals/notificationtemplate.service';
+import { NotificationTemplateDto } from 'app/models/modelsbyswagger/models'; 
 
 declare var $: any;
 
 @Component({
     moduleId: module.id,
-    selector: 'emailtemplate-list',
-    templateUrl: 'emailtemplate.component.html' 
+    selector: 'notificationtemplate-list',
+    templateUrl: 'notificationtemplate.component.html' 
 })
 
-export class EmailTemplateComponent implements OnInit {
-    public listResult: EmailTemplateDto[];
-    serviceResponse: ServiceResponse<EmailTemplateDto>;
+export class NotificationTemplateComponent implements OnInit {
+    public listResult: NotificationTemplateDto[];
+    serviceResponse: ServiceResponse<NotificationTemplateDto>;
     public dataTable: DataTable;
     entityRoute: RouteEntity;
     columlabelsDT: string[] = [
@@ -30,7 +30,7 @@ export class EmailTemplateComponent implements OnInit {
         , 'general.actions'
     ];
 
-    constructor(@Inject(EmailTemplateService) private registerService: EmailTemplateService
+    constructor(@Inject(NotificationTemplateService) private registerService: NotificationTemplateService
         , @Inject(Router) private router: Router
         , @Inject(LanguageService) private languageService: LanguageService) { }
     ngOnInit() {
@@ -41,13 +41,13 @@ export class EmailTemplateComponent implements OnInit {
     ngAfterViewInit() {
     }
     newRegister(): void {
-        this.router.navigate(['/administrative/emailtemplate/emailtemplateaction']);
+        this.router.navigate(['/administrative/notificationtemplate/notificationtemplateaction']);
     }
     viewRegister(idRegister: number): void {
-        this.router.navigate(['/administrative/emailtemplate/emailtemplateaction', { modeForm: 'view', id: idRegister }]);
+        this.router.navigate(['/administrative/notificationtemplate/notificationtemplateaction', { modeForm: 'view', id: idRegister }]);
     }
     editRegister(idRegister: number): void {
-        this.router.navigate(['/administrative/emailtemplate/emailtemplateaction', { modeForm: 'edit', id: idRegister }]);
+        this.router.navigate(['/administrative/notificationtemplate/notificationtemplateaction', { modeForm: 'edit', id: idRegister }]);
     }
     removeRegister(idRegister: number): void {
         this.modalAlertRemove(idRegister);
@@ -58,7 +58,7 @@ export class EmailTemplateComponent implements OnInit {
                 this.listResult = response["data"];
                 this.loadConfigDataTablesLazzy();
                 //this.convertListToDataTableRowAndFill(response["data"]);  this.loadConfigDataTablesLazzy()
-                CaptureTologFunc('retrieveList-EmailTemplate', response);
+                CaptureTologFunc('retrieveList-NotificationTemplate', response);
             },
             error: (err) => { this.showNotification('top', 'center', this.gettranslateInformationAsync('modalalert.notification.erro.connection'), 'danger'); }
         }); 
@@ -67,8 +67,8 @@ export class EmailTemplateComponent implements OnInit {
     executeDeleteRegister(idRegister: number) {
         this.registerService.delete(idRegister).subscribe({
             next: (response: any) => {
-                CaptureTologFunc('executeDeleteRegister-EmailTemplate', response);
-                this.listResult = this.removeItemFromList<EmailTemplateDto>(this.listResult, idRegister);
+                CaptureTologFunc('executeDeleteRegister-NotificationTemplate', response);
+                this.listResult = this.removeItemFromList<NotificationTemplateDto>(this.listResult, idRegister);
                 this.modalAlertDeleted();
             },
             error: (err) => { this.modalErroAlert('Error of delete.'); }
