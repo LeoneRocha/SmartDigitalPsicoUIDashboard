@@ -5,13 +5,13 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title" class="lead pb-3" *ngIf="!isUpdateRegister && !isModeViewForm">
-                            {{ "emailtemplate.TitleAdd" | translate }}
+                            {{ "notificationtemplate.TitleAdd" | translate }}
                         </h4>
                         <h4 class="title" class="lead pb-3" *ngIf="isUpdateRegister">
-                            {{ "emailtemplate.TitleEdit" | translate }}
+                            {{ "notificationtemplate.TitleEdit" | translate }}
                         </h4>
                         <h4 class="title" class="lead pb-3" *ngIf="isModeViewForm">
-                            {{ "emailtemplate.TitleView" | translate }}
+                            {{ "notificationtemplate.TitleView" | translate }}
                         </h4>
                     </div>
                     <div class="content">
@@ -54,26 +54,26 @@
                                 <div class="col-md-6">
                                     <!--subject-->
                                     <div class="form-group">
-                                        <label for="subject">{{ "emailtemplate.subject" | translate }}:</label>
+                                        <label for="subject">{{ "notificationtemplate.subject" | translate }}:</label>
                                         <span class="star">*</span>
                                         <input type="text" class="form-control" id="subject" name="subject"
                                             formControlName="subject" maxlength="255"
                                             [ngClass]="!isValidFormSubject() ? '' : 'error'" />
                                         <small [hidden]="!isValidFormSubject()" class="text-danger">
-                                            {{ "emailtemplate.subject_required" | translate }}
+                                            {{ "notificationtemplate.subject_required" | translate }}
                                         </small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <!--tagApi-->
                                     <div class="form-group">
-                                        <label for="tagApi">{{ "emailtemplate.tagApi" | translate }}:</label>
+                                        <label for="tagApi">{{ "notificationtemplate.tagApi" | translate }}:</label>
                                         <span class="star">*</span>
                                         <input type="text" class="form-control" id="tagApi" name="tagApi"
                                             formControlName="tagApi" maxlength="255"
                                             [ngClass]="!isValidFormTagApi() ? '' : 'error'" />
                                         <small [hidden]="!isValidFormTagApi()" class="text-danger">
-                                            {{ "emailtemplate.tagApi_required" | translate }}
+                                            {{ "notificationtemplate.tagApi_required" | translate }}
                                         </small>
                                     </div>
                                 </div>
@@ -82,12 +82,12 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="body">{{ "emailtemplate.body" | translate }}:</label>
+                                        <label for="body">{{ "notificationtemplate.body" | translate }}:</label>
                                         <span class="star">*</span>
                                         <angular-editor id="body" formControlName="body"
                                             [config]="editorConfig"></angular-editor>
                                         <small [hidden]="!isValidFormBody()" class="text-danger">
-                                            {{ "emailtemplate.body_required" | translate }}
+                                            {{ "notificationtemplate.body_required" | translate }}
                                         </small>
                                     </div>
                                 </div>

@@ -55,12 +55,12 @@
     "userpage": "User Page",
     "userregisterpage": "Register Page",
     "gender": "Gender",
-    "office": "Office",
+    "office": "Profession",
     "rolegroup": "Role Group",
     "specialty": "Specialty",
     "applicationsetting": "System Configurations",
     "applicationlanguage": "Languages",
-    "emailtemplate": "Email Templates",
+    "notificationtemplate": "Notification Templates",
     "medicals": "Medicals"
   },
   "general": {
@@ -217,13 +217,13 @@
       "TitleView": "View Language"
     }
   },
-  "emailtemplate": {
-    "title": "Email Template",
-    "category": "List of Email Template",
-    "select": "Select Email Template",
-    "TitleAdd": "Add Email Template",
-    "TitleEdit": "Edit Email Template",
-    "TitleView": "View Email Template",
+  "notificationtemplate": {
+    "title": "Notification Template",
+    "category": "List of Notification Template",
+    "select": "Select Notification Template",
+    "TitleAdd": "Add Notification Template",
+    "TitleEdit": "Edit Notification Template",
+    "TitleView": "View Notification Template",
     "tagApi": "Tag",
     "tagApi_required": "Tag is required",
     "subject": "Subject",
