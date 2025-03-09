@@ -92,7 +92,7 @@ export const ROUTES: RouteInfo[] = [{
         { path: 'specialty', title: 'navbar.specialty', ab: 'S' },
         { path: 'applicationsetting', title: 'navbar.applicationsetting', ab: 'AS' },
         { path: 'applicationlanguage', title: 'navbar.applicationlanguage', ab: 'AL' },
-        { path: 'emailtemplate', title: 'navbar.emailtemplate', ab: 'ET' },
+        { path: 'notificationtemplate', title: 'navbar.notificationtemplate', ab: 'ET' },
     ]
 } /*{
     path: '/pages',

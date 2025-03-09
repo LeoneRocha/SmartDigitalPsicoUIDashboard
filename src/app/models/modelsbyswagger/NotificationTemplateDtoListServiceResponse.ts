@@ -10,10 +10,10 @@
  * Do not edit the class manually.
  */
 import { ErrorResponse } from './errorResponse';
-import { EmailTemplateDto } from './EmailTemplateDto';
+import { NotificationTemplateDto } from './NotificationTemplateDto';
 
-export interface EmailTemplateDtoListServiceResponse { 
-    data?: Array<EmailTemplateDto>;
+export interface NotificationTemplateDtoListServiceResponse { 
+    data?: Array<NotificationTemplateDto>;
     success?: boolean;
     message?: string;
     errors?: Array<ErrorResponse>;

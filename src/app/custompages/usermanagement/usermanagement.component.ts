@@ -26,7 +26,7 @@ export class UserManagementComponent implements OnInit {
     columlabelsDT: string[] = [
         'Id'
         , 'general.description.title'
-        , 'applanguage.title'
+        , 'general.email.title'
         , 'general.enable'
         , 'general.actions'
     ];
