@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 declare interface TableData {
     headerRow: string[];
@@ -8,6 +8,7 @@ declare interface TableData {
 @Component({
     selector: 'regular-table-cmp',
     templateUrl: 'regulartable.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 declare var $:any;
 
@@ -11,6 +11,7 @@ declare interface DataTable {
 @Component({
     selector: 'data-table-cmp',
     templateUrl: 'datatable.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

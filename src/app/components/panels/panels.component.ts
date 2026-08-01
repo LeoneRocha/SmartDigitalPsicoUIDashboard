@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 declare var $:any;
 
 @Component({
     selector: 'panels-cmp',
     templateUrl: 'panels.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

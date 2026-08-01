@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import swal from 'sweetalert2';
 
 declare var $:any;
@@ -6,6 +6,7 @@ declare var $:any;
 @Component({
     selector: 'sweetalert-cmp',
     templateUrl: 'sweetalert.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

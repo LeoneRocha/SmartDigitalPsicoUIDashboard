@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { OfficeService } from 'app/services/general/simple/office.service';
 import { Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -19,6 +19,7 @@ import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
     animations: [
         botaoAnimado
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 //5-  a lista

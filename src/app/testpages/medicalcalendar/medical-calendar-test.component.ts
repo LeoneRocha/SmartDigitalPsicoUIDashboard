@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, AfterContentInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Inject, AfterContentInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
@@ -6,7 +6,7 @@ import { AuthService } from 'app/services/auth/auth.service';
 import swal from 'sweetalert2';
 import { ServiceResponse } from 'app/models/ServiceResponse';
 import { MedicalCalendarService } from 'app/services/general/principals/medicalCalendar.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { CalendarDto } from 'app/models/medicalcalendar/CalendarDto';
 import { TimeSlotDto } from 'app/models/medicalcalendar/TimeSlotDto';
 import { DateHelper } from 'app/helpers/date-helper';
@@ -16,6 +16,7 @@ declare var $: any;
     selector: 'medical-calendar-test',
     templateUrl: './medical-calendar-test.component.html',
     styleUrls: ['./medical-calendar-test.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, AfterViewInit {

@@ -6,7 +6,7 @@ import { FixedPluginModule } from './shared/fixedplugin/fixedplugin.module';
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { AppRoutes } from './app.routing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { AuthGuard } from './services/auth/auth-guard.service';
 import { AdminAuthGuard, AdminOrMedicalAuthGuard } from './services/auth/admin-auth-guard.service';
@@ -44,7 +44,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     ],
     bootstrap: [AppComponent], imports: [BrowserAnimationsModule,
         RouterModule.forRoot(AppRoutes, {
-            useHash: false //HashLocationStrategy- default true https://www.tektutorialshub.com/angular/angular-location-strategies/
+            useHash: false, //HashLocationStrategy- default true https://www.tektutorialshub.com/angular/angular-location-strategies/
+            paramsInheritanceStrategy: 'emptyOnly' // Angular 22 default is 'always'; keep pre-v22 route param inheritance
         }),
         LayoutModule,
         FixedPluginModule,
@@ -68,7 +69,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
         AdminOrMedicalAuthGuard,
         MedicalAuthGuard,
         PatientAuthGuard,
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
     ] })
 
 export class AppModule { }

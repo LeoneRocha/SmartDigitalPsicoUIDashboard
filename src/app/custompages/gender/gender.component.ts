@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { GenderService } from 'app/services/general/simple/gender.service';
 import { Inject } from '@angular/core';
 import { GenderModel } from 'app/models/simplemodel/GenderModel';
@@ -18,6 +18,7 @@ declare var $: any;
     templateUrl: 'gender.component.html'
     //styleUrls: ['./gender.component.css']
     ,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

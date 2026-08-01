@@ -1,10 +1,11 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 
 declare var $:any;
 
 @Component({
     selector: 'register-cmp',
     templateUrl: './register.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

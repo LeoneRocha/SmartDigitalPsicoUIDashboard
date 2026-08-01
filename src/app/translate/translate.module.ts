@@ -7,14 +7,14 @@ import {
   TranslateDirective
 } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 
 @NgModule({
   imports: [CommonModule, TranslatePipe, TranslateDirective],
   exports: [TranslatePipe, TranslateDirective],
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
     ...provideTranslateService({
       lang: 'en',
       fallbackLang: 'en',

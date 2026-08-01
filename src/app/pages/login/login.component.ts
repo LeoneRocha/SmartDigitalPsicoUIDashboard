@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Inject } from '@angular/core';
+import { Component, OnInit, ElementRef, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppInformationVersionProductModel } from 'app/models/simplemodel/AppInformationVersionProductModel';
 import { UserLoginModel } from 'app/models/usermodels/UserLoginModel';
@@ -12,6 +12,7 @@ declare var $: any;
 @Component({
     selector: 'login-cmp',
     templateUrl: './login.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

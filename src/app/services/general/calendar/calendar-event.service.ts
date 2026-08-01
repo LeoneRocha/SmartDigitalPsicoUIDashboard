@@ -13,7 +13,7 @@ import { DeleteMedicalCalendarDto } from 'app/models/modelsbyswagger/deleteMedic
 import { PatientService } from '../principals/patient.service';
 import { PatientModel } from 'app/models/principalsmodel/PatientModel';
 import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
-import * as moment from 'moment';
+import moment from 'moment';
 import { TimeSlotDto } from 'app/models/medicalcalendar/TimeSlotDto';
 import { LanguageService } from '../language.service';
 import { GetMedicalCalendarTimeSlotDto } from 'app/models/medicalcalendar/GetMedicalCalendarTimeSlotDto';

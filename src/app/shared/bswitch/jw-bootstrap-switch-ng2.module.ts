@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Input, NgModule, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, NgModule, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -65,6 +65,7 @@ import { CommonModule } from '@angular/common';
             multi: true
         }
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BSwitchComponent implements ControlValueAccessor {

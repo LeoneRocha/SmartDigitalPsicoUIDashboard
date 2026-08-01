@@ -10,7 +10,7 @@ import { NotificationTemplateService } from 'app/services/general/principals/not
 import { AddEditNotificationTemplateComponent } from './add-edit-notificationtemplate/add-edit-notificationtemplate.component';
 
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 @NgModule({ declarations: [
         NotificationTemplateComponent,
         AddEditNotificationTemplateComponent
@@ -21,7 +21,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
         CustomPipesModule,
         AngularEditorModule], providers: [
         NotificationTemplateService, LanguageService,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
     ] })
 
 export class EmailTemplateModule { }

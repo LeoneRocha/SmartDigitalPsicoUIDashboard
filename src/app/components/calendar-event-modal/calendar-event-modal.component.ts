@@ -1,10 +1,10 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit, Inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { DayOfWeek } from 'app/models/general/day-of-week';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { ERecurrenceCalendarType } from 'app/models/medicalcalendar/enuns/ERecurrenceCalendarType';
 import { DatePipe } from '@angular/common';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ILabelsEventModalForm } from 'app/models/LabelsEventModalForm';
 import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalendar';
@@ -21,6 +21,7 @@ import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityMode
     styleUrls: ['./calendar-event-modal.component.css'],
     providers: [DatePipe] // Adicione isso para usar o DatePipe
     ,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CalendarEventModalComponent implements OnInit, AfterViewInit {

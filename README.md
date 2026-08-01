@@ -19,6 +19,7 @@
 - [Pré-requisitos](#pré-requisitos)
 - [Tecnologias](#tecnologias)
 - [Como executar](#como-executar)
+- [Atualização Angular (histórico)](#atualização-angular-histórico)
 - [Ambientes / API](#ambientes--api)
 - [Documentação interna](#documentação-interna)
 - [Template base](#template-base)
@@ -63,21 +64,22 @@ Azure DevOps: https://lionscorp.visualstudio.com/SMARTDIGITALPSICO
 ## Pré-requisitos
 
 - [Git](https://git-scm.com)
-- [Node.js](https://nodejs.org/) — ver `engines` em `package.json` (hoje pinado em Node `18.14.2` / npm `9.6.3`; alinhar ao ambiente local/CI)
-- npm
+- [Node.js](https://nodejs.org/) — `engines` em `package.json`: **`^22.22.3 || ^24.15.0 || ^26.0.0`** e **npm ≥ 10**
 - API local ou de produção acessível (CORS/JWT)
+- Backend em **.NET 10** — ver [README da API](https://github.com/LeoneRocha/SmartDigitalPsicoAPI/blob/main/README.md)
 
 ---
 
 ## Tecnologias
 
-- Angular **14**
-- TypeScript
-- NgRx (store / effects)
-- ngx-translate
-- Bootstrap **3** + jQuery (template Light Bootstrap Dashboard Pro)
+- Angular **22.1.x** (linha ativa; LTS permanece 21)
+- TypeScript **~6.0**
+- NgRx **22** (`22.0.0-beta.0` até release estável no npm)
+- ngx-translate 18
+- Bootstrap **3.4.1** + jQuery (template Light Bootstrap Dashboard Pro — sem migração para BS5)
 - JWT (`@auth0/angular-jwt`)
 - Karma / Jasmine (testes)
+- Docker: imagem base `node:22` + Angular CLI 22
 
 ---
 
@@ -87,10 +89,12 @@ Azure DevOps: https://lionscorp.visualstudio.com/SMARTDIGITALPSICO
 git clone https://github.com/LeoneRocha/SmartDigitalPsicoUIDashboard.git
 cd SmartDigitalPsicoUIDashboard
 
-npm install
+npm install --legacy-peer-deps
 npm start
 # equivalente: ng serve
 ```
+
+> Use `--legacy-peer-deps` (Bootstrap 3 / jQuery / peers de plugins do template).
 
 Ajuste a URL da API em:
 
@@ -100,7 +104,8 @@ Ajuste a URL da API em:
 Build de produção:
 
 ```bash
-npm run build -- --configuration=production
+npm run build:prod
+# ou: ng build --configuration=production
 ```
 
 Testes:
@@ -108,6 +113,19 @@ Testes:
 ```bash
 npm test
 ```
+
+**npm audit:** pode restar **1** alerta moderado em `bootstrap@3.4.1` (EOL, sem patch oficial na linha 3.x). Não rode `npm audit fix --force` — isso instalaria Bootstrap 5 e quebraria o tema.
+
+---
+
+## Atualização Angular (histórico)
+
+| Ciclo | Destino | Status |
+| ----- | ------- | ------ |
+| 14 → 21 | Angular 21.2.x (LTS) | Concluído |
+| 21 → 22 | Angular 22.1.x (active) | Concluído (2026-08-01) |
+
+Relatório: [`DOCUMENTACAO/UI/RelatorioAtualizacaoAngular-SmartDigitalPsicoUIDashboard.md`](./DOCUMENTACAO/UI/RelatorioAtualizacaoAngular-SmartDigitalPsicoUIDashboard.md)
 
 ---
 
@@ -125,8 +143,15 @@ O arquivo `environment.homologation.ts` pode ainda existir no código apontando 
 
 ## Documentação interna
 
-- `DOCUMENTACAO/UI/` — levantamento, plano e relatório de atualização Angular/pacotes
-- Anotações NgRx: `src/app/storereduxngrx/readme.txt` (notas internas)
+| Documento | Conteúdo |
+| --------- | -------- |
+| `DOCUMENTACAO/UI/RelatorioAtualizacaoAngular-SmartDigitalPsicoUIDashboard.md` | Relatório Angular **14→21→22** (concluído) |
+| `DOCUMENTACAO/UI/PlanoImplementacaoAtualizacaoAngular-SmartDigitalPsicoUIDashboard.md` | Plano operacional (14→21; ciclo 22 no relatório) |
+| `DOCUMENTACAO/UI/2026-07-LevantamentoConjuntoHomologado-SmartDigitalPsicoUIDashboard.md` | Inventário homologado de pacotes |
+
+Migração do backend (.NET 8 → 10): `SmartDigitalPsicoAPI/DOCUMENTACAO/UpdateDotNet10/RelatorioMigracaoDotNet10.md`.
+
+Anotações NgRx: `src/app/storereduxngrx/readme.txt` (notas internas).
 
 ---
 

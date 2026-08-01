@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
@@ -18,6 +18,7 @@ declare var $: any;
     templateUrl: 'patient.component.html'
     //styleUrls: ['./Patient.component.css']
     ,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

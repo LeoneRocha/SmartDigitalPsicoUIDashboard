@@ -1,10 +1,11 @@
-import { Component, Inject, Input, OnInit } from "@angular/core";
+import { Component, Inject, Input, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ProgressBarService } from "app/services/progress-bar.service";
 
 @Component({
     selector: 'app-progress-bar',
     templateUrl: './progress-bar.component.html',
     styleUrls: ['./progress-bar.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ProgressBarComponent implements OnInit {

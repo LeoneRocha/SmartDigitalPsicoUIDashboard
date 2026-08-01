@@ -2,10 +2,10 @@
 
 **Status:** CONCLUÍDO  
 **Projeto:** `SmartDigitalPsicoUIDashboard/`  
-**Branch:** `chore/update-packages-smartdigitalpsicouidashboard-angular21` (trabalho local)  
+**Branch:** trabalho local (sem commit/PR neste ciclo)  
 **Data da execução:** 2026-08-01  
 **Conjunto (inventário completo `package.json`):** `2026-07-LevantamentoConjuntoHomologado-SmartDigitalPsicoUIDashboard.md`  
-**Plano:** `PlanoImplementacaoAtualizacaoAngular-SmartDigitalPsicoUIDashboard.md`
+**Planos:** `PlanoImplementacaoAtualizacaoAngular-SmartDigitalPsicoUIDashboard.md` (14→21); plano Angular 21→22 (Cursor)
 
 ---
 
@@ -13,117 +13,109 @@
 
 ```text
 Framework: Angular (mantido)
-Partida: Angular 14 (^14.2.0)
-Destino: Angular ~21.2.19 — família alinhada (cdk/google-maps ~21.2.14)
-NgRx: 14 → 21.1.1
-ngx-translate: 14/7 → 18/18 (API provideTranslateService)
-FullCalendar Angular: 5 → 6.1.x (script fullcalendar@3 mantido)
-TypeScript: ~4.7 → ~5.9.0
-Node engines: 18.14.2 → ^20.19 || ^22.12 || ^24
+Partida original: Angular 14 (^14.2.0)
+Ciclo anterior: Angular ~21.2.19 (LTS)
+Destino atual: Angular ~22.1.0 — linha ativa (não LTS; LTS continua 21)
+Família alinhada: @angular/* 22.1.0; CDK/google-maps 22.1.0; CLI/build 22.1.2
+NgRx: 21.1.1 → 22.0.0-beta.0 (única linha 22 publicada no npm)
+ngx-translate: 18/18 (mantido)
+FullCalendar Angular: 6.1.x (mantido)
+TypeScript: ~5.9 → ~6.0.0 (strict:false explícito — TS6 default strict=true)
+Node engines: ^22.22.3 || ^24.15.0 || ^26.0.0 (Node 20 removido)
 Bootstrap: 3.4.x mantido
 Status execução: CONCLUÍDO
 Build prod: OK
 Testes: 3/3 OK
-ng serve: OK (HTTP 200, app-root + bundles)
+ng serve: OK (HTTP 200 /, app-root + bundles)
 ```
 
 ---
 
-## 2. Família `@angular/*`
+## 2. Família `@angular/*` (após 21 → 22)
 
-| Pacote | Antes | Depois |
-| ------ | ----- | ------ |
-| `@angular/animations` | ^14.2.0 | ^21.2.19 |
-| `@angular/cdk` | ^14.2.0 | ^21.2.14 |
-| `@angular/common` | ^14.2.0 | ^21.2.19 |
-| `@angular/compiler` | ^14.2.0 | ^21.2.19 |
-| `@angular/core` | ^14.2.0 | ^21.2.19 |
-| `@angular/elements` | ^14.2.0 | ^21.2.19 |
-| `@angular/forms` | ^14.2.0 | ^21.2.19 |
-| `@angular/google-maps` | ^14.2.0 | ^21.2.14 |
-| `@angular/localize` | ^14.2.0 | ^21.2.19 |
-| `@angular/platform-browser` | ^14.2.0 | ^21.2.19 |
-| `@angular/platform-browser-dynamic` | ^14.2.0 | ^21.2.19 |
-| `@angular/router` | ^14.2.0 | ^21.2.19 |
-| `@angular/cli` | ~14.2.7 | ^21.2.19 |
-| `@angular/compiler-cli` | ^14.2.0 | ^21.2.19 |
-| `@angular/language-service` | 14.2.0 | ^21.2.19 |
-| `@angular-devkit/build-angular` | ^14.2.7 | ^21.2.19 |
-| `@angular-builders/custom-webpack` | ^14.1.0 | ^21.1.0 |
+| Pacote | Antes (21) | Depois (22) |
+| ------ | ---------- | ----------- |
+| `@angular/animations` | ^21.2.19 | ^22.1.0 |
+| `@angular/cdk` | ^21.2.14 | ^22.1.0 |
+| `@angular/common` | ^21.2.19 | ^22.1.0 |
+| `@angular/compiler` | ^21.2.19 | ^22.1.0 |
+| `@angular/core` | ^21.2.19 | ^22.1.0 |
+| `@angular/elements` | ^21.2.19 | ^22.1.0 |
+| `@angular/forms` | ^21.2.19 | ^22.1.0 |
+| `@angular/google-maps` | ^21.2.14 | ^22.1.0 |
+| `@angular/localize` | ^21.2.19 | ^22.1.0 |
+| `@angular/platform-browser` | ^21.2.19 | ^22.1.0 |
+| `@angular/platform-browser-dynamic` | ^21.2.19 | ^22.1.0 |
+| `@angular/router` | ^21.2.19 | ^22.1.0 |
+| `@angular/cli` | ^21.2.19 | ^22.1.2 |
+| `@angular/compiler-cli` | ^21.2.19 | ^22.1.0 |
+| `@angular/language-service` | ^21.2.19 | ^22.1.0 |
+| `@angular-devkit/build-angular` | ^21.2.19 | ^22.1.2 |
+| `@angular-builders/custom-webpack` | ^21.1.0 | ^22.0.1 |
 
-- [x] `npm ls` confirma **zero drift de major** (todas major 21)
+- [x] Família core/CLI em **22.x** sem drift de major
 
 ---
 
-## 3. Satélites e demais deps
+## 3. Satélites e demais deps (delta 21 → 22)
 
 | Pacote | Antes | Depois / ação |
 | ------ | ----- | ------------- |
-| `@ngrx/store` / effects / store-devtools | ^14.0.1 | ^21.1.1 |
-| `@ngx-translate/core` | ^14.0.0 | ^18.0.0 |
-| `@ngx-translate/http-loader` | ^7.0.0 | ^18.0.0 |
-| `ngx-translate-messageformat-compiler` | ^6.2.0 | ^7.3.0 |
-| `@messageformat/core` | ^3.1.0 | ^3.4.0 |
-| `@auth0/angular-jwt` | ^5.1.2 | ^5.2.0 |
-| `@kolkov/angular-editor` | 3.0.0-beta.2 | ^3.0.3 |
-| `@fullcalendar/angular` (+ plugins) | ^5.11.3 | ^6.1.x |
-| `fullcalendar` | 3.10.1 | 3.10.1 (mantido v1) |
-| `@ngui/map` | 0.30.3 | **Removido** → `@angular/google-maps` |
-| `angular-ng-autocomplete` | ^2.0.12 | mantido |
-| `ngx-chips` | 2.2.2 | **Removido** → stub local `TagInputModule` |
-| `ng2-nouislider` | 1.8.2 | **Removido** → stub local `NouisliderModule` |
-| `jw-bootstrap-switch-ng2` | 2.0.5 | **Removido** → stub local `bSwitch` |
-| `bootstrap` | ^3.4.1 | ^3.4.1 |
-| `jquery` | 3.5.1 | ^3.7.1 |
-| `sweetalert2` | 10.12.5 | 10.12.5 (mantido) |
-| `rxjs` / `zone.js` / `typescript` | 7.5 / 0.11 / 4.7 | ~7.8 / ~0.15 / ~5.9 |
+| `@ngrx/store` / effects / store-devtools | ^21.1.1 | ^22.0.0-beta.0 |
+| `angular-eslint` | 21.4.0 | ^22.1.0 |
+| `typescript` | ~5.9.0 | ~6.0.0 |
+| `zone.js` | ^0.15.1 | ^0.15.1 (mantido) |
+| Demais satélites (translate, FullCalendar, Bootstrap 3, etc.) | — | mantidos |
 
-**Removidos:** `force`, `cli-update`, `cors`, `rxjs-compat`, `web-animations-js`, `protractor`, `@types/jasminewd2`, `codelyzer`, `webpack` (deps), `karma-coverage-istanbul-reporter`, `@ngui/map`, `jw-bootstrap-switch-ng2`, `ngx-chips`, `ng2-nouislider`
+**Migrations `ng update` aceitas:** `ChangeDetectionStrategy.Eager` em componentes; `provideHttpClient(withXhr(), …)`; `$safeNavigationMigration` no modal de calendário; `strictTemplates: false`.
 
-**Adicionados:** `angular-eslint` / `eslint` / `typescript-eslint`, `datatables.net`, stubs em `src/app/shared/{bswitch,tag-input,nouislider}/`
+**Compat explícita:** `RouterModule.forRoot({ paramsInheritanceStrategy: 'emptyOnly' })` (default 22 = `always`).
+
+**Ajustes de build TS6 / Angular 22:** `strict: false` + `ignoreDeprecations: "6.0"` + `esModuleInterop` nos tsconfigs; `import moment from 'moment'`; remoção do import morto `ComponentFactoryResolver`.
+
+**Não feito neste ciclo:** Karma → Vitest; application builder (`@angular/build:application`).
 
 ---
 
-## 4. Gates
+## 4. Gates (ciclo 21 → 22)
 
 | Gate | Resultado |
 | ---- | --------- |
-| Família `@angular/*` alinhada 21.x | OK |
+| Família `@angular/*` alinhada 22.x | OK |
 | Build production | OK |
 | `ng test` ChromeHeadless | OK (3 SUCCESS) |
-| ESLint (`ng lint`) | OK (0 errors; warnings legados documentados) |
-| `ng serve` | OK — Compiled successfully; HTTP 200 `/` com `app-root` + bundles |
-| Docker Node 20 | Dockerfile atualizado (`node:20`, `npm ci --legacy-peer-deps`, sem `--force`) |
+| `ng serve` | OK — Compiled successfully; HTTP 200 `/` com `app-root` |
+| Docker Node 22 | Dockerfile: `node:22`, `@angular/cli@22`, `npm ci --legacy-peer-deps` |
 
 ---
 
-## 5. Desvios do Conjunto v1
+## 5. Desvios / notas
 
-1. **Wrappers abandonados:** `jw-bootstrap-switch-ng2`, `ngx-chips`, `ng2-nouislider` substituídos por componentes Ivy locais (mesmo seletor/`NgModule` export name quando possível).
-2. **`@ngui/map`:** migrado para `@angular/google-maps` + script Maps em `index.html`.
-3. **CDK / google-maps:** patch `21.2.14` (não existe `21.2.19` nesses pacotes) — mesma major.
-4. **Dual FullCalendar:** Angular 6.1.x + script jQuery `fullcalendar@3.10.1` mantido.
-5. **Install:** `legacy-peer-deps` necessário por peers de libs legadas BS3.
-6. **`serve`:** `browserTarget` → `buildTarget` (Angular 21 / custom-webpack).
+1. **NgRx 22 estável ainda não no npm** — usado `22.0.0-beta.0` (peer `@angular/core` ^22).
+2. **TS 6** muda default `strict=true`; projeto restaura `strict: false` para evitar refatoração ampla.
+3. **`extendedDiagnostics` + `strictTemplates:false`** conflitam (NG4003) — diagnostics de suppress removidos; `strictTemplates: false` mantido.
+4. **Install:** `--legacy-peer-deps` (Bootstrap 3 / jQuery / `@kolkov/angular-editor` peers).
+5. Builder Webpack legado continua em uso (avisos de depreciação do CLI 22).
+6. **npm audit residual:** `bootstrap@3.4.1` (moderate). Sem patch oficial na linha 3.x; **não** usar `npm audit fix --force` (Bootstrap 5). Aceito até eventual migração de UI.
 
 ---
 
-## 6. Critérios de aceite
+## 6. Critérios de aceite (ciclo 22)
 
-1. [x] Angular mantido; família `@angular/*` em **21.x** sem drift de major  
-2. [x] Inventário do `package.json` tratado  
-3. [x] NgRx 21 + translate 18 + FullCalendar 6  
+1. [x] Família `@angular/*` em **22.x**  
+2. [x] Node engines sem 20; TypeScript 6  
+3. [x] Eager CD + `emptyOnly` + HttpClient XHR  
 4. [x] Build + test + serve OK  
-5. [x] ESLint; sem Protractor/TSLint  
-6. [x] Bootstrap 3 mantido  
-7. [x] Engines/Docker OK  
-8. [x] Sem `audit fix --force` cego  
+5. [x] Dockerfile Node 22 + CLI 22  
+6. [x] Karma mantido (sem Vitest)  
 
 ---
 
 ## 7. Conclusão
 
-Upgrade Angular **14 → 21.2.x** concluído com build/test/serve verdes. Wrappers mortos foram substituídos por stubs locais; maps usa `@angular/google-maps`. Bootstrap 3 + NgModules preservados.
+Upgrade Angular **21.2.x → 22.1.x** (active line) concluído com build/test/serve verdes. Toolchain em Node ≥22.22.3 e TypeScript 6; NgRx em beta 22 até release estável. Bootstrap 3 + NgModules + Karma preservados.
+
+Histórico do ciclo **14 → 21** permanece nas seções do plano antigo e no inventário homologado; este relatório reflete o estado **atual** pós-22.
 
 ---
 

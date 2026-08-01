@@ -5,7 +5,9 @@
 **Conjunto Homologado (inventário 1:1 do `package.json`):** `DOCUMENTACAO/UI/2026-07-LevantamentoConjuntoHomologado-SmartDigitalPsicoUIDashboard.md`  
 **Processo-base:** `SmartDigitalPsicoAPI/DOCUMENTACAO/GuiaGenericoAtualizacaoPacotes.md`  
 **Data:** 2026-07-31 (revisado com inventário completo de pacotes)  
-**Status:** Planejado (não executado)
+**Status:** CONCLUÍDO — ciclo **14 → 21** executado; ciclo seguinte **21 → 22** também concluído (ver `RelatorioAtualizacaoAngular-SmartDigitalPsicoUIDashboard.md`, estado atual Angular **22.1.x**)
+
+> Este plano descreve a rota **14 → 21**. O destino **atual** do repositório é Angular **22.1.x** (Node `^22.22.3 || ^24.15.0 || ^26.0.0`, TypeScript ~6.0). Use o relatório para o estado pós-upgrade.
 
 ---
 

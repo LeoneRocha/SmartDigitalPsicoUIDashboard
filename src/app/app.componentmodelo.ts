@@ -1,10 +1,11 @@
 // componentemodelo.component.ts
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app.componentmodelo',
     templateUrl: './app.componentmodelo.html',
     styleUrls: ['./app.componentmodelo.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ComponentemodeloComponent {

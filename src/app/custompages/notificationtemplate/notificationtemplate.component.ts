@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
@@ -14,6 +14,7 @@ declare var $: any;
 @Component({
     selector: 'notificationtemplate-list',
     templateUrl: 'notificationtemplate.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

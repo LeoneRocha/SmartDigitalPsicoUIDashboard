@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef, ViewContainerRef, ComponentFactoryResolver, TemplateRef, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef, ViewContainerRef, TemplateRef, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { CalendarOptions, DatesSetArg } from '@fullcalendar/core';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -12,7 +12,7 @@ import { AuthService } from 'app/services/auth/auth.service';
 import { DateHelper } from 'app/helpers/date-helper';
 import { ICalendarEvent } from 'app/models/general/ICalendarEvent';
 import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
-import * as moment from 'moment';
+import moment from 'moment';
 import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 import { ErrorHelper } from 'app/helpers/error-helper';
 import { SuccessHelper } from 'app/helpers/success-helper';
@@ -31,6 +31,7 @@ declare var $: any;
     selector: 'calendar-cmp',
     templateUrl: 'calendar.component.html',
     styleUrls: ['calendar.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CalendarComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import swal from 'sweetalert2';
@@ -18,6 +18,7 @@ import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
     animations: [
         botaoAnimado
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

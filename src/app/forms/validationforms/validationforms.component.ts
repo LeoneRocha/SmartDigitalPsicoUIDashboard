@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PasswordValidation } from './password-validator.component';
 
@@ -17,6 +17,7 @@ declare interface User {
 @Component({
     selector: 'validationforms-cmp',
     templateUrl: 'validationforms.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

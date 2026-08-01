@@ -1,11 +1,11 @@
 ### STAGE 1: Build ###
-FROM node:20 AS node
+FROM node:22 AS node
 
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --legacy-peer-deps
 COPY . .
-RUN npm install -g @angular/cli@21
+RUN npm install -g @angular/cli@22
 
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV

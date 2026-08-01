@@ -1,8 +1,9 @@
-import { Component, Input, VERSION } from "@angular/core";
+import { Component, Input, VERSION, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
     selector: "countdowntimer",
     templateUrl: "./countdowntimer.component.html",
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CountDownTimerComponent {
