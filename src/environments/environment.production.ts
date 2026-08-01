@@ -2,5 +2,5 @@ export const environment = {
   production: false,
   EnableCaptureResponseTolog: false,
   APIUrl: 'https://smartdigitalpsicoapi.azurewebsites.net/api',
-  UIVersion: '2025.03.02.01'
+  UIVersion: '2026.8.1.2049'
 };

@@ -8,6 +8,6 @@ export const environment = {
   EnableCaptureResponseTolog: false,
   //APIUrl: 'http://localhost:5187/api',
   APIUrl: 'https://localhost:53892/api',
-  UIVersion: '2025.03.02.01'
+  UIVersion: '2026.8.1.2049'
 };
   
