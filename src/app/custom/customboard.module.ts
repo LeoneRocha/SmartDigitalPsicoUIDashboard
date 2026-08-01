@@ -20,10 +20,10 @@ import { CustomPipesModule } from 'app/common/custompipe/custompipe.module';
     DailyScheduleComponent,
   ],
   providers: [
-    , LanguageService
-    , MedicalCalendarService
-    , CalendarEventService
-    , PatientService
+    LanguageService,
+    MedicalCalendarService,
+    CalendarEventService,
+    PatientService
   ]
 })
 export class CustomBoardModule { }

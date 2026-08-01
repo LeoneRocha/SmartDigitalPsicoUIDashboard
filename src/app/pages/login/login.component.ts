@@ -10,9 +10,9 @@ import { environment } from 'environments/environment';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'login-cmp',
-    templateUrl: './login.component.html'
+    templateUrl: './login.component.html',
+    standalone: false
 })
 
 export class LoginComponent implements OnInit {

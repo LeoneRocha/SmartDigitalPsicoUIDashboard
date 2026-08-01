@@ -7,9 +7,9 @@ declare var $:any;
 
 
 @Component({
-    moduleId: module.id,
     selector: 'wizard-cmp',
-    templateUrl: 'wizard.component.html'
+    templateUrl: 'wizard.component.html',
+    standalone: false
 })
 
 export class WizardComponent implements OnInit{

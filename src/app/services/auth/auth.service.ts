@@ -91,30 +91,42 @@ export class AuthService extends GenericService<ServiceResponse<UserAutenticateM
   }
   getTypeUser(userLoaded: UserAutenticateView): string {
 
-    if (userLoaded === null && userLoaded === undefined)
+    if (userLoaded === null || userLoaded === undefined)
       return '';
 
     if (this.isUserContainsRoleByUser("Admin", userLoaded?.roleGroups))
       return 'Admin';
 
-    if (this.isUserContainsRoleByUser('Medical', userLoaded?.roleGroups))
+    if (this.isUserContainsRoleByUser('Medical', userLoaded?.roleGroups) || this.hasMedicalProfile(userLoaded))
       return 'Medical';
+
+    return '';
   }
 
   private isUserContainsRoleByUser(roleCheck: string, roleGroups: RoleGroupModel[]): boolean {
     let isUserContainRole: boolean = false;
     const userRoles: RoleGroupModel[] = roleGroups;
-    //const roleFinded: RoleGroup = userRoles.find(role => role?.rolePolicyClaimCode?.toUpperCase().trim() == roleCheck?.toUpperCase().trim());    
-    //if (roleFinded) { isUserContainRole = true };
     if (userRoles != null && userRoles != undefined)
       isUserContainRole = userRoles?.some(role => role?.rolePolicyClaimCode === roleCheck);
     return isUserContainRole;
   }
 
   isUserContainsRole(roleCheck: string): boolean {
-    let isUserContainRole: boolean = false;
     const userRoles: RoleGroupModel[] = this.getRolesUser();
-    return this.isUserContainsRoleByUser(roleCheck, userRoles);
+    if (this.isUserContainsRoleByUser(roleCheck, userRoles)) {
+      return true;
+    }
+
+    // Fallback when RoleGroupUser seed is missing but Medical profile is linked
+    if (roleCheck === 'Medical') {
+      return this.hasMedicalProfile(this.getLocalStorageUser());
+    }
+
+    return false;
+  }
+
+  private hasMedicalProfile(userLoaded: UserAutenticateView): boolean {
+    return !!userLoaded?.medicalId && userLoaded.medicalId > 0;
   }
 
   removeLocalStorageUser() {

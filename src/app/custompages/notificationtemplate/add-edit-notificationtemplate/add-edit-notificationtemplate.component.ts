@@ -13,11 +13,15 @@ import { NotificationTemplateDto } from 'app/models/modelsbyswagger/models';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AngularEditorConfigHelper } from 'app/helpers/angularEditorConfigHelper';
 import { NotificationTemplateService } from 'app/services/general/principals/notificationtemplate.service';
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-notificationtemplate',
     templateUrl: 'add-edit-notificationtemplate.component.html',
-    styleUrls: ['add-edit-notificationtemplate.component.css']
+    styleUrls: ['add-edit-notificationtemplate.component.css'],
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 
 export class AddEditNotificationTemplateComponent implements OnInit {

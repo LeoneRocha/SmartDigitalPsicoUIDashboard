@@ -16,10 +16,12 @@ import { ErrorHelper } from 'app/helpers/error-helper';
 import { DropDownEntityModelSelect } from 'app/models/general/dropDownEntityModelSelect';
 
 @Component({
-  selector: 'app-calendar-event-modal',
-  templateUrl: './calendar-event-modal.component.html',
-  styleUrls: ['./calendar-event-modal.component.css'],
-  providers: [DatePipe] // Adicione isso para usar o DatePipe
+    selector: 'app-calendar-event-modal',
+    templateUrl: './calendar-event-modal.component.html',
+    styleUrls: ['./calendar-event-modal.component.css'],
+    providers: [DatePipe] // Adicione isso para usar o DatePipe
+    ,
+    standalone: false
 })
 export class CalendarEventModalComponent implements OnInit, AfterViewInit {
   labelFormTitle: string = '';

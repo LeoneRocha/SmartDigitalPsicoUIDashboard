@@ -15,10 +15,11 @@ import { LanguageService } from 'app/services/general/language.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'specialty-list',
     templateUrl: 'specialty.component.html'
     //styleUrls: ['./Specialty.component.css']
+    ,
+    standalone: false
 })
 
 export class SpecialtyComponent implements OnInit {

@@ -12,10 +12,11 @@ import { LanguageService } from 'app/services/general/language.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'applicationlanguage-list',
     templateUrl: 'applicationlanguage.component.html'
     //styleUrls: ['./ApplicationLanguage.component.css']
+    ,
+    standalone: false
 })
 
 export class ApplicationLanguageComponent implements OnInit {

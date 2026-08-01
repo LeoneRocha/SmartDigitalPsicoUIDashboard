@@ -18,13 +18,13 @@ import { PatientHospitalizationInformationService } from 'app/services/general/p
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-patient_hospitalizationinformation',
     templateUrl: 'add-edit-patient_hospitalizationinformation.component.html',
     //styleUrls: ['./gender.component.css']
     animations: [
         botaoAnimado
-    ]
+    ],
+    standalone: false
 })
 //5-  a lista
 export class AddEditPatientHospitalizationInformationComponent implements OnInit {

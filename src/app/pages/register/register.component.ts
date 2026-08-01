@@ -3,9 +3,9 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 declare var $:any;
 
 @Component({
-    moduleId:module.id,
     selector: 'register-cmp',
-    templateUrl: './register.component.html'
+    templateUrl: './register.component.html',
+    standalone: false
 })
 
 export class RegisterComponent implements OnInit{

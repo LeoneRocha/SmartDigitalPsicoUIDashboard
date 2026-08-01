@@ -11,9 +11,10 @@ import { CalendarEventService } from 'app/services/general/calendar/calendar-eve
 import { LanguageService } from 'app/services/general/language.service';
 import * as moment from 'moment';
 @Component({
-  selector: 'daily-schedule',
-  templateUrl: './dailyschedule.component.html',
-  styleUrls: ['./dailyschedule.component.css']
+    selector: 'daily-schedule',
+    templateUrl: './dailyschedule.component.html',
+    styleUrls: ['./dailyschedule.component.css'],
+    standalone: false
 })
 
 export class DailyScheduleComponent implements OnInit, OnDestroy {

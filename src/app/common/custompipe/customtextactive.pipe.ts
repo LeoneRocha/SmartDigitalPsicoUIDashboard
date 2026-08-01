@@ -1,7 +1,10 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
 //customtextactive.pipe
-@Pipe({name: 'customtextactive'})
+@Pipe({
+    name: 'customtextactive',
+    standalone: false
+})
 export class CustomTextActivePipe implements PipeTransform {
     transform(value) {
         return value ? 'general.actived' : 'general.desactived';

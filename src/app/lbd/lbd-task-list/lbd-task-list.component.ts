@@ -9,7 +9,8 @@ export interface Task {
 @Component({
     selector: 'lbd-task-list',
     templateUrl: './lbd-task-list.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LbdTaskListComponent {
     @Input()

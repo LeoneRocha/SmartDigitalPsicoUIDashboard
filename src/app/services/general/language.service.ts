@@ -15,7 +15,6 @@ export class LanguageService {
     let lang: string;
     lang = this.getLanguageToLocalStorage();
     this.translate.use(lang);
-    this.translate.setDefaultLang(lang);
   }
 
   translateInformationAsync(infoKeys: string[]): string[] {
@@ -58,13 +57,12 @@ export class LanguageService {
   }
   switchLanguage(lang: string) {
 
-    if (this.translate.currentLang === 'pt-BR') {
+    if (this.translate.getCurrentLang() === 'pt-BR') {
       lang = 'en';
     } else {
       lang = 'pt-BR';
     }
     this.translate.use(lang);
-    this.translate.setDefaultLang(lang);
 
     this.removeLanguageToLocalStorage();
     this.saveLanguageToLocalStorage(lang);
@@ -73,7 +71,6 @@ export class LanguageService {
 
   setLanguage(lang: string) {
     this.translate.use(lang);
-    this.translate.setDefaultLang(lang);
 
     this.removeLanguageToLocalStorage();
     this.saveLanguageToLocalStorage(lang);

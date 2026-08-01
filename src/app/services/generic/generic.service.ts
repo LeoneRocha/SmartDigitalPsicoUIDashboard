@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GenericServiceModel } from 'app/models/GenericServiceModel';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { Inject } from '@angular/core';

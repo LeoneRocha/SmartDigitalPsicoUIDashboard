@@ -19,9 +19,9 @@ import { GlobalizationTimeZonesService } from 'app/services/general/simple/globa
 import { forkJoin } from 'rxjs';
 
 @Component({
-    moduleId: module.id,
     selector: 'userprofile-cmp',
-    templateUrl: 'userprofile.component.html'
+    templateUrl: 'userprofile.component.html',
+    standalone: false
 })
 
 export class UserProfileComponent implements OnInit {

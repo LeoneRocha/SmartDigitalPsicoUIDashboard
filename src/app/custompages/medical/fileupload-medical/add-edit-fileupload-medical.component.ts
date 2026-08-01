@@ -19,13 +19,13 @@ import { AuthService } from 'app/services/auth/auth.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-fileupload-c',
     templateUrl: 'add-edit-fileupload-medical.component.html',
     //styleUrls: ['./gender.component.css']
     animations: [
         botaoAnimado
-    ]
+    ],
+    standalone: false
 })
 //5-  a lista
 export class AddEditFileUploadMedicalComponent implements OnInit {

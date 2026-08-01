@@ -16,11 +16,16 @@ import { selectOneSpecialty } from 'app/storereduxngrx/selectors/specialty.selec
 import { switchMap } from 'rxjs';
 import { setAPIStatus } from 'app/storereduxngrx/shared/app.action';
 import { LanguageService } from 'app/services/general/language.service';
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-specialty',
     templateUrl: 'add-edit-specialty.component.html'
     //styleUrls: ['./specialty.component.css']
+    ,
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 export class AddEditSpecialtyComponent implements OnInit {
     registerId: number;

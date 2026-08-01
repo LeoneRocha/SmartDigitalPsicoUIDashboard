@@ -1,78 +1,80 @@
 <div class="wrapper wrapper-full-page">
-    <div class="full-page login-page" data-color="red" data-image="../../../assets/img/full-screen-image-1.jpg">
+  <div class="full-page login-page" data-color="red" data-image="../../../assets/img/full-screen-image-1.jpg">
 
-        <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
-        <div class="content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-                        <form #fLogin="ngForm" (ngSubmit)="signIn()">
+    <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
+            <form #fLogin="ngForm" (ngSubmit)="signIn()">
 
-                            <!--   if you want to have the card without animation please remove the ".card-hidden" class   -->
-                            <div class="card card-hidden">
-                                <div class="header text-center">{{ "general.login.header" | translate }}</div>
-                                <div class="content">
-                                    <div class="form-group">
-                                        <label>{{ "general.login.title" | translate }}</label>
-                                        <input type="text" [(ngModel)]="userLoginModel.login" placeholder="*******"
-                                            class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>{{ "general.password.title" | translate }} </label>
-                                        <input type="password" [(ngModel)]="userLoginModel.password"
-                                            placeholder="*******" class="form-control"/>  
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <input id="checkbox21" type="checkbox" checked="">
-                                            <label for="checkbox21">
-                                                {{ "general.login.rememberme" | translate }}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="footer text-center">
-                                    <button type="submit" class="btn btn-fill btn-danger btn-wd">{{
-                                        "general.login.title" | translate }}</button>
-                                </div>
-                            </div>
-                        </form>
-                        <div *ngIf="invalidLogin" class="alert alert-danger">{{ "general.login.invalidLogin" | translate
-                            }}</div>
+              <!--   if you want to have the card without animation please remove the ".card-hidden" class   -->
+              <div class="card card-hidden">
+                <div class="header text-center">{{ "general.login.header" | translate }}</div>
+                <div class="content">
+                  <div class="form-group">
+                    <label>{{ "general.login.title" | translate }}</label>
+                    <input type="text" name="login" [(ngModel)]="userLoginModel.login" placeholder="*******"
+                      class="form-control" autocomplete="username">
                     </div>
-                </div>
+                    <div class="form-group">
+                      <label>{{ "general.password.title" | translate }} </label>
+                      <input type="password" name="password" [(ngModel)]="userLoginModel.password"
+                        placeholder="*******" class="form-control" autocomplete="current-password"/>
+                      </div>
+                      <div class="form-group">
+                        <div class="checkbox">
+                          <input id="checkbox21" type="checkbox" checked="">
+                          <label for="checkbox21">
+                            {{ "general.login.rememberme" | translate }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="footer text-center">
+                      <button type="submit" class="btn btn-fill btn-danger btn-wd">{{
+                      "general.login.title" | translate }}</button>
+                    </div>
+                  </div>
+                </form>
+                @if (invalidLogin) {
+                  <div class="alert alert-danger">{{ "general.login.invalidLogin" | translate
+                  }}</div>
+                }
+              </div>
             </div>
-        </div> 
+          </div>
+        </div>
         <footer class="footer footer-transparent">
-            <div class="container">
-                <nav class="pull-left">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                {{ "navbar.home" | translate }}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                {{ "navbar.company" | translate }}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                {{ "navbar.portfolio" | translate }}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                {{ "navbar.blog" | translate }}
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <p class="copyright pull-right">
-                    &copy; {{test | date: 'yyyy'}} <a href="#" title='{{ apiInfo != null ?  apiInfo.environmentName : "" }}'>Smart Digital Psico</a>, <a href="#" title='{{ apiInfo != null ?  apiInfo.version : "" }}'>Version API</a>,  <a href="#" title='{{ uiVersionInfo != null ?  uiVersionInfo : "" }}'>Version UI</a>
-                </p>
-            </div>
+          <div class="container">
+            <nav class="pull-left">
+              <ul>
+                <li>
+                  <a href="#">
+                    {{ "navbar.home" | translate }}
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    {{ "navbar.company" | translate }}
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    {{ "navbar.portfolio" | translate }}
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    {{ "navbar.blog" | translate }}
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <p class="copyright pull-right">
+              &copy; {{test | date: 'yyyy'}} <a href="#" title='{{ apiInfo != null ?  apiInfo.environmentName : "" }}'>Smart Digital Psico</a>, <a href="#" title='{{ apiInfo != null ?  apiInfo.version : "" }}'>Version API</a>,  <a href="#" title='{{ uiVersionInfo != null ?  uiVersionInfo : "" }}'>Version UI</a>
+            </p>
+          </div>
         </footer>
+      </div>
     </div>
-</div>

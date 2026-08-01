@@ -8,14 +8,18 @@
 
     <div class="footer">
       <div class="legend">
-        <span *ngFor="let item of legendItems">
-          <i [ngClass]="item.imageClass"></i> {{ item.title }}
-        </span>
+        @for (item of legendItems; track item) {
+          <span>
+            <i [ngClass]="item.imageClass"></i> {{ item.title }}
+          </span>
+        }
       </div>
-      <hr *ngIf="withHr">
-      <div class="stats">
-        <i [ngClass]="footerIconClass"></i> {{ footerText }}
+      @if (withHr) {
+        <hr>
+        }
+        <div class="stats">
+          <i [ngClass]="footerIconClass"></i> {{ footerText }}
+        </div>
       </div>
     </div>
   </div>
-</div>

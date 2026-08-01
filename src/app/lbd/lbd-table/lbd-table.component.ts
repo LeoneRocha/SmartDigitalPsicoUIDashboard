@@ -6,9 +6,10 @@ export interface TableData {
 }
 
 @Component({
-  selector: 'lbd-table',
-  templateUrl: './lbd-table.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lbd-table',
+    templateUrl: './lbd-table.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LbdTableComponent {
   @Input()

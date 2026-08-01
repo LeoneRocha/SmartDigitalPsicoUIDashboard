@@ -16,13 +16,13 @@ import { PatientMedicationInformationService } from 'app/services/general/princi
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-patient_patientmedicationinformation',
     templateUrl: 'add-edit-patientmedicationinformation.component.html',
     //styleUrls: ['./gender.component.css']
     animations: [
         botaoAnimado
-    ]
+    ],
+    standalone: false
 })
 //5-  a lista
 export class AddEditPatientMedicationInformationComponent implements OnInit {

@@ -3,9 +3,9 @@ import { AppInformationVersionProductModel } from 'app/models/simplemodel/AppInf
 import { AppInformationVersionProductService } from 'app/services/general/simple/appinformationversionproduct.service';
 
 @Component({
-    moduleId: module.id,
     selector: 'footer-cmp',
-    templateUrl: 'footer.component.html'
+    templateUrl: 'footer.component.html',
+    standalone: false
 })
 
 export class FooterComponent {

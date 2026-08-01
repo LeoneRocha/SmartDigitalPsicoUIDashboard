@@ -7,9 +7,9 @@
                         <p class="category">Satellite Map</p>
                     </div>
                     <div class="content">
-                        <ngui-map zoom="3" center="40.748817,-73.985428"  mapTypeId="satellite" scrollwheel="false">
-                            <marker [position]="[40.748817,-73.985428]"></marker>
-                        </ngui-map>
+                        <google-map height="360px" width="100%" [center]="center" [zoom]="3" [mapTypeId]="'satellite'" [options]="mapOptions">
+                            <map-marker [position]="center"></map-marker>
+                        </google-map>
                     </div>
                 </div>
             </div>
@@ -19,9 +19,9 @@
                       <p class="category">Regular Map</p>
                     </div>
                     <div class="content">
-                        <ngui-map zoom="13" center="40.748817,-73.985428" scrollwheel="false" >
-                            <marker [position]="[40.748817,-73.985428]"></marker>
-                        </ngui-map>
+                        <google-map height="360px" width="100%" [center]="center" [zoom]="13" [options]="mapOptions">
+                            <map-marker [position]="center"></map-marker>
+                        </google-map>
                     </div>
                 </div>
             </div>

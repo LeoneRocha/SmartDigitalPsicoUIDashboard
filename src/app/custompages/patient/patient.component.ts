@@ -14,10 +14,11 @@ import { AuthService } from 'app/services/auth/auth.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'patient-list',
     templateUrl: 'patient.component.html'
     //styleUrls: ['./Patient.component.css']
+    ,
+    standalone: false
 })
 
 export class PatientComponent implements OnInit {

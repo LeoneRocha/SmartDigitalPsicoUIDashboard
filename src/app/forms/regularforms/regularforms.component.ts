@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
     selector: 'regularforms-cmp',
-    templateUrl: 'regularforms.component.html'
+    templateUrl: 'regularforms.component.html',
+    standalone: false
 })
 
 export class RegularFormsComponent{}

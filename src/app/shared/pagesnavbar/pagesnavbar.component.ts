@@ -5,9 +5,9 @@ import { AppComponent } from 'app/app.component';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'pagesnavbar-cmp',
-    templateUrl: 'pagesnavbar.component.html'
+    templateUrl: 'pagesnavbar.component.html',
+    standalone: false
 })
 
 export class PagesnavbarComponent implements OnInit {

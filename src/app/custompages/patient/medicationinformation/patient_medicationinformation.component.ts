@@ -9,11 +9,16 @@ import { LanguageService } from 'app/services/general/language.service';
 import { PatientMedicationInformationModel } from 'app/models/principalsmodel/PatientMedicationInformationModel';
 import { PatientMedicationInformationService } from 'app/services/general/principals/patientmedicationinformation.service';
 declare var $: any;
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'patient_patientmedicationinformation-list',
     templateUrl: 'patient_medicationinformation.component.html'
     //styleUrls: ['./Patient.component.css'] 
+    ,
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 
 export class PatientMedicationInformationComponent implements OnInit {

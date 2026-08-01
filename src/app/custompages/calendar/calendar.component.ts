@@ -1,7 +1,11 @@
 import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef, ViewContainerRef, ComponentFactoryResolver, TemplateRef, ElementRef } from '@angular/core';
+import { CalendarOptions, DatesSetArg } from '@fullcalendar/core';
+import { FullCalendarComponent } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CalendarOptions, DatesSetArg, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarCriteriaDto } from 'app/models/medicalcalendar/CalendarCriteriaDto';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { AuthService } from 'app/services/auth/auth.service';
@@ -24,10 +28,10 @@ import { LoadingService } from 'app/services/loading.service';
 //https://fullcalendar.io/docs/event-object
 declare var $: any;
 @Component({
-	moduleId: module.id,
-	selector: 'calendar-cmp',
-	templateUrl: 'calendar.component.html',
-	styleUrls: ['calendar.component.css']
+    selector: 'calendar-cmp',
+    templateUrl: 'calendar.component.html',
+    styleUrls: ['calendar.component.css'],
+    standalone: false
 })
 export class CalendarComponent implements OnInit {
 	//#region Variables	   
@@ -96,6 +100,7 @@ export class CalendarComponent implements OnInit {
 	//#region FULL CALENDAR 
 	loadDefinitionsFullCalendar(): void {
 		this.calendarOptions = {
+			plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
 			themeSystem: 'bootstrap',
 			headerToolbar: {
 				right: 'prev,next today',

@@ -4,9 +4,9 @@ import swal from 'sweetalert2';
 declare var $:any;
 
 @Component({
-    moduleId: module.id,
     selector: 'sweetalert-cmp',
-    templateUrl: 'sweetalert.component.html'
+    templateUrl: 'sweetalert.component.html',
+    standalone: false
 })
 
 export class SweetAlertComponent{

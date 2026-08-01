@@ -1,9 +1,9 @@
 import { Component, Input, VERSION } from "@angular/core";
 
 @Component({
-  selector: "countdowntimer",
-  templateUrl: "./countdowntimer.component.html",
-  //styleUrls: ["./app.component.css"]
+    selector: "countdowntimer",
+    templateUrl: "./countdowntimer.component.html",
+    standalone: false
 })
 export class CountDownTimerComponent {
   //name = "Angular " + VERSION.major;

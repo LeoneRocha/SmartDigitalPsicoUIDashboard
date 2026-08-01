@@ -13,10 +13,10 @@ import { DateHelper } from 'app/helpers/date-helper';
 declare var $: any;
 
 @Component({
-  moduleId: module.id,
-  selector: 'medical-calendar-test',
-  templateUrl: './medical-calendar-test.component.html',
-  styleUrls: ['./medical-calendar-test.component.css']
+    selector: 'medical-calendar-test',
+    templateUrl: './medical-calendar-test.component.html',
+    styleUrls: ['./medical-calendar-test.component.css'],
+    standalone: false
 })
 export class MedicalCalendarTestComponent implements OnInit, AfterContentInit, AfterViewInit {
   calendarData: CalendarDto;

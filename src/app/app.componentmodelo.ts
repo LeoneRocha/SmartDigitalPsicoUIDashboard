@@ -2,9 +2,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app.componentmodelo',
-  templateUrl: './app.componentmodelo.html',
-  styleUrls: ['./app.componentmodelo.css']
+    selector: 'app.componentmodelo',
+    templateUrl: './app.componentmodelo.html',
+    styleUrls: ['./app.componentmodelo.css'],
+    standalone: false
 })
 export class ComponentemodeloComponent {
   title: string = 'default title';

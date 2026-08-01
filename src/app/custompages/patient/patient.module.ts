@@ -51,15 +51,15 @@ import { PatientFileService } from 'app/services/general/principals/patientfile.
     ]
     ,
     providers: [
-        , DatePipe
-        , PatientService
-        , GenderService
-        , LanguageService
-        , PatientAdditionalInformationService
-        , PatientHospitalizationInformationService
-        , PatientMedicationInformationService
-        , PatientRecordService
-        , PatientFileService
+        DatePipe,
+        PatientService,
+        GenderService,
+        LanguageService,
+        PatientAdditionalInformationService,
+        PatientHospitalizationInformationService,
+        PatientMedicationInformationService,
+        PatientRecordService,
+        PatientFileService
     ],
 })
 

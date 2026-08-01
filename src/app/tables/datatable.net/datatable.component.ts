@@ -9,9 +9,9 @@ declare interface DataTable {
 }
 
 @Component({
-    moduleId: module.id,
     selector: 'data-table-cmp',
-    templateUrl: 'datatable.component.html'
+    templateUrl: 'datatable.component.html',
+    standalone: false
 })
 
 export class DataTableComponent implements OnInit{

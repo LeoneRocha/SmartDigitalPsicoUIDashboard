@@ -11,11 +11,16 @@ import { ApplicationLanguageService } from 'app/services/general/simple/applicat
 import { ApplicationLanguageModel } from 'app/models/simplemodel/ApplicationLanguageModel';
 import { ResourceKeyOptions } from 'app/common/enuns/language-options copy';
 import { LanguageService } from 'app/services/general/language.service';
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-applicationlanguage',
     templateUrl: 'add-edit-applicationlanguage.component.html'
     //styleUrls: ['./ApplicationLanguage.component.css']
+    ,
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 //5-  a lista
 

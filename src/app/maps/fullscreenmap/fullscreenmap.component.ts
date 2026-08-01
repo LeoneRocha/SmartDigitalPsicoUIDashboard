@@ -1,12 +1,11 @@
-import {Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
     selector: 'fullscreen-map-cmp',
-    templateUrl: 'fullscreenmap.component.html'
+    templateUrl: 'fullscreenmap.component.html',
+    standalone: false
 })
-
-export class FullScreenMapsComponent implements OnInit{
-    ngOnInit(){
-	}
+export class FullScreenMapsComponent {
+    center: google.maps.LatLngLiteral = { lat: 40.748817, lng: -73.985428 };
+    mapOptions: google.maps.MapOptions = { scrollwheel: false };
 }

@@ -5,16 +5,20 @@
         <div class="card card-calendar">
           <div class="content">
             <!-- Formulário de Evento -->
-            <div *ngIf="showEventForm">
-              <app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labelsForm"
-                [languageUI]="languageUI" [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString"
-                (onClose)="closeEventForm()" (onConfirm)="confirmEventForm()" (onDelete)="deleteEventForm()">
-              </app-calendar-event-modal>
-            </div>
+            @if (showEventForm) {
+              <div>
+                <app-calendar-event-modal [form]="eventForm" [patients]="patients" [labels]="labelsForm"
+                  [languageUI]="languageUI" [selectedEvent]="selectedEvent" [inputDateIsoString]="inputDateIsoString"
+                  (onClose)="closeEventForm()" (onConfirm)="confirmEventForm()" (onDelete)="deleteEventForm()">
+                </app-calendar-event-modal>
+              </div>
+            }
             <!-- Calendário -->
-            <div *ngIf="!showEventForm">
-              <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
-            </div>
+            @if (!showEventForm) {
+              <div>
+                <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
+              </div>
+            }
           </div>
         </div>
       </div>

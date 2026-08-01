@@ -8,9 +8,9 @@ var misc: any = {
     disabled_collapse_init: 0
 }
 @Component({
-    moduleId: module.id,
     selector: 'fixedplugin-cmp',
-    templateUrl: 'fixedplugin.component.html'
+    templateUrl: 'fixedplugin.component.html',
+    standalone: false
 })
 
 export class FixedPluginComponent implements OnInit{

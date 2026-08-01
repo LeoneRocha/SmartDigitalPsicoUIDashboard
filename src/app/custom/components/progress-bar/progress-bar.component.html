@@ -1,4 +1,5 @@
-<div id="ProgressBarComponent" class="overlay-container" *ngIf="isVisible">
+@if (isVisible) {
+  <div id="ProgressBarComponent" class="overlay-container">
     <div class="progress-modal">
       <div class="progress-title">
         {{title}}
@@ -13,4 +14,4 @@
       </div>
     </div>
   </div>
-  
+}

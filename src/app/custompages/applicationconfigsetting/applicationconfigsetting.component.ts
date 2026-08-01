@@ -12,10 +12,11 @@ import { LanguageService } from 'app/services/general/language.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'applicationConfigSetting-list',
     templateUrl: 'applicationconfigsetting.component.html'
     //styleUrls: ['./ApplicationConfigSetting.component.css']
+    ,
+    standalone: false
 })
 
 export class ApplicationConfigSettingComponent implements OnInit {

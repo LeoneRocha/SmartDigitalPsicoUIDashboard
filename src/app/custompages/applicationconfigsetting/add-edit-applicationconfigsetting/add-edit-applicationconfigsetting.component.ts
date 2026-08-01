@@ -10,11 +10,16 @@ import { GetMsgServiceResponse } from 'app/common/helpers/GetMsgServiceResponse'
 import { ApplicationConfigSettingService } from 'app/services/general/simple/applicationconfigsetting.service';
 import { ApplicationConfigSettingModel } from 'app/models/simplemodel/ApplicationConfigSettingModel';
 import { LanguageService } from 'app/services/general/language.service';
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-ApplicationConfigSetting',
     templateUrl: 'add-edit-applicationconfigsetting.component.html'
     //styleUrls: ['./ApplicationConfigSetting.component.css']
+    ,
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 //5-  a lista
 

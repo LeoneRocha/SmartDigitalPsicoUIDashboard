@@ -18,13 +18,13 @@ import { PatientAdditionalInformationService } from 'app/services/general/princi
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-patient_additionalinformation',
     templateUrl: 'add-edit-patient_additionalinformation.component.html',
     //styleUrls: ['./gender.component.css']
     animations: [
         botaoAnimado
-    ]
+    ],
+    standalone: false
 })
 //5-  a lista
 export class AddEditPatientAdditionalInformationComponent implements OnInit {

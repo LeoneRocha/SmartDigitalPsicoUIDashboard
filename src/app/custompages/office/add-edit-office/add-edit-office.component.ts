@@ -10,11 +10,16 @@ import { CaptureTologFunc } from 'app/common/errohandler/app-error-handler';
 import { GetMsgServiceResponse } from 'app/common/helpers/GetMsgServiceResponse';
 import { OfficeModel } from 'app/models/simplemodel/OfficeModel';
 import { LanguageService } from 'app/services/general/language.service';
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-office',
     templateUrl: 'add-edit-office.component.html'
     //styleUrls: ['./office.component.css']
+    ,
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 //5-  a lista
 

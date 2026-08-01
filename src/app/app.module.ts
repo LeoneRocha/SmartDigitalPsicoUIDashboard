@@ -6,7 +6,7 @@ import { FixedPluginModule } from './shared/fixedplugin/fixedplugin.module';
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { AppRoutes } from './app.routing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { AuthGuard } from './services/auth/auth-guard.service';
 import { AdminAuthGuard, AdminOrMedicalAuthGuard } from './services/auth/admin-auth-guard.service';
@@ -30,25 +30,7 @@ import { ProgressBarService } from './services/progress-bar.service';
 import { LoadingComponent } from './custom/components/loading/loading.component';
 import { LoadingService } from './services/loading.service';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-@NgModule({
-    imports: [
-        BrowserAnimationsModule,
-        RouterModule.forRoot(AppRoutes, {
-            useHash: false//HashLocationStrategy- default true https://www.tektutorialshub.com/angular/angular-location-strategies/
-        }),
-        LayoutModule,
-        FixedPluginModule,
-        HttpClientModule,
-        StoreModule.forRoot({ appState: appReducer }),//4)fourth time 
-        EffectsModule.forRoot([]),
-        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-        NgxTranslateModule,
-        AutocompleteLibModule,
-        CustomBoardModule,
-        AngularEditorModule
-        //SweetAlert2Module.forRoot(), // Adicione isto        
-    ],
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         AdminLayoutComponent,
         AuthLayoutComponent,
@@ -60,18 +42,33 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
         ProgressBarComponent,
         LoadingComponent,
     ],
-    bootstrap: [AppComponent],
-    providers: [
-        //Services
-        AuthService
-        , GlobalizationCultureService
-        , GlobalizationTimeZonesService
-        , LanguageService
-        , ProgressBarService
-        , LoadingService
-        //Guards
-        , AuthGuard, AdminAuthGuard, AdminOrMedicalAuthGuard, AuthGuard, MedicalAuthGuard, PatientAuthGuard
-    ],
-})
+    bootstrap: [AppComponent], imports: [BrowserAnimationsModule,
+        RouterModule.forRoot(AppRoutes, {
+            useHash: false //HashLocationStrategy- default true https://www.tektutorialshub.com/angular/angular-location-strategies/
+        }),
+        LayoutModule,
+        FixedPluginModule,
+        StoreModule.forRoot({ appState: appReducer }), //4)fourth time 
+        EffectsModule.forRoot([]),
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+        NgxTranslateModule,
+        AutocompleteLibModule,
+        CustomBoardModule,
+        AngularEditorModule
+        //SweetAlert2Module.forRoot(), // Adicione isto        
+    ], providers: [
+        AuthService,
+        GlobalizationCultureService,
+        GlobalizationTimeZonesService,
+        LanguageService,
+        ProgressBarService,
+        LoadingService,
+        AuthGuard,
+        AdminAuthGuard,
+        AdminOrMedicalAuthGuard,
+        MedicalAuthGuard,
+        PatientAuthGuard,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 
 export class AppModule { }
