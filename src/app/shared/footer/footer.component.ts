@@ -1,10 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core'; 
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core'; 
 import { AppInformationVersionProductModel } from 'app/models/simplemodel/AppInformationVersionProductModel';
 import { AppInformationVersionProductService } from 'app/services/general/simple/appinformationversionproduct.service';
 
 @Component({
     selector: 'footer-cmp',
     templateUrl: 'footer.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

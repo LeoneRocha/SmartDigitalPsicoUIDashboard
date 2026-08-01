@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LanguageService } from 'app/services/general/language.service';
 import { LoadingService } from 'app/services/loading.service';
 
@@ -6,6 +6,7 @@ import { LoadingService } from 'app/services/loading.service';
     selector: 'app-loading',
     templateUrl: './loading.component.html',
     styleUrls: ['./loading.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LoadingComponent implements OnInit {

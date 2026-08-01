@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceResponse } from 'app/models/ServiceResponse';
@@ -21,6 +21,7 @@ import { forkJoin } from 'rxjs';
 @Component({
     selector: 'userprofile-cmp',
     templateUrl: 'userprofile.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

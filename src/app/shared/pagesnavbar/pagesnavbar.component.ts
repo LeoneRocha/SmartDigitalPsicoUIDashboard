@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef,  Inject } from '@angular/core'; 
+import { Component, OnInit, Renderer2, ViewChild, ElementRef, Inject, ChangeDetectionStrategy } from '@angular/core'; 
 import { Location  } from '@angular/common';   
 import { AppComponent } from 'app/app.component';
 
@@ -7,6 +7,7 @@ declare var $: any;
 @Component({
     selector: 'pagesnavbar-cmp',
     templateUrl: 'pagesnavbar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

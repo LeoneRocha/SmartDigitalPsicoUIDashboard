@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Location } from '@angular/common';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
@@ -9,6 +9,7 @@ declare var $: any;
 @Component({
     selector: 'app-layout',
     templateUrl: './admin-layout.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

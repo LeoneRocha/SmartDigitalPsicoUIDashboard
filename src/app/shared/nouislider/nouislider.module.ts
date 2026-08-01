@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, NgModule } from '@angular/core';
+import { Component, forwardRef, Input, NgModule, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -34,6 +34,7 @@ import { CommonModule } from '@angular/common';
             useExisting: forwardRef(() => NouisliderComponent),
             multi: true
         }],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NouisliderComponent implements ControlValueAccessor {

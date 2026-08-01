@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataTable } from 'app/models/general/DataTable';
 import { SimpleModel } from 'app/models/contracts/SimpleModel';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ declare var $: any;
 @Component({
     selector: 'custom-genericdatatablegrid',
     templateUrl: './genericdatatablegrid.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

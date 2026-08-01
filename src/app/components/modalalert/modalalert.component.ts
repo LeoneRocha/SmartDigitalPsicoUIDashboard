@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import swal from 'sweetalert2';
 import { LanguageService } from 'app/services/general/language.service';
 import { ModalData } from 'app/models/general/ModalData';
@@ -7,6 +7,7 @@ declare var $: any;
 @Component({
     selector: 'custom-modalalert',
     templateUrl: './modalalert.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 declare var $: any;
 
 @Component({
     selector: 'vector-maps-cmp',
     templateUrl: './vectormaps.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import swal from 'sweetalert2';
 import {FormControl, FormGroupDirective, NgForm, Validators, FormGroup} from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
@@ -9,6 +9,7 @@ declare var $:any;
 @Component({
     selector: 'wizard-cmp',
     templateUrl: 'wizard.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

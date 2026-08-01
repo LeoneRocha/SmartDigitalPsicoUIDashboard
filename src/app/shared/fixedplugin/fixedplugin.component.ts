@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
 
 declare var $:any;
@@ -10,6 +10,7 @@ var misc: any = {
 @Component({
     selector: 'fixedplugin-cmp',
     templateUrl: 'fixedplugin.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

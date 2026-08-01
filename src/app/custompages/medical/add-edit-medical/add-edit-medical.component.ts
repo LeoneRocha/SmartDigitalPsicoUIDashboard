@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ServiceResponse } from 'app/models/ServiceResponse';
@@ -27,6 +27,7 @@ declare var $: any;
     animations: [
         botaoAnimado
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 //5-  a lista

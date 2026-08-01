@@ -21,9 +21,9 @@
             <div class="form-group col-md-6">
               <label for="swal-patient" class="text-left">{{ labels.labelPatient }}</label>
               <div class="ng-autocomplete">
-                <input type="hidden" id="swal-patient" [value]="selectedPatient?.id" formControlName="swalpatient">
+                <input type="hidden" id="swal-patient" [value]="$safeNavigationMigration(selectedPatient?.id)" formControlName="swalpatient">
                 <ng-autocomplete [data]="patientsFiltered" [searchKeyword]="'text'"
-                  [placeholder]="selectedPatient?.text" [itemTemplate]="itemTemplate"
+                  [placeholder]="$safeNavigationMigration(selectedPatient?.text)" [itemTemplate]="itemTemplate"
                   [notFoundTemplate]="notFoundTemplate" (selected)='selectEvent($event)'
                   (inputChanged)='filterPatientsInMemory($event)' [minQueryLength]="3"
                   formControlName="patientId">
@@ -147,7 +147,7 @@
                           @for (day of daysOfWeek; track day) {
                             <div class="checkbox">
                               <input class="form-check-input" type="checkbox" [value]="day.value"
-                                [checked]="selectedEvent?.medicalCalendar?.recurrenceDays?.includes(day.value)"
+                                [checked]="$safeNavigationMigration(selectedEvent?.medicalCalendar?.recurrenceDays?.includes(day.value))"
                                 id="day-{{day.value}}" required (change)="onRecurrenceDayChange(day.value)">
                                 <label class="form-check-label" for="day-{{day.value}}">{{ day.label }}</label>
                               </div>

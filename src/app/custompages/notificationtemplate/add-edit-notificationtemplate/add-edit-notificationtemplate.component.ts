@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ServiceResponse } from 'app/models/ServiceResponse';
@@ -21,6 +21,7 @@ import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
     animations: [
         botaoAnimado
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

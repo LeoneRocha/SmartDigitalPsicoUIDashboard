@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
@@ -16,6 +16,7 @@ declare var $: any;
     templateUrl: 'usermanagement.component.html'
     //styleUrls: ['./usermanagement.component.css']
     ,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

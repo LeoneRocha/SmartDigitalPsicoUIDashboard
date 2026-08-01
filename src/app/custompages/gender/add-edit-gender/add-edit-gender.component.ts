@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { GenderService } from 'app/services/general/simple/gender.service';
 import { Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -20,6 +20,7 @@ import { ModalAlertComponent } from 'app/components/modalalert/modalalert.compon
     animations: [
         botaoAnimado
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 //5-  a lista

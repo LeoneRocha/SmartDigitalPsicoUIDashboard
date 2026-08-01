@@ -1,10 +1,11 @@
-import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentInit, Inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from 'app/services/auth/auth.service';
 import { ROUTES, RouteInfo } from '../common/routerpaths';
 declare var $: any;
 @Component({
     selector: 'sidebar-cmp',
     templateUrl: 'sidebar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

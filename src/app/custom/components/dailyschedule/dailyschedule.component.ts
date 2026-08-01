@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoRefreshHelper } from 'app/helpers/AutoRefreshHelper';
 import { DateHelper } from 'app/helpers/date-helper';
@@ -9,11 +9,12 @@ import { EStatusCalendar } from 'app/models/medicalcalendar/enuns/EStatusCalenda
 import { AuthService } from 'app/services/auth/auth.service';
 import { CalendarEventService } from 'app/services/general/calendar/calendar-event.service';
 import { LanguageService } from 'app/services/general/language.service';
-import * as moment from 'moment';
+import moment from 'moment';
 @Component({
     selector: 'daily-schedule',
     templateUrl: './dailyschedule.component.html',
     styleUrls: ['./dailyschedule.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

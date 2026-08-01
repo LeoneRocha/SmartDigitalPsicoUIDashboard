@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef, Directive, Inject } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ElementRef, Directive, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthService } from 'app/services/auth/auth.service';
 import { ROUTES } from 'app/common/routerpaths';
@@ -14,6 +14,7 @@ declare var $: any;
 @Component({
     selector: 'navbar-cmp',
     templateUrl: 'navbar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

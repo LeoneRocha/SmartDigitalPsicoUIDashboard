@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 declare var $:any;
 
 @Component({
     selector: 'extendedforms-cmp',
     templateUrl: 'extendedforms.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

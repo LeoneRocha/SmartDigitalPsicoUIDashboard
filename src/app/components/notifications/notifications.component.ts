@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 declare var $:any;
 
 @Component({
     selector: 'notifications-cmp',
     templateUrl: 'notifications.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

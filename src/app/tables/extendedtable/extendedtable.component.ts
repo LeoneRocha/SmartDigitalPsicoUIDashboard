@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 
 declare var $:any;
 
@@ -21,6 +21,7 @@ declare interface TableData2 {
 @Component({
     selector: 'extended-table-cmp',
     templateUrl: 'extendedtable.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

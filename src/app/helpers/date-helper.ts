@@ -1,5 +1,5 @@
 import { DayCalendarDto } from "app/models/medicalcalendar/DayCalendarDto";
-import * as moment from 'moment';
+import moment from 'moment';
 
 export class DateHelper {
     static getDayOfWeek(): string[] {

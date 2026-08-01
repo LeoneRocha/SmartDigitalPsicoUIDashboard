@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -11,6 +11,7 @@ declare var $: any;
 @Component({
     selector: 'calendar-cmp',
     templateUrl: 'calendar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

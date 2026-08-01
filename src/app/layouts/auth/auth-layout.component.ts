@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { PagesnavbarComponent } from '../../shared/pagesnavbar/pagesnavbar.component';
@@ -10,6 +10,7 @@ declare var $: any;
 @Component({
     selector: 'app-layout',
     templateUrl: './auth-layout.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 
