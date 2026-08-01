@@ -14,8 +14,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:prod": "ng build --configuration=production",
+    "build:prod": "node scripts/bump-ui-version.js && ng build --configuration=production",
     "build:homo": "ng build --configuration=homologation",
+    "bump:version": "node scripts/bump-ui-version.js",
     "test": "ng test",
     "lint": "ng lint",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
