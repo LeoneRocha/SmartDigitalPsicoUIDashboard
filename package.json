@@ -52,7 +52,6 @@
     "bootstrap-notify": "3.1.3",
     "bootstrap-select": "1.13.18",
     "bootstrap-switch": "3.4.0",
-    "bootstrap-tagsinput": "0.7.1",
     "chartist": "0.11.4",
     "chartist-plugin-zoom": "0.6.0",
     "chosen-js": "1.8.7",
@@ -101,5 +100,10 @@
     "ts-node": "~10.9.1",
     "typescript": "~6.0.0",
     "typescript-eslint": "8.59.2"
+  },
+  "overrides": {
+    "moment-timezone": "^0.5.48",
+    "@hono/node-server": "^2.0.12",
+    "uuid": "^11.1.1"
   }
 }
