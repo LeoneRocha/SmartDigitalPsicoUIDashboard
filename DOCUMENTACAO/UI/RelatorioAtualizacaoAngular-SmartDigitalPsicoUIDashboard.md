@@ -96,6 +96,7 @@ ng serve: OK (HTTP 200 /, app-root + bundles)
 3. **`extendedDiagnostics` + `strictTemplates:false`** conflitam (NG4003) — diagnostics de suppress removidos; `strictTemplates: false` mantido.
 4. **Install:** `--legacy-peer-deps` (Bootstrap 3 / jQuery / `@kolkov/angular-editor` peers).
 5. Builder Webpack legado continua em uso (avisos de depreciação do CLI 22).
+6. **npm audit residual:** `bootstrap@3.4.1` (moderate). Sem patch oficial na linha 3.x; **não** usar `npm audit fix --force` (Bootstrap 5). Aceito até eventual migração de UI.
 
 ---
 
