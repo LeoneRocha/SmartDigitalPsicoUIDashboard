@@ -5,17 +5,15 @@
     "baseUrl": "src",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true, 
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types"
     ],
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ]
+    "useDefineForClassFields": false
   }
 }

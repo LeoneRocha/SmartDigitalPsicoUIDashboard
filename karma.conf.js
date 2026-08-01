@@ -10,17 +10,14 @@ module.exports = function (config) {
       require('karma-coverage'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
-      require('karma-junit-reporter'), // Adicione este plugin
+      require('karma-junit-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false
     },
-    files: [ 
-    ],
-    preprocessors: { 
-    },
+    files: [],
+    preprocessors: {},
     mime: {
       'text/x-typescript': ['ts', 'tsx']
     },
@@ -30,29 +27,21 @@ module.exports = function (config) {
       subdir: '.',
       includeAllSources: true
     },
-    coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, 'coverage'),
-      reports: ['html', 'lcovonly'],
-      fixWebpackSourcePaths: true
-    },
-    junitReporter: { // Configuração do JUnit Reporter
-      outputDir: require('path').join(__dirname, 'coverage'), // Diretório de saída
-      outputFile: 'test-results.xml', // Nome do arquivo de saída
-      useBrowserName: false // Não incluir o nome do navegador no arquivo
-    },
-    angularCli: {
-      environment: 'dev'
+    junitReporter: {
+      outputDir: require('path').join(__dirname, 'coverage'),
+      outputFile: 'test-results.xml',
+      useBrowserName: false
     },
     reporters: config.angularCli && config.angularCli.codeCoverage
-      ? ['progress', 'coverage-istanbul', 'coverage', 'junit']
-      : ['progress', 'kjhtml', 'coverage-istanbul', 'coverage', 'junit'],// Adicione 'junit' aos repórteres
-    port: 9877, // Porta alterada
+      ? ['progress', 'coverage', 'junit']
+      : ['progress', 'kjhtml', 'coverage', 'junit'],
+    port: 9877,
     colors: true,
     logLevel: config.LOG_WARN,
-    autoWatch: false, // Desativar autoWatch true to local 
-    singleRun: true, // Executar apenas uma vez false to local 
-    browsers: ['ChromeHeadless'],// Chrome to local 
-    concurrency: 4, // Ajuste de concurrency
-    browserNoActivityTimeout: 60000 // Ajuste de timeout
+    autoWatch: false,
+    singleRun: true,
+    browsers: ['ChromeHeadless'],
+    concurrency: 4,
+    browserNoActivityTimeout: 60000
   });
 };

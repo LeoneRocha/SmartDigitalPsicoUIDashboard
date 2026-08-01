@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
     selector: 'user-cmp',
-    templateUrl: 'user.component.html'
+    templateUrl: 'user.component.html',
+    standalone: false
 })
 
 export class UserComponent{ }

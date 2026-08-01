@@ -9,13 +9,18 @@ import { LanguageService } from 'app/services/general/language.service';
 import { PatientRecordModel } from 'app/models/principalsmodel/PatientRecordModel';
 import { PatientRecordService } from 'app/services/general/principals/patientrecord.service';
 declare var $: any;
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'patient_record-list',
     templateUrl: 'patient_record.component.html'
     //styleUrls: ['./Patient.component.css']
     //fonts icon https://fontawesome.com/v4/icons/
     //https://fontawesome.com/search?q=info&o=r&s=light&f=classic
+    ,
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 
 export class PatientRecordComponent implements OnInit {

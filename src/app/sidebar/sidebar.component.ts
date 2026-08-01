@@ -3,9 +3,9 @@ import { AuthService } from 'app/services/auth/auth.service';
 import { ROUTES, RouteInfo } from '../common/routerpaths';
 declare var $: any;
 @Component({
-    moduleId: module.id,
     selector: 'sidebar-cmp',
     templateUrl: 'sidebar.component.html',
+    standalone: false
 })
 
 export class SidebarComponent {

@@ -10,11 +10,16 @@ import { GetMsgServiceResponse } from 'app/common/helpers/GetMsgServiceResponse'
 import { RoleGroupModel } from 'app/models/simplemodel/RoleGroupModel';
 import { RoleGroupService } from 'app/services/general/simple/rolegroup.service';
 import { LanguageService } from 'app/services/general/language.service';
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-rolegroup',
     templateUrl: 'add-edit-rolegroup.component.html'
     //styleUrls: ['./RoleGroup.component.css']
+    ,
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 //5-  a lista
 

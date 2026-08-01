@@ -8,7 +8,8 @@ declare var $: any;
 
 @Component({
     selector: 'app-layout',
-    templateUrl: './admin-layout.component.html'
+    templateUrl: './admin-layout.component.html',
+    standalone: false
 })
 
 export class AdminLayoutComponent implements OnInit {

@@ -12,9 +12,9 @@ var misc: any = {
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'navbar-cmp',
-    templateUrl: 'navbar.component.html'
+    templateUrl: 'navbar.component.html',
+    standalone: false
 })
 
 export class NavbarComponent implements OnInit {

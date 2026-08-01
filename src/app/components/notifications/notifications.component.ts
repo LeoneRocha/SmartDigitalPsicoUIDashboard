@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 declare var $:any;
 
 @Component({
-    moduleId: module.id,
     selector: 'notifications-cmp',
-    templateUrl: 'notifications.component.html'
+    templateUrl: 'notifications.component.html',
+    standalone: false
 })
 
 export class NotificationsComponent{

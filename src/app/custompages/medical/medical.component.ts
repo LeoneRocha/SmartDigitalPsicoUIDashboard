@@ -13,10 +13,11 @@ import { LanguageService } from 'app/services/general/language.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'medical-list',
     templateUrl: 'medical.component.html'
     //styleUrls: ['./Medical.component.css']
+    ,
+    standalone: false
 })
 
 export class MedicalComponent implements OnInit {

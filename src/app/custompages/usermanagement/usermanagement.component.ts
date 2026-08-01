@@ -12,10 +12,11 @@ import { LanguageService } from 'app/services/general/language.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'usermanagement-list',
     templateUrl: 'usermanagement.component.html'
     //styleUrls: ['./usermanagement.component.css']
+    ,
+    standalone: false
 })
 
 export class UserManagementComponent implements OnInit {

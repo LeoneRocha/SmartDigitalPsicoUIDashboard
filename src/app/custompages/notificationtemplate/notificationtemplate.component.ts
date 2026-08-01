@@ -12,9 +12,9 @@ import { NotificationTemplateDto } from 'app/models/modelsbyswagger/models';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'notificationtemplate-list',
-    templateUrl: 'notificationtemplate.component.html' 
+    templateUrl: 'notificationtemplate.component.html',
+    standalone: false
 })
 
 export class NotificationTemplateComponent implements OnInit {

@@ -14,13 +14,13 @@ import { LanguageService } from 'app/services/general/language.service';
 import { ModalData } from 'app/models/general/ModalData';
 import { ModalAlertComponent } from 'app/components/modalalert/modalalert.component';
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-gender',
     templateUrl: 'add-edit-gender.component.html',
     //styleUrls: ['./gender.component.css']
     animations: [
         botaoAnimado
-    ]
+    ],
+    standalone: false
 })
 //5-  a lista
 

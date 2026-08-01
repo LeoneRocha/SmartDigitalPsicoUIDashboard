@@ -10,8 +10,9 @@ import { LanguageService } from 'app/services/general/language.service';
 
 declare var $: any;
 @Component({
-  selector: 'custom-genericdatatablegrid',
-  templateUrl: './genericdatatablegrid.component.html'
+    selector: 'custom-genericdatatablegrid',
+    templateUrl: './genericdatatablegrid.component.html',
+    standalone: false
 })
 
 export class GenericDataTableGrid implements OnInit {

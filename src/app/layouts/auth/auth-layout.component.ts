@@ -8,8 +8,9 @@ import { LanguageService } from 'app/services/general/language.service';
 declare var $: any;
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './auth-layout.component.html'
+    selector: 'app-layout',
+    templateUrl: './auth-layout.component.html',
+    standalone: false
 })
 
 export class AuthLayoutComponent {

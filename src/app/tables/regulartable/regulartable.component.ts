@@ -6,9 +6,9 @@ declare interface TableData {
 }
 
 @Component({
-    moduleId: module.id,
     selector: 'regular-table-cmp',
-    templateUrl: 'regulartable.component.html'
+    templateUrl: 'regulartable.component.html',
+    standalone: false
 })
 
 export class RegularTableComponent implements OnInit{

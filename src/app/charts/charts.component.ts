@@ -5,9 +5,9 @@ import * as Chartist from 'chartist';
 declare var $:any;
 
 @Component({
-    moduleId: module.id,
     selector: 'charts-cmp',
-    templateUrl: './charts.component.html'
+    templateUrl: './charts.component.html',
+    standalone: false
 })
 
 export class ChartsComponent implements OnInit{

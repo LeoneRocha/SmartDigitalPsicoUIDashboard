@@ -1,13 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions } from '@fullcalendar/core';
+import { FullCalendarComponent } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import swal from 'sweetalert2';
 
 declare var $: any;
 
 @Component({
-	moduleId: module.id,
-	selector: 'calendar-cmp',
-	templateUrl: 'calendar.component.html'
+    selector: 'calendar-cmp',
+    templateUrl: 'calendar.component.html',
+    standalone: false
 })
 
 export class CalendarComponent implements OnInit {
@@ -74,6 +78,7 @@ export class CalendarComponent implements OnInit {
 			}
 		];
 		this.calendarOptions = {
+			plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
 			headerToolbar: {
 				right: 'prev,next today',
 				center: 'dayGridMonth,timeGridWeek,timeGridDay',

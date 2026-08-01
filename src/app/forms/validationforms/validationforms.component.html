@@ -18,7 +18,7 @@
                                 <input type="email" class="form-control" name="email" [ngModel]="register.email"
                                   required  #email="ngModel" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
                                 <small [hidden]="email.valid || (email.pristine && !f.submitted)" class="text-danger">
-                                  Email is required and format should be <i>john@doe.com</i>.
+                                  Email is required and format should be <i>john&#64;doe.com</i>.
                                 </small>
                             </div>
                             <div class="form-group">
@@ -75,7 +75,7 @@
                                 <input type="email" class="form-control" name="email" [ngModel]="login.email"
                                   required  #email="ngModel" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
                                 <small [hidden]="email.valid || (email.pristine && !f1.submitted)" class="text-danger">
-                                  Email is required and format should be <i>john@doe.com</i>.
+                                  Email is required and format should be <i>john&#64;doe.com</i>.
                                 </small>
                             </div>
                             <div class="form-group">
@@ -126,7 +126,7 @@
                                         <input type="email" class="form-control" name="email" [ngModel]="typeValidation.email"
                                           required  #email="ngModel" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
                                         <small [hidden]="email.valid || (email.pristine && !f2.submitted)" class="text-danger">
-                                          Email is required and format should be <i>john@doe.com</i>.
+                                          Email is required and format should be <i>john&#64;doe.com</i>.
                                         </small>
                                     </div>
                                     <div class="col-sm-4"><code>email="true"</code></div>

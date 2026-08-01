@@ -8,8 +8,9 @@ import * as Chartist from 'chartist';
 declare var $:any;
 
 @Component({
-  selector: 'dashboard-cmp',
-  templateUrl: './dashboard.component.html'
+    selector: 'dashboard-cmp',
+    templateUrl: './dashboard.component.html',
+    standalone: false
 })
 
 export class DashboardComponent {

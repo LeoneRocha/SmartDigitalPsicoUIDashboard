@@ -3,9 +3,9 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 declare var $:any;
 
 @Component({
-    moduleId:module.id,
     selector: 'lock-cmp',
-    templateUrl: './lock.component.html'
+    templateUrl: './lock.component.html',
+    standalone: false
 })
 
 export class LockComponent implements OnInit{

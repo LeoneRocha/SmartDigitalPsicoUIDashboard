@@ -11,11 +11,16 @@ import { MedicalFileModel } from 'app/models/principalsmodel/MedicalFileModel';
 import { HttpResponse } from '@angular/common/http';
 import { AuthService } from 'app/services/auth/auth.service';
 declare var $: any;
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'fileupload-medical-list',
     templateUrl: 'fileupload-medical.component.html'
     //styleUrls: ['./Medical.component.css'] 
+    ,
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 
 export class FileUploadMedicalComponent implements OnInit {

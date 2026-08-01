@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 declare var $:any;
 
 @Component({
-    moduleId: module.id,
     selector: 'extendedforms-cmp',
-    templateUrl: 'extendedforms.component.html'
+    templateUrl: 'extendedforms.component.html',
+    standalone: false
 })
 
 export class ExtendedFormsComponent implements OnInit{

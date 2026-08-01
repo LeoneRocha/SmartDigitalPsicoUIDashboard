@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
     selector: 'typography-cmp',
-    templateUrl: 'typography.component.html'
+    templateUrl: 'typography.component.html',
+    standalone: false
 })
 
 export class TypographyComponent{}

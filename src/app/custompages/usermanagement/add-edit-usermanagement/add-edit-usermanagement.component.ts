@@ -18,11 +18,16 @@ import { MedicalModel } from 'app/models/principalsmodel/MedicalModel';
 import { LanguageService } from 'app/services/general/language.service';
 import { RoleGroupModel } from 'app/models/simplemodel/RoleGroupModel';
 import { RoleGroupService } from 'app/services/general/simple/rolegroup.service';
+import { botaoAnimado } from 'app/common/animations/geral-trigger-animation';
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-usermanagement',
     templateUrl: 'add-edit-usermanagement.component.html'
     //styleUrls: ['./usermanagement.component.css']
+    ,
+    animations: [
+        botaoAnimado
+    ],
+    standalone: false
 })
 //5-  a lista
 

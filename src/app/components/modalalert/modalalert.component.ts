@@ -5,8 +5,9 @@ import { ModalData } from 'app/models/general/ModalData';
 
 declare var $: any;
 @Component({
-  selector: 'custom-modalalert',
-  templateUrl: './modalalert.component.html'
+    selector: 'custom-modalalert',
+    templateUrl: './modalalert.component.html',
+    standalone: false
 })
 
 export class ModalAlertComponent implements OnInit {

@@ -21,13 +21,13 @@ import { FormHelperCalendar } from 'app/helpers/formHelperCalendar';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-medical',
     templateUrl: 'add-edit-medical.component.html',
     //styleUrls: ['./gender.component.css']
     animations: [
         botaoAnimado
-    ]
+    ],
+    standalone: false
 })
 //5-  a lista
 export class AddEditMedicalComponent implements OnInit {

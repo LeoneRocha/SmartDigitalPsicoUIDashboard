@@ -16,13 +16,13 @@ import { PatientRecordService } from 'app/services/general/principals/patientrec
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'add-edit-patient_record',
     templateUrl: 'add-edit-patient_record.component.html',
     //styleUrls: ['./gender.component.css']
     animations: [
         botaoAnimado
-    ]
+    ],
+    standalone: false
 })
 //5-  a lista
 export class AddEditPatientRecordComponent implements OnInit {

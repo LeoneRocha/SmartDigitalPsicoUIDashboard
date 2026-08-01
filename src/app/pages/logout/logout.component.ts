@@ -5,9 +5,9 @@ import { AuthService } from 'app/services/auth/auth.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'logout-cmp',
-    templateUrl: './logout.component.html'
+    templateUrl: './logout.component.html',
+    standalone: false
 })
 
 export class LogoutComponent implements OnInit {

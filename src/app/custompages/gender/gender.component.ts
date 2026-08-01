@@ -14,10 +14,11 @@ import { LanguageService } from 'app/services/general/language.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'genderlist',
     templateUrl: 'gender.component.html'
     //styleUrls: ['./gender.component.css']
+    ,
+    standalone: false
 })
 
 export class GenderComponent implements OnInit, OnDestroy {

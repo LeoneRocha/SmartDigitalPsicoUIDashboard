@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 declare var $:any;
 
 @Component({
-    moduleId: module.id,
     selector: 'panels-cmp',
-    templateUrl: 'panels.component.html'
+    templateUrl: 'panels.component.html',
+    standalone: false
 })
 
 export class PanelsComponent implements OnInit{

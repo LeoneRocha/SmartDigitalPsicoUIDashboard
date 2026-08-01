@@ -12,10 +12,11 @@ import { LanguageService } from 'app/services/general/language.service';
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'officelist',
     templateUrl: 'office.component.html'
     //styleUrls: ['./office.component.css']
+    ,
+    standalone: false
 })
 
 export class OfficeComponent implements OnInit {

@@ -13,9 +13,10 @@ export enum ChartType {
 }
 
 @Component({
-  selector: 'lbd-chart',
-  templateUrl: './lbd-chart.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lbd-chart',
+    templateUrl: './lbd-chart.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LbdChartComponent implements OnInit, AfterViewInit {
   static currentId = 1;

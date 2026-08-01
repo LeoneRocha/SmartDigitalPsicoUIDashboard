@@ -19,9 +19,9 @@ declare interface TableData2 {
 }
 
 @Component({
-    moduleId: module.id,
     selector: 'extended-table-cmp',
-    templateUrl: 'extendedtable.component.html'
+    templateUrl: 'extendedtable.component.html',
+    standalone: false
 })
 
 export class ExtendedTableComponent implements OnInit{

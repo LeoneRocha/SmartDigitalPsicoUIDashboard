@@ -5,9 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EqualValidator } from './equal-validator.directive';
 import { LbdModule } from '../lbd/lbd.module';
 import { FormsRoutes } from './forms.routing';
-import { TagInputModule } from 'ngx-chips';
-import { NouisliderModule } from 'ng2-nouislider';
-import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { TagInputModule } from '../shared/tag-input/tag-input.module';
+import { NouisliderModule } from '../shared/nouislider/nouislider.module';
+import { JwBootstrapSwitchNg2Module } from '../shared/bswitch/jw-bootstrap-switch-ng2.module';
 
 import { ExtendedFormsComponent } from './extendedforms/extendedforms.component';
 import { RegularFormsComponent } from './regularforms/regularforms.component';
