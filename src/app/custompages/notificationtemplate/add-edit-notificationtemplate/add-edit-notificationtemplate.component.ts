@@ -84,7 +84,7 @@ export class AddEditNotificationTemplateComponent implements OnInit {
 
         if (this.isModeViewForm) {
             formsElement.controls['description'].disable();
-            formsElement.controls['tagApi'].disable();
+            formsElement.controls['templateKey'].disable();
             formsElement.controls['language'].disable();
             formsElement.controls['subject'].disable();
             formsElement.controls['body'].disable();
@@ -95,7 +95,7 @@ export class AddEditNotificationTemplateComponent implements OnInit {
 
         if (this.registerId > 0) {
             formsElement.controls['language'].disable();
-            formsElement.controls['tagApi'].disable();
+            formsElement.controls['templateKey'].disable();
         }
     }
     loadRegister() {
@@ -160,7 +160,7 @@ export class AddEditNotificationTemplateComponent implements OnInit {
             subject: responseData?.subject,
             body: responseData?.body,
             description: responseData?.description,
-            tagApi: responseData?.tagApi,
+            templateKey: responseData?.templateKey,
             language: responseData?.language,
             enable: responseData?.enable,
             links: responseData?.links
@@ -169,7 +169,7 @@ export class AddEditNotificationTemplateComponent implements OnInit {
         formsElement.controls['subject'].setValue(this.registerModel.subject);
         formsElement.controls['body'].setValue(this.registerModel.body);
         formsElement.controls['description'].setValue(this.registerModel.description);
-        formsElement.controls['tagApi'].setValue(this.registerModel.tagApi);
+        formsElement.controls['templateKey'].setValue(this.registerModel.templateKey);
         formsElement.controls['language'].setValue(this.registerModel.language);
         formsElement.controls['enableOpt'].setValue(this.registerModel.enable);
     }
@@ -186,9 +186,9 @@ export class AddEditNotificationTemplateComponent implements OnInit {
         let isValid = this.registerForm.get('description').errors?.required;
         return this.registerForm.controls['description'].touched && this.registerForm.controls['description'].invalid && isValid;
     }
-    isValidFormTagApi(): boolean {
-        let isValid = this.registerForm.get('tagApi').errors?.required;
-        return this.registerForm.controls['tagApi'].touched && this.registerForm.controls['tagApi'].invalid && isValid;
+    isValidFormTemplateKey(): boolean {
+        let isValid = this.registerForm.get('templateKey').errors?.required;
+        return this.registerForm.controls['templateKey'].touched && this.registerForm.controls['templateKey'].invalid && isValid;
     }
     isValidFormLanguage(): boolean {
         let isValid = this.registerForm.get('language').errors?.required;
@@ -199,7 +199,7 @@ export class AddEditNotificationTemplateComponent implements OnInit {
         this.registerForm = this.fb.group({
             id: new FormControl(),
             description: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
-            tagApi: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
+            templateKey: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
             subject: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
             body: new FormControl('', [Validators.required, Validators.minLength(3)]),
             language: new FormControl('', Validators.required),
@@ -211,7 +211,7 @@ export class AddEditNotificationTemplateComponent implements OnInit {
         this.registerModel = {
             id: this.registerId ? this.registerId : 0,
             description: formElement.controls['description']?.value,
-            tagApi: formElement.controls['tagApi']?.value,
+            templateKey: formElement.controls['templateKey']?.value,
             language: formElement.controls['language']?.value,
             subject: formElement.controls['subject']?.value,
             body: formElement.controls['body']?.value,
@@ -225,7 +225,7 @@ export class AddEditNotificationTemplateComponent implements OnInit {
             body: '',
             enable: false,
             description: '',
-            tagApi: '',
+            templateKey: '',
             language: '',
             links: []
         }

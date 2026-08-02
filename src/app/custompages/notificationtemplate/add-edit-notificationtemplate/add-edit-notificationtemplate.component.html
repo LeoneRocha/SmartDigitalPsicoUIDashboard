@@ -73,15 +73,15 @@
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <!--tagApi-->
+                    <!--templateKey-->
                     <div class="form-group">
-                      <label for="tagApi">{{ "notificationtemplate.tagApi" | translate }}:</label>
+                      <label for="templateKey">{{ "notificationtemplate.templateKey" | translate }}:</label>
                       <span class="star">*</span>
-                      <input type="text" class="form-control" id="tagApi" name="tagApi"
-                        formControlName="tagApi" maxlength="255"
-                        [ngClass]="!isValidFormTagApi() ? '' : 'error'" />
-                        <small [hidden]="!isValidFormTagApi()" class="text-danger">
-                          {{ "notificationtemplate.tagApi_required" | translate }}
+                      <input type="text" class="form-control" id="templateKey" name="templateKey"
+                        formControlName="templateKey" maxlength="255"
+                        [ngClass]="!isValidFormTemplateKey() ? '' : 'error'" />
+                        <small [hidden]="!isValidFormTemplateKey()" class="text-danger">
+                          {{ "notificationtemplate.templateKey_required" | translate }}
                         </small>
                       </div>
                     </div>
