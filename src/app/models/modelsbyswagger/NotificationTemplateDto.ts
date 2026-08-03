@@ -19,5 +19,5 @@ export interface NotificationTemplateDto {
     links?: Array<HyperMediaLink>;
     id?: number;
     enable: boolean; 
-    tagApi?: string;
+    templateKey?: string;
 }
